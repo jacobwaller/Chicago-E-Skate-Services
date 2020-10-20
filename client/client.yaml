@@ -1,4 +1,5 @@
 runtime: nodejs12
+service: default
 
 handlers:
   # Serve all static files with url ending with a file extension
