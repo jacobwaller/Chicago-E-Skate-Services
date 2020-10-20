@@ -36,7 +36,7 @@ const listRides = async () => {
 
 const getRide = async (id) => {
   const ret = await listRides();
-  if (id < 0 || id + 1 > ret.length) return {};
+  if (id < 0 || id >= ret.length) return {};
   return ret[id];
 };
 
