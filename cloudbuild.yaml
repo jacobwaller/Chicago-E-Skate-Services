@@ -6,6 +6,13 @@ steps:
       - fetchRide
       - --source=./api/
       - --trigger-http
+  - name: "cd ./client/"
+  - name: node
+    entrypoint: npm
+    args: ["install"]
+  - name: node
+    entrypoint: npm
+    args: ["run", "build"]
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       - "app"
