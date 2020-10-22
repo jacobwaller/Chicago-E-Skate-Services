@@ -1,5 +1,6 @@
 const { google } = require("googleapis");
 const moment = require("moment-timezone");
+const { Base64 } = require("js-base64");
 require("dotenv").config();
 
 const NUM_RIDES = 5;
@@ -8,8 +9,6 @@ const NUM_RIDES = 5;
  * Returns a list of the next NUM_RIDES rides
  */
 const listRides = async () => {
-  console.log(process.env.PRIVATE_KEY);
-
   const list = await getListOfRides();
   const currentDate = moment();
   currentDate.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
@@ -47,7 +46,7 @@ function getJwt() {
   return new google.auth.JWT(
     process.env.CLIENT_EMAIL,
     null,
-    process.env.PRIVATE_KEY,
+    Base64.decode(process.env.PRIVATE_KEY),
     ["https://www.googleapis.com/auth/spreadsheets"]
   );
 }
