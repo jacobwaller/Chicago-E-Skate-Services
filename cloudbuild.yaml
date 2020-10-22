@@ -10,4 +10,4 @@ steps:
     args:
       - "app"
       - "deploy"
-      - "client.yaml"
+      - "./client/client.yaml"
