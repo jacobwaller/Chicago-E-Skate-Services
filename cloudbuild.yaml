@@ -11,7 +11,7 @@ steps:
     args: ["--prefix", "./client/", "install"]
   # Build
   - name: "gcr.io/cloud-builders/npm"
-    args: [--prefix", "./client/", "run", "build"]
+    args: ["run", "build", "--prefix", "./client/"]
   # Deploy
   - name: "gcr.io/cloud-builders/gcloud"
     args:
