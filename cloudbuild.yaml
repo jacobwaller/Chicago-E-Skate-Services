@@ -1,4 +1,5 @@
 steps:
+  #Deploy Cloud Function
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       - functions
@@ -6,13 +7,13 @@ steps:
       - fetchRide
       - --source=./api/
       - --trigger-http
-  # Install
+  # NPM Install
   - name: "gcr.io/cloud-builders/npm"
     args: ["--prefix", "./client/", "install"]
-  # Build
+  # NPM Build
   - name: "gcr.io/cloud-builders/npm"
     args: ["run", "build", "--prefix", "./client/"]
-  # Deploy
+  # GCloud Deploy
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       - "app"
