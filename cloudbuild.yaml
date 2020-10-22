@@ -8,10 +8,10 @@ steps:
       - --trigger-http
   # Install
   - name: "gcr.io/cloud-builders/npm"
-    args: ["install"]
+    args: ["--prefix", "./client/", "install"]
   # Build
   - name: "gcr.io/cloud-builders/npm"
-    args: ["run", "build"]
+    args: [--prefix", "./client/", "run", "build"]
   # Deploy
   - name: "gcr.io/cloud-builders/gcloud"
     args:
