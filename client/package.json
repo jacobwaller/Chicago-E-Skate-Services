@@ -6,7 +6,8 @@
     "start": "nodemon -w craco.config.js -w ./src/antd.customize.less --exec \"craco start\"",
     "build": "craco build",
     "test": "craco test",
-    "clean": "rimraf build dist coverage"
+    "clean": "rimraf build dist coverage",
+    "deploy": "build && gcloud app deploy client.yaml"
   },
   "eslintConfig": {
     "extends": "react-app"

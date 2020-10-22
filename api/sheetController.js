@@ -1,5 +1,7 @@
 const { google } = require("googleapis");
 const moment = require("moment-timezone");
+const { Base64 } = require("js-base64");
+require("dotenv").config();
 
 const NUM_RIDES = 5;
 
@@ -41,18 +43,16 @@ const getRide = async (id) => {
 };
 
 function getJwt() {
-  var credentials = require("./credentials.json");
   return new google.auth.JWT(
-    credentials.client_email,
+    process.env.CLIENT_EMAIL,
     null,
-    credentials.private_key,
+    Base64.decode(process.env.PRIVATE_KEY),
     ["https://www.googleapis.com/auth/spreadsheets"]
   );
 }
 
 function getApiKey() {
-  var apiKeyFile = require("./api_key.json");
-  return apiKeyFile.key;
+  return process.env.API_KEY;
 }
 
 /**
