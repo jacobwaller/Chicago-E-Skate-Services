@@ -6,15 +6,15 @@ steps:
       - fetchRide
       - --source=./api/
       - --trigger-http
-  - name: "cd ./client/"
   - name: node
-    entrypoint: npm
+    entrypoint: "./client/npm"
     args: ["install"]
   - name: node
-    entrypoint: npm
+    entrypoint: "./client/npm"
     args: ["run", "build"]
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       - "app"
       - "deploy"
       - "./client/client.yaml"
+      - "--stop-previous-version"
