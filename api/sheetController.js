@@ -8,6 +8,8 @@ const NUM_RIDES = 5;
  * Returns a list of the next NUM_RIDES rides
  */
 const listRides = async () => {
+  console.log(process.env.PRIVATE_KEY);
+
   const list = await getListOfRides();
   const currentDate = moment();
   currentDate.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
