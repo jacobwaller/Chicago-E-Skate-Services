@@ -3,5 +3,4 @@ build/
 
 credentials.json
 api_key.json
-
 .env
