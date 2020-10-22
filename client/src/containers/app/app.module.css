@@ -1,0 +1,27 @@
+.fullPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.header {
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.carouselContent {
+  height: 300px;
+  overflow: hidden;
+}
+
+.siteContent {
+  background: #fff;
+  padding: 24px;
+  min-height: 280px;
+}
+
+.footer {
+  text-align: center;
+}
