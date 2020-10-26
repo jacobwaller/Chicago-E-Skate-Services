@@ -68,7 +68,7 @@ function GroupRideContent() {
   }
 
   return (
-    <Carousel autoplay={false} dots={false} easing="linear">
+    <Carousel autoplay={false} dots={true} easing="linear">
       {cardInfo}
     </Carousel>
   );
