@@ -62,7 +62,7 @@ const getListOfRides = async () => {
   const sheets = google.sheets({ version: "v4" });
   const results = await sheets.spreadsheets.values.get({
     spreadsheetId: "1SAssru-78PhVGSw_j-igSnmHKlxr5NsuRSZTjxgORxA",
-    range: "Rides!A2:G",
+    range: "Rides!A3:K",
     auth: getJwt(),
     key: getApiKey(),
   });
@@ -71,14 +71,17 @@ const getListOfRides = async () => {
   //Map rows to a list of objects
   const list = rows.map((row) => {
     return {
-      date: row[0],
-      time: row[1],
-      city: row[2],
-      startPoint: row[3],
-      endPoint: row[4],
-      type: row[5],
-      routeLink: row[6],
-      description: row[7],
+      title: row[0],
+      date: row[1],
+      meetTime: row[2],
+      launchTime: row[3],
+      city: row[4],
+      startPoint: row[5],
+      endPoint: row[6],
+      type: row[7],
+      routeLink: row[8],
+      routeDistance: row[9],
+      description: row[10],
     };
   });
 
