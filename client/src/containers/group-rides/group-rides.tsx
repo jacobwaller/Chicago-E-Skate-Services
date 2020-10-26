@@ -1,66 +1,87 @@
 import React from "react";
-import { Card, Col, Row, Skeleton } from "antd";
-import classes from "./group-rides.module.css";
+import RideData from "../../interfaces/RideData";
+import { Card, Col, Skeleton, Avatar, Carousel, Divider } from "antd";
+import { useQuery, QueryCache, ReactQueryCacheProvider } from "react-query";
+import { PropertySafetyFilled } from "@ant-design/icons";
+import Modal from "antd/lib/modal/Modal";
 
-// TODO not sure what this will actually be, just basing it off the mock
-interface RideData {
-  title: string;
-  date: Date;
-  time: string;
-  city: string;
-  startPoint: string;
-  endPoint: string;
-  type: string;
-  routeLink: string;
-  description: string;
+const queryCache = new QueryCache();
+
+const openModal = (ride: RideData | undefined) => {};
+
+interface RideProps {
+  loading: boolean;
+  rideData: RideData | undefined;
+  // openModal: () => {};
 }
 
-const randomRideDataTest: RideData[] = [];
-for (let i = 0; i < 30; i++) {
-  randomRideDataTest.push({
-    title: `Tuesday Night Group Ride #${i}`,
-    date: new Date(),
-    startPoint: "McCormick Waterfall 123 N Main",
-    endPoint: "Alive one 321 S 69th Street",
-    description: "There's metered parking for...",
-    city: "Chicago",
-    routeLink: "",
-    time: "3:00 PM",
-    type: "STREET",
-  });
-}
-
-const Ride: React.FC<{ rideData: RideData }> = ({ rideData }) => {
-  const {
-    title,
-    date,
-    startPoint: startLocation,
-    endPoint: endLocation,
-    description,
-  } = rideData;
-  // TODO make these pretty and cool, images
+const Ride: React.FC<RideProps> = (props) => {
   return (
-    <Card style={{ width: 300, marginTop: 16 }}>
-      <Skeleton loading={false} active>
-        <Card.Meta title={title} description={description} />
-      </Skeleton>
-    </Card>
+    <div
+      onClick={() => {
+        openModal(props.rideData);
+      }}
+    >
+      <Card
+        bordered={false}
+        bodyStyle={{
+          backgroundColor: "rgb(231,231,231)",
+          border: 0,
+          borderRadius: 10,
+        }}
+      >
+        <Skeleton loading={props.loading} active>
+          <Card.Meta
+            avatar={<Avatar shape="square" alt="image" src="/maps.jpg" />}
+            title={`${props.rideData?.title}`}
+          />
+          <Divider />
+          <p> {`(${props.rideData?.date} @ ${props.rideData?.meetTime})`}</p>
+          <p>{props.rideData?.description}</p>
+          <p>
+            {props.rideData?.startPoint} to {props.rideData?.endPoint}
+          </p>
+        </Skeleton>
+      </Card>
+    </div>
   );
 };
 
-export const GroupRides: React.FC = () => {
-  // TODO add react-virtualized to do infinite scrolling
+function Content() {
+  const { data } = useQuery("repoData", () =>
+    fetch(
+      "https://us-central1-chicagoeskatewebsite-293020.cloudfunctions.net/fetchRide"
+    ).then((res) => res.json())
+  );
+
+  // If we don't have data, just display a loading card
+  // otherwise, show the info
+  let cardInfo;
+  if (data) {
+    cardInfo = data.map((ride: RideData, i: number) => (
+      <Col span={24}>
+        <Ride key={i} loading={false} rideData={ride} />
+      </Col>
+    ));
+  } else {
+    cardInfo = (
+      <Col span={24}>
+        <Ride key={0} loading={true} rideData={undefined} />
+      </Col>
+    );
+  }
+
   return (
-    <Row
-      className={classes.rides}
-      gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
-      justify="space-around"
-    >
-      {randomRideDataTest.map((rideData, i) => (
-        <Col>
-          <Ride key={i} rideData={rideData} />
-        </Col>
-      ))}
-    </Row>
+    <Carousel autoplay={false} dots={false} easing="linear">
+      {cardInfo}
+    </Carousel>
+  );
+}
+
+export const GroupRides: React.FC = (props) => {
+  return (
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <Content />
+    </ReactQueryCacheProvider>
   );
 };
