@@ -68,7 +68,7 @@ const getListOfRides = async () => {
   });
 
   const rows = results.data.values;
-  //Map rows to a list of objects
+  //Map rows to a list of object
   const list = rows.map((row) => {
     return {
       title: row[0],
