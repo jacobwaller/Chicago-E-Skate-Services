@@ -7,6 +7,9 @@ const { listRides, getRide } = require("./sheetController");
  * @param {!express:Response} res HTTP response context.
  */
 const fetchRide = async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+
   if (req.method === "GET") {
     const id = req.query.id;
     if (id === undefined) {
