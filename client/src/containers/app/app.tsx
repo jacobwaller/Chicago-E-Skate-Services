@@ -5,6 +5,7 @@ import classes from "./app.module.css";
 import { GroupRides } from "../group-rides";
 import Avatar from "antd/lib/avatar/avatar";
 import RideData from "../../interfaces/RideData";
+import { Information } from "../information";
 
 const { Header, Content, Footer } = Layout;
 
@@ -23,6 +24,7 @@ export class App extends React.Component {
         <Content className={classes.siteContent}>
           <GroupRides />
           <Divider />
+          <Information />
         </Content>
         <Footer className={classes.footer}>
           <p>Join us on Telegram</p>
