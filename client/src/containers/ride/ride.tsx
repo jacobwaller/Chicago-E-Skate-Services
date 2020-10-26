@@ -1,6 +1,6 @@
 import React from "react";
 import RideData from "../../interfaces/RideData";
-import { Card, Col, Skeleton, Avatar, Carousel, Divider } from "antd";
+import { Card, Skeleton, Avatar, Divider } from "antd";
 
 interface RideProps {
   loading: boolean;
