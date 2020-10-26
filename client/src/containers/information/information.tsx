@@ -48,40 +48,39 @@ const rules = (
 const info = (
   <>
     <p>Telegram Chats:</p>
-
-    <p>
-      Main Chicago E-Skate Chat: https://t.me/joinchat/IpygA1Fe8katyls34TYaYg
-    </p>
-
+    <a href="https://t.me/joinchat/IpygA1Fe8katyls34TYaYg">
+      Main Chicago E-Skate Chat
+    </a>
+    <br />
+    <br />
     <p> Subgroups:</p>
-
-    <p>
-      Chicago E-Bike Community: https://t.me/joinchat/GGTLCBGKcqVJxoLM58E9MA
-    </p>
-
-    <p>Chicago EUC: https://t.me/joinchat/KVjiJBwwz5YOwDJvBxX5ww</p>
-
-    <p>Chicago Onewheel: https://t.me/joinchat/IpygA05s_fmnsPahsoLa4g</p>
-
-    <p>
-      Chicago Electric Scooters: https://t.me/joinchat/IpygAxxTFUuTxKL_Gu1wVQ
-    </p>
+    <a href="https://t.me/joinchat/GGTLCBGKcqVJxoLM58E9MA">
+      Chicago E-Bike Community
+    </a>
+    <br />
+    <a href="https://t.me/joinchat/KVjiJBwwz5YOwDJvBxX5ww">Chicago EUC</a>
+    <br />
+    <a href="https://t.me/joinchat/IpygA05s_fmnsPahsoLa4g">Chicago Onewheel</a>
+    <br />
+    <a href="https://t.me/joinchat/IpygAxxTFUuTxKL_Gu1wVQ">
+      Chicago Electric Scooters
+    </a>
+    <br />
+    <br />
 
     <p> FB Groups:</p>
 
-    <p>
-      Chicago E-Skate: https://www.facebook.com/groups/chicagoeskate/?ref=share
-    </p>
-
-    <p>
-      Chicago Onewheel:
-      https://www.facebook.com/groups/chicagoonewheel/?ref=share
-    </p>
-
-    <p>
+    <a href="https://www.facebook.com/groups/chicagoeskate/?ref=share">
+      Chicago E-Skate:
+    </a>
+    <br />
+    <a href="https://www.facebook.com/groups/chicagoonewheel/?ref=share">
+      Chicago Onewheel
+    </a>
+    <br />
+    <a href="https://www.facebook.com/groups/665412891024870/?ref=share">
       Chicago E-Bike Community:
-      https://www.facebook.com/groups/665412891024870/?ref=share
-    </p>
+    </a>
   </>
 );
 

@@ -1,9 +1,6 @@
 import React from "react";
 import RideData from "../../interfaces/RideData";
 import { Card, Col, Skeleton, Avatar, Carousel, Divider } from "antd";
-import { useQuery, QueryCache, ReactQueryCacheProvider } from "react-query";
-
-const queryCache = new QueryCache();
 
 interface RideProps {
   loading: boolean;

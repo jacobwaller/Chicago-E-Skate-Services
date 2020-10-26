@@ -1,21 +1,14 @@
 import React from "react";
-import { Divider, Layout, Space, PageHeader, Modal, Carousel, Col } from "antd";
+import { Divider, Layout, PageHeader, Modal, Carousel, Col } from "antd";
 import { RocketOutlined } from "@ant-design/icons";
-import { useQuery, QueryCache, ReactQueryCacheProvider } from "react-query";
-import { ExperimentOutlined } from "@ant-design/icons";
+import { useQuery } from "react-query";
 import classes from "./app.module.css";
 import { Ride } from "../ride";
 import Avatar from "antd/lib/avatar/avatar";
 import RideData from "../../interfaces/RideData";
 import { Information } from "../information";
 
-const { Header, Content, Footer } = Layout;
-
-let text = `Error loading group ride information`;
-
-function ModalText(data: RideData) {
-  return <p>{data.title}</p>;
-}
+const { Content, Footer } = Layout;
 
 function GroupRideContent() {
   const { data } = useQuery("repoData", () =>
