@@ -75,7 +75,7 @@ const getListOfRides = async () => {
       date: row[1],
       meetTime: row[2],
       launchTime: row[3],
-      city: row[4],
+      group: row[4],
       startPoint: row[5],
       endPoint: row[6],
       type: row[7],
