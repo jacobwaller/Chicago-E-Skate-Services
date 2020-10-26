@@ -1,28 +1,30 @@
-import React from 'react';
-import { Divider, Layout, Space } from 'antd';
-import { ExperimentOutlined } from '@ant-design/icons';
-import classes from './app.module.css';
-import { GroupRides } from "../group-rides"
+import React from "react";
+import { Divider, Layout, Space, PageHeader } from "antd";
+import { ExperimentOutlined } from "@ant-design/icons";
+import classes from "./app.module.css";
+import { GroupRides } from "../group-rides";
+import { Information } from "../information";
+import Avatar from "antd/lib/avatar/avatar";
 
 const { Header, Content, Footer } = Layout;
 
 export function App() {
   return (
     <Layout className={classes.fullPage}>
-      <Header className={classes.header}>
-        <Space>
-          <ExperimentOutlined className={classes.logo}/>
-          <Space split={<Divider type="vertical" />}>
-            <div>Eskate</div>
-            <div>Maybe some tabs for general info, idk where we'll put that yet</div>
-          </Space>
-        </Space>
-      </Header>
+      <PageHeader
+        title="Chicago E-Skate"
+        className={classes.header}
+        avatar={{ src: "./logo.jpg" }}
+      ></PageHeader>
+
       <Content className={classes.siteContent}>
-        <GroupRides/>
+        <GroupRides />
+        <Divider />
+        <Information />
       </Content>
       <Footer className={classes.footer}>
-        Eksate - TODO back to top? remove this?
+        <p>Join us on Telegram</p>
+        <Avatar src="./telegram.png"></Avatar>
       </Footer>
     </Layout>
   );

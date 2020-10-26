@@ -1,6 +1,5 @@
 import React from "react";
-import { Card, Col, Row, Skeleton } from "antd";
-import classes from "./group-rides.module.css";
+import { Card, Col, Skeleton, Avatar, Carousel } from "antd";
 
 // TODO not sure what this will actually be, just basing it off the mock
 interface RideData {
@@ -16,7 +15,7 @@ interface RideData {
 }
 
 const randomRideDataTest: RideData[] = [];
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 5; i++) {
   randomRideDataTest.push({
     title: `Tuesday Night Group Ride #${i}`,
     date: new Date(),
@@ -40,9 +39,19 @@ const Ride: React.FC<{ rideData: RideData }> = ({ rideData }) => {
   } = rideData;
   // TODO make these pretty and cool, images
   return (
-    <Card style={{ width: 300, marginTop: 16 }}>
+    <Card
+      bodyStyle={{
+        backgroundColor: "rgb(231,231,231)",
+        border: 0,
+        borderRadius: 10,
+      }}
+    >
       <Skeleton loading={false} active>
-        <Card.Meta title={title} description={description} />
+        <Card.Meta
+          avatar={<Avatar shape="square" alt="image" src="/maps.jpg" />}
+          title={title}
+          description={description}
+        />
       </Skeleton>
     </Card>
   );
@@ -51,16 +60,24 @@ const Ride: React.FC<{ rideData: RideData }> = ({ rideData }) => {
 export const GroupRides: React.FC = () => {
   // TODO add react-virtualized to do infinite scrolling
   return (
-    <Row
-      className={classes.rides}
-      gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
-      justify="space-around"
-    >
+    <Carousel autoplay={false} dots={false} easing="linear">
       {randomRideDataTest.map((rideData, i) => (
-        <Col>
+        <Col span={24}>
           <Ride key={i} rideData={rideData} />
         </Col>
       ))}
-    </Row>
+    </Carousel>
+
+    // <Row
+    //   className={classes.rides}
+    //   gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
+    //   justify="space-around"
+    // >
+    //   {randomRideDataTest.map((rideData, i) => (
+    //     <Col>
+    //       <Ride key={i} rideData={rideData} />
+    //     </Col>
+    //   ))}
+    // </Row>
   );
 };
