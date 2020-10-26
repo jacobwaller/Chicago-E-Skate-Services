@@ -16,7 +16,8 @@
     "@ant-design/icons": "^4.2.2",
     "antd": "^4.7.3",
     "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react-dom": "^16.14.0",
+    "react-query": "^2.25.2"
   },
   "devDependencies": {
     "@craco/craco": "^5.7.0",
