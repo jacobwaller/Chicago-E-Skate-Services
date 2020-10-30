@@ -112,7 +112,10 @@ bot.on("new_chat_members", (ctx) => {
 
 // This should be the last thing we check for.
 // Used to make sure we don't timeout
-bot.on("message", (ctx) => undefined);
+bot.on("message", (ctx) => {
+  //Do nothing pls
+  return -1;
+});
 if (NODE_ENV === "production") {
   bot.telegram.setWebhook(
     `https://${REGION}-${PROJECT_ID}.cloudfunctions.net/${FUNCTION_NAME}`
