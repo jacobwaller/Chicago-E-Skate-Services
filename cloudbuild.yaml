@@ -7,6 +7,14 @@ steps:
       - fetchRide
       - --source=./api/
       - --trigger-http
+  #Deploy Bot
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - functions
+      - deploy
+      - botFunction
+      - --source=./bot/
+      - --trigger-http
   # NPM Install
   - name: "gcr.io/cloud-builders/npm"
     args: ["--prefix", "./client/", "install"]
