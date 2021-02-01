@@ -7,6 +7,7 @@ steps:
       - fetchRides
       - --source=./api/
       - --trigger-http
+      - --runtime=nodejs12
   #Deploy Bot
   # - name: "gcr.io/cloud-builders/gcloud"
   #   args:
@@ -15,6 +16,7 @@ steps:
   #     - botFunction
   #     - --source=./bot/
   #     - --trigger-http
+  #     - --runtime=nodejs12
   # NPM Install
   - name: "gcr.io/cloud-builders/npm"
     args: ["--prefix", "./client/", "install"]
