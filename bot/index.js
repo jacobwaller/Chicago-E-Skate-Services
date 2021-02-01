@@ -11,7 +11,10 @@ const {
 } = process.env;
 
 const REGION = "us-central1";
-const bot = new Telegraf(BOT_TOKEN);
+const bot = new Telegraf(BOT_TOKEN, {
+  username: "ChiSk8-Info",
+  telegram: { webhookReply: false },
+});
 
 //Generic Command Section. Commands defined in basicCommands.json
 const { commands } = require("./basicCommands");
@@ -21,6 +24,8 @@ for (var i = 0; i < commands.length; i++) {
 
 var group_ride_comms = ["group_ride", "groupride", "ride", "rides"];
 bot.command(group_ride_comms, (ctx) => {
+  // TODO: Change to Axios & pass URL depending on stage
+  // TODO: Add some error checking for no rides
   request(
     `https://us-central1-chicagoeskatewebsite-293020.cloudfunctions.net/fetchRide?id=0`,
     { json: true },
@@ -110,18 +115,18 @@ bot.on("new_chat_members", (ctx) => {
   );
 });
 
-// This should be the last thing we check for.
-// Used to make sure we don't timeout
-bot.on("message", (ctx) => {
-  //Do nothing pls
-  return -1;
+bot.use(async (ctx, next) => {
+  console.log("Handling unhandled stuff");
+  return next();
 });
+
 if (NODE_ENV === "production") {
   bot.telegram.setWebhook(
     `https://${REGION}-${PROJECT_ID}.cloudfunctions.net/${FUNCTION_NAME}`
   );
+
   exports.botFunction = (req, res) => {
-    bot.handleUpdate(req.body, res);
+    // bot.handleUpdate(req.body, res);
   };
 } else {
   bot.launch();
