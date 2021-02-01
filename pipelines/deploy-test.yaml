@@ -8,6 +8,7 @@ steps:
       - --source=./api/
       - --trigger-http
       - --runtime=nodejs12
+      - --entry-point=fetchRide
   #Deploy Bot
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -17,6 +18,7 @@ steps:
       - --source=./bot/
       - --trigger-http
       - --runtime=nodejs12
+      - --entry-point=botFunction
   # NPM Install
   - name: "gcr.io/cloud-builders/npm"
     args: ["--prefix", "./client/", "install"]
