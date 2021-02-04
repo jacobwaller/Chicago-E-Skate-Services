@@ -14,6 +14,10 @@ type CommandResponse = {
  */
 const basicCommands: Array<CommandResponse> = [
   {
+    commands: ['ping'],
+    response: 'pong',
+  },
+  {
     commands: ['start'],
     response:
       'Thanks for adding me to this group. Use /help to learn what I can do',

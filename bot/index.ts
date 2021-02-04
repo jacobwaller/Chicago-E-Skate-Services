@@ -4,14 +4,7 @@ import { basicCommands, commands } from './utils/commands';
 import groupRide from './utils/groupRide';
 import { title } from 'process';
 
-const {
-  BOT_TOKEN,
-  NODE_ENV,
-  PROJECT_ID,
-  FUNCTION_NAME,
-  USERNAME,
-  REGION,
-} = process.env;
+const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 
 const bot = new Telegraf(BOT_TOKEN, {
   telegram: { webhookReply: true },
