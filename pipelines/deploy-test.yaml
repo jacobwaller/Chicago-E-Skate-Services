@@ -13,10 +13,17 @@ steps:
   #Deploy Bot
   # Install
   - name: "gcr.io/cloud-builders/npm"
-    args: ["--prefix", "./bot/", "install"]
+    args: 
+    - --prefix
+    - ./bot/
+    - install
   # Build
   - name: "gcr.io/cloud-builders/npm"
-    args: ["--prefix", "./bot/", "run build"]
+    args: 
+      - --prefix
+      - ./bot/ 
+      - run
+      - build
   
   # Deploy
   # gcloud functions deploy botFunctionQA --source=./built/ --trigger-http --runtime=nodejs12 --entry-point=botFunction --env-vars-file=../variables/bot.qa.yaml --allow-unauthenticated
