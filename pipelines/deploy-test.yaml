@@ -3,7 +3,8 @@ steps:
   # gcloud functions deploy fetchRideQA --source=./ --trigger-http --runtime=nodejs12 --entry-point=fetchRide --allow-unauthenticated
   - name: "gcr.io/cloud-builders/gcloud"
     args:
-      - functions deploy
+      - functions
+      - deploy
       - fetchRideQA
       - --source=./api/
       - --trigger-http
