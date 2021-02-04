@@ -1,6 +1,8 @@
 node_modules
-build/
+built/
 
 credentials.json
 api_key.json
 .env
+
+/variables/

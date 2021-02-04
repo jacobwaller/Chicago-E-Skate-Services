@@ -5,14 +5,23 @@
   "main": "index.js",
   "scripts": {
     "start": "functions-framework --target=botFunction",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "predeploy": "npm run build",
+    "prebuild": "rm -r ./built/",
+    "build": "tsc --build",
+    "postbuild": "cp package.json ./built/package.json",
+    "deploy:qa": "gcloud functions deploy botFunctionQA --source=./built/ --trigger-http --runtime=nodejs12 --entry-point=botFunction --env-vars-file=../variables/bot.qa.yaml  --allow-unauthenticated",
+    "deploy:prod": "gcloud functions deploy botFunction --source=./built/ --trigger-http --runtime=nodejs12 --entry-point=botFunction  --env-vars-file=../variables/bot.prod.yaml --allow-unauthenticated"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@google-cloud/functions-framework": "^1.7.1",
+    "axios": "^0.21.1",
     "dotenv": "^8.2.0",
-    "request": "^2.88.2",
-    "telegraf": "^3.38.0"
+    "telegraf": "^4.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.22"
   }
 }

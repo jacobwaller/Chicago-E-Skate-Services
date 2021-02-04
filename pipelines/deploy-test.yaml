@@ -1,8 +1,9 @@
 steps:
-  #Deploy Cloud Function
+  # Deploy Cloud Function
+  # gcloud functions deploy fetchRideQA --source=./ --trigger-http --runtime=nodejs12 --entry-point=fetchRide --allow-unauthenticated
   - name: "gcr.io/cloud-builders/gcloud"
     args:
-      - functions
+      - functions deploy
       - deploy
       - fetchRideQA
       - --source=./api/
@@ -10,15 +11,25 @@ steps:
       - --runtime=nodejs12
       - --entry-point=fetchRide
   #Deploy Bot
+  # Install
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["--prefix", "./bot/", "install"]
+  # Build
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["--prefix", "./bot/", "run build"]
+  
+  # Deploy
+  # gcloud functions deploy botFunctionQA --source=./built/ --trigger-http --runtime=nodejs12 --entry-point=botFunction --env-vars-file=../variables/bot.qa.yaml --allow-unauthenticated
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       - functions
       - deploy
       - botFunctionQA
-      - --source=./bot/
+      - --source=./bot/built/
       - --trigger-http
       - --runtime=nodejs12
       - --entry-point=botFunction
+  
   # NPM Install
   - name: "gcr.io/cloud-builders/npm"
     args: ["--prefix", "./client/", "install"]

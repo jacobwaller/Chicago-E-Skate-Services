@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "es5",
+    "isolatedModules": false,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "outDir": "./built/"
+  },
+  "include": ["*.ts", "utils/types.ts", "utils/commands.ts", "utils/groupRide.ts"],
+  "exclude": ["node_modules"],
+  "assets": ["package.json"]
+}
