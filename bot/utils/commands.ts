@@ -2,6 +2,7 @@ import { Context } from 'telegraf';
 
 const commands = {
   groupRide: ['ride', 'rides', 'grouprides'],
+  random: ['random', 'random_gif', 'gif'],
 };
 
 type CommandResponse = {
@@ -13,10 +14,6 @@ type CommandResponse = {
  * Commands that are basic responses with no underlying logic are defined here
  */
 const basicCommands: Array<CommandResponse> = [
-  {
-    commands: ['ping'],
-    response: 'pong',
-  },
   {
     commands: ['start'],
     response:
