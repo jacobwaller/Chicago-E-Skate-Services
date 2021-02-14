@@ -30,10 +30,7 @@ bot.command(commands.random, async (ctx) => {
     `https://api.giphy.com/v1/gifs/random?api_key=${GIPHY_KEY}&tag=${searchText}&rating=R`
   );
 
-  if (
-    axiosResponse.data.data.images == undefined ||
-    axiosResponse.data.data.images.original.mp4 == undefined
-  ) {
+  if (axiosResponse.data.data?.images?.original?.mp4 == undefined) {
     return ctx.reply(`No results for query: ${searchText}`);
   }
 
