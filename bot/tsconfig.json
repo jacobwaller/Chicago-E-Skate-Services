@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "target": "es5",
+    "target": "es2019",
     "isolatedModules": false,
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "outDir": "./built/"
+    "outDir": "./built/",
+    "moduleResolution": "node"
   },
-  "include": ["*.ts", "utils/types.ts", "utils/commands.ts", "utils/groupRide.ts"],
+  "include": ["*.ts", "utils/*.ts"],
   "exclude": ["node_modules"],
   "assets": ["package.json"]
 }
