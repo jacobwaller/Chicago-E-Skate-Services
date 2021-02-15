@@ -1,5 +1,4 @@
-import { Context, Telegraf } from 'telegraf';
-import axios from 'axios';
+import { Telegraf } from 'telegraf';
 import { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
 
 import { basicCommands, commands } from './utils/commands';
