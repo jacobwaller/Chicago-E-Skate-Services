@@ -4,12 +4,11 @@ import { HttpFunction } from '@google-cloud/functions-framework/build/src/functi
 import { basicCommands, commands } from './utils/commands';
 
 import groupRide from './utils/groupRide';
-import newChatMembers from './utils/newChatMembers';
 import randomGif from './utils/randomGif';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 
-const bot = new Telegraf(BOT_TOKEN);
+const bot = new Telegraf(BOT_TOKEN || "");
 
 bot.telegram.setWebhook(
   `https://${REGION}-${PROJECT_ID}.cloudfunctions.net/${FUNCTION_NAME}`
@@ -22,7 +21,24 @@ basicCommands.forEach((item) => {
 bot.command(commands.groupRide, async (ctx) => ctx.reply(await groupRide(ctx)));
 bot.command(commands.random, async (ctx) => await randomGif(ctx));
 
-bot.on('new_chat_members', (ctx) => newChatMembers(ctx));
+bot.on('new_chat_members', (ctx) => {
+  const name = ctx.message.from.first_name || ctx.message.from.username;
+
+  const welcomeString =
+    `Hey, ${name} Welcome to the Chicago E-Skate Network\n` +
+    `Make sure to also join the main Chicago E-Skate Channel at: https://t.me/joinchat/NP_fsHcrXehkY2Qx`+
+    `For info on the next group ride, click: /group_ride\n` +
+    `For more info on the group go to chicagoeskate.com\n` +
+    `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;
+
+  return ctx.reply(welcomeString);
+});
+
+bot.command('format', (ctx) => {
+  const code = ctx.message.text.split(' ').slice(1).join(' ');
+  const formattedCode = ''; //Use prettier to format;
+  ctx.reply(`<code>${formattedCode}</code>`, { parse_mode: 'HTML' });
+});
 
 export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);

@@ -4,7 +4,7 @@ import axios from 'axios';
 const { GIPHY_KEY } = process.env;
 
 // TODO: Figure out how to make this work with typing
-export default async (ctx) => {
+export default async (ctx: any) => {
   // Either the search text is provided or it defaults to skateboard
   const searchText =
     ctx.message.text.split(' ').slice(1).join(' ') || 'skateboard';
