@@ -6,7 +6,7 @@ import { ApiResponse } from './types';
  * Gets the next group ride and returns the formatted string
  * @param ctx Telegram context
  */
-const getGroupRide = async (ctx: Context): Promise<string> => {
+const getGroupRide = async (): Promise<string> => {
   // Call API
   console.log('Calling API with url', process.env.API_URL);
   const axiosResponse = await axios.get<ApiResponse>(
@@ -22,7 +22,7 @@ const getGroupRide = async (ctx: Context): Promise<string> => {
       `Depart At: ${response.launchTime}\n` +
       `From: ${response.startPoint}\n` +
       `To: ${response.endPoint}\n` +
-      `Route: ${response.routeLink} (${response.routeLink} Miles)\n\n` +
+      `Route: ${response.routeLink} (${response.routeDistance} Miles)\n\n` +
       //
       `${response.description}\n\n` +
       //

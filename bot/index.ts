@@ -18,7 +18,7 @@ basicCommands.forEach((item) => {
   bot.command(item.commands, (ctx) => ctx.reply(item.response));
 });
 
-bot.command(commands.groupRide, async (ctx) => ctx.reply(await groupRide(ctx)));
+bot.command(commands.groupRide, async (ctx) => ctx.reply(await groupRide()));
 bot.command(commands.random, async (ctx) => await randomGif(ctx));
 
 bot.on('new_chat_members', (ctx) => {
@@ -26,18 +26,12 @@ bot.on('new_chat_members', (ctx) => {
 
   const welcomeString =
     `Hey, ${name} Welcome to the Chicago E-Skate Network\n` +
-    `Make sure to also join the main Chicago E-Skate Channel at: https://t.me/joinchat/NP_fsHcrXehkY2Qx`+
+    `Make sure to also join the main Chicago E-Skate Channel at: https://t.me/joinchat/NP_fsHcrXehkY2Qx\n`+
     `For info on the next group ride, click: /group_ride\n` +
     `For more info on the group go to chicagoeskate.com\n` +
     `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;
 
   return ctx.reply(welcomeString);
-});
-
-bot.command('format', (ctx) => {
-  const code = ctx.message.text.split(' ').slice(1).join(' ');
-  const formattedCode = ''; //Use prettier to format;
-  ctx.reply(`<code>${formattedCode}</code>`, { parse_mode: 'HTML' });
 });
 
 export const botFunction: HttpFunction = async (req, res) => {

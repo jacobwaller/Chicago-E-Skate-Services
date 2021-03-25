@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 
 const commands = {
-  groupRide: ['ride', 'rides', 'grouprides'],
+  groupRide: ['ride', 'rides', 'grouprides', 'groupride'],
   random: ['random', 'random_gif', 'gif'],
 };
 
