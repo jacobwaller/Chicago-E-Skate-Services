@@ -22,16 +22,7 @@ bot.command(commands.groupRide, async (ctx) => ctx.reply(await groupRide()));
 bot.command(commands.random, async (ctx) => await randomGif(ctx));
 
 bot.on('new_chat_members', (ctx) => {
-  let name = 'new member';
-
-  if ('from' in ctx) {
-    const user = ctx.from;
-    if ('first_name' in user) {
-      name = user.first_name;
-    } else if ('username' in user) {
-      name = user.username;
-    }
-  }
+  let name = ctx.from.first_name;
 
   const welcomeString =
     `Hello, ${name} Welcome to the Chicago E-Skate Network\n` +
