@@ -20,6 +20,7 @@ steps:
       - --trigger-http
       - --runtime=nodejs12
       - --entry-point=fetchRide
+      - --allow-unauthenticated
 
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -30,6 +31,7 @@ steps:
       - --trigger-http
       - --runtime=nodejs12
       - --entry-point=chargingHandler
+      - --allow-unauthenticated
   # Deploy Bot
   - name: "gcr.io/cloud-builders/gcloud"
     args:
