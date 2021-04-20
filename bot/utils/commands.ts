@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 
 const commands = {
-  groupRide: ['ride', 'rides', 'grouprides', 'groupride'],
+  groupRide: ['ride', 'rides', 'grouprides', 'groupride', 'group_ride'],
   random: ['random', 'random_gif', 'gif'],
 };
 
@@ -22,9 +22,10 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['help'],
     response:
-      "Hello, I'm here to answer questions\n\n" +
-      'You can give me commands like /ride /flashlight or /charge to get ' +
-      'information on the next group ride, flashlight recommendations, or a link to our charging map',
+      'I am here to help answer questions about Chicago E-Skate.\n' +
+      'Find out when the next group ride is with the command /ride\n' +
+      'To request that your group ride or event is available with that command, DM @jacob_waller\n' +
+      "for a list of commands that I have available, type a '/' and select the command you'd like",
   },
   {
     commands: ['flashlight', 'light', 'flashlights', 'lights'],
