@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jacobwaller/EskateWebsite/issues"
   },
-  "homepage": "https://github.com/jacobwaller/EskateWebsite#readme"
+  "homepage": "https://github.com/jacobwaller/EskateWebsite#readme",
+  "dependencies": {
+    "typescript": "^4.2.4"
+  }
 }
