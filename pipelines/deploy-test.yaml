@@ -6,10 +6,9 @@ steps:
 
   # Build all
   - name: 'gcr.io/cloud-builders/npm'
-    entrypoint: 'npx'
     args:
-      - tsc 
-      - --build  
+      - run
+      - build  
 
   # Deploy APIs
   - name: "gcr.io/cloud-builders/gcloud"

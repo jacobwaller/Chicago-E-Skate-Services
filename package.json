@@ -4,8 +4,8 @@
   "description": "",
   "main": "",
   "scripts": {
-    "build": "tsc --build",
-    "postbuild": "cp ./api/package.json ./built/api/package.json && cp ./bot/package.json ./built/bot/package.json && cp ./client/package.json ./built/client/package.json"
+    "build": "npx tsc --build",
+    "postbuild": "cp package.json ./built/api/package.json && cp package.json ./built/bot/package.json && cp package.json ./built/client/package.json"
   },
   "repository": {
     "type": "git",
