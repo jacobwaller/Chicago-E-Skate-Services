@@ -5,6 +5,7 @@ import { basicCommands, commands } from './utils/commands';
 
 import groupRide from './utils/groupRide';
 import randomGif from './utils/randomGif';
+import { encode, decode } from 'js-base64';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 
@@ -31,33 +32,22 @@ bot.command(['add-location', 'add'], (ctx) => {
     return ctx.reply('Please do not include a * in your title or decription');
   }
   const splIndex = split.indexOf('*');
-  // prettier-ignore
-  const title = split
-    .slice(1, splIndex)
-    .filter((str) => !str.includes('|'))
-    .join(' ') // combine all the strings back together from after /add until the '*' and remove pipes as we're going to use them later
-  const description = split
-    .slice(splIndex + 1)
-    .filter((str) => !str.includes('|'))
-    .join(' '); // Combine all the strings after '*' to make the description and remove pipes as we're going to use them later
 
+  const title = split.slice(1, splIndex).join(' '); // combine all the strings back together from after /add until the '*'
+  const description = split.slice(splIndex + 1).join(' '); // Combine all the strings after '*' to make the description
   if (title.trim() === '') {
     return ctx.reply('Must supply a title');
   } else if (description.trim() === '') {
     return ctx.reply('Must supply a description');
   }
 
-  const str = JSON.stringify(
-    {
-      title: title,
-      description: description,
-    },
-    undefined,
-    2,
-  );
-
+  const str = JSON.stringify({
+    title: title,
+    description: description,
+  });
+  const b64 = encode(str);
   return ctx.reply(
-    `Awesome! Go ahead and reply to this message with the location of the charging spot. \n|${str}`,
+    `Awesome! Go ahead and reply to this message with the location of the charging spot. \n${b64}`,
   );
 });
 
@@ -72,7 +62,7 @@ bot.on('location', (ctx) => {
     // Check if we're adding location
     const split = ctx.message.reply_to_message.text.split('|');
     if (split.length === 2) {
-      const objSoFar = JSON.parse(split[1]);
+      const objSoFar = JSON.parse(decode(split[1]));
       const lat = ctx.message.location.latitude;
       const lon = ctx.message.location.longitude;
       objSoFar.lat = lat;
