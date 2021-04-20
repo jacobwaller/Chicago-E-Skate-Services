@@ -3,13 +3,11 @@ steps:
   - name: "gcr.io/cloud-builders/npm"
     args: 
       - install
-      - -g
-      - typescript
 
   # Build all
-  - name: "bash"
+  - name: 'gcr.io/cloud-builders/npm'
+    entrypoint: 'npx'
     args:
-      - npx 
       - tsc 
       - --build  
 
