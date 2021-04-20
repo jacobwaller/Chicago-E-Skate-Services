@@ -47,7 +47,7 @@ bot.command(['add-location', 'add'], (ctx) => {
   });
   const b64 = encode(str);
   return ctx.reply(
-    `Awesome! Go ahead and reply to this message with the location of the charging spot. \n${b64}`,
+    `Awesome! Go ahead and reply to this message with the location of the charging spot. \n\n${b64}`,
   );
 });
 
@@ -60,7 +60,7 @@ bot.on('location', (ctx) => {
     'text' in ctx.message.reply_to_message // Make ts happy. If we're at this point, it's definitely a text message
   ) {
     // Check if we're adding location
-    const split = ctx.message.reply_to_message.text.split('|');
+    const split = ctx.message.reply_to_message.text.split('\n\n');
     if (split.length === 2) {
       const objSoFar = JSON.parse(decode(split[1]));
       const lat = ctx.message.location.latitude;
