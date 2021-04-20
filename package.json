@@ -1,0 +1,20 @@
+{
+  "name": "eskatewebsite",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".prettierrc.js",
+  "scripts": {
+    "build": "tsc --build",
+    "postbuild": "cp ./api/package.json ./built/api/package.json && cp ./bot/package.json ./built/bot/package.json && cp ./client/package.json ./built/client/package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobwaller/EskateWebsite.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacobwaller/EskateWebsite/issues"
+  },
+  "homepage": "https://github.com/jacobwaller/EskateWebsite#readme"
+}
