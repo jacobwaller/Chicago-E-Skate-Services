@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "build": "npx tsc --build",
-    "postbuild": "cp package.json ./built/api/package.json && cp package.json ./built/bot/package.json && cp package.json ./built/client/package.json"
+    "postbuild": "cp package.json ./built/api/package.json && cp package.json ./built/bot/package.json"
   },
   "repository": {
     "type": "git",
