@@ -20,6 +20,16 @@ steps:
       - --trigger-http
       - --runtime=nodejs12
       - --entry-point=fetchRide
+
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - functions
+      - deploy
+      - chargingHandlerQA
+      - --source=./built/api/
+      - --trigger-http
+      - --runtime=nodejs12
+      - --entry-point=chargingHandler
   # Deploy Bot
   - name: "gcr.io/cloud-builders/gcloud"
     args:

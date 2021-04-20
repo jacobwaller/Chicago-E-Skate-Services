@@ -1,6 +1,7 @@
-import { google } from 'googleapis';
+import { google, sheets_v4 } from 'googleapis';
 import moment from 'moment-timezone';
 import { Base64 } from 'js-base64';
+import { ChargingSpot } from './types';
 require('dotenv').config();
 
 const NUM_RIDES = 5;
@@ -18,9 +19,34 @@ const getApiKey = () => {
   return process.env.API_KEY;
 };
 
-/**
- * Returns a list of all rides in the google sheet
- */
+const getAllChargingSpots = async () => {
+  const sheets = google.sheets({ version: 'v4' });
+  const results = await sheets.spreadsheets.values.get({
+    spreadsheetId: '1SAssru-78PhVGSw_j-igSnmHKlxr5NsuRSZTjxgORxA',
+    range: 'ChargingSpots!A3:K',
+    auth: getJwt(),
+    key: getApiKey(),
+  });
+
+  const rows = results.data.values;
+  if (rows === null || rows === undefined) {
+    return [];
+  }
+  //Map rows to a list of object
+  const list: Array<ChargingSpot> = rows.map((row) => {
+    return {
+      id: row[0],
+      title: row[1],
+      lat: row[2],
+      lon: row[3],
+      addedBy: row[4],
+      description: row[5],
+    };
+  });
+
+  return list;
+};
+
 const getListOfRides = async () => {
   const sheets = google.sheets({ version: 'v4' });
   const results = await sheets.spreadsheets.values.get({
@@ -89,4 +115,30 @@ export const getRide = async (id: number) => {
   const ret = await listRides();
   if (id < 0 || id >= ret.length) return {};
   return ret[id];
+};
+
+export const addChargingSpot = async (body: ChargingSpot): Promise<number> => {
+  const sheets = google.sheets({ version: 'v4' });
+  const params: sheets_v4.Params$Resource$Spreadsheets$Values$Append = {
+    spreadsheetId: '1SAssru-78PhVGSw_j-igSnmHKlxr5NsuRSZTjxgORxA',
+    range: 'ChargingSpots',
+    auth: getJwt(),
+    key: getApiKey(),
+    insertDataOption: 'INSERT_ROWS',
+    requestBody: {
+      values: [
+        [body.title, body.lat, body.lon, body.addedBy, body.description],
+      ],
+    },
+  };
+  const results = await sheets.spreadsheets.values.append(params);
+  return results.status;
+};
+
+export const getChargingSpots = async (
+  lat: number,
+  lon: number,
+  n: number,
+): Promise<Array<ChargingSpot>> => {
+  return [];
 };
