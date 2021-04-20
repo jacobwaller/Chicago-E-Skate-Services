@@ -34,12 +34,12 @@ bot.command(['add-location', 'add'], (ctx) => {
   // prettier-ignore
   const title = split
     .slice(1, splIndex)
-    .join(' ')
-    .replaceAll('|', ''); // combine all the strings back together from after /add until the '*' and remove pipes as we're going to use them later
+    .filter((str) => !str.includes('|'))
+    .join(' ') // combine all the strings back together from after /add until the '*' and remove pipes as we're going to use them later
   const description = split
     .slice(splIndex + 1)
-    .join(' ')
-    .replaceAll('|', ''); // Combine all the strings after '*' to make the description and remove pipes as we're going to use them later
+    .filter((str) => !str.includes('|'))
+    .join(' '); // Combine all the strings after '*' to make the description and remove pipes as we're going to use them later
 
   if (title.trim() === '') {
     return ctx.reply('Must supply a title');
