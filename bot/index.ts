@@ -20,6 +20,11 @@ basicCommands.forEach((item) => {
 });
 
 bot.command(['add-location', 'add'], (ctx) => {
+  if (ctx.message.chat.type !== 'private') {
+    return ctx.reply(
+      `Sorry! I cannot add charging locations in group chats. Please DM me to add a new charging location. Click: @${bot.botInfo?.username}`,
+    );
+  }
   const split = ctx.message.text.split(' ');
   // Error checking for dummies
   if (split.length < 2 || !ctx.message.text.includes('*')) {
@@ -54,6 +59,7 @@ bot.command(['add-location', 'add'], (ctx) => {
 bot.on('location', (ctx) => {
   // Needs to be replying to me
   if (
+    ctx.message.chat.type === 'private' && // Needs to be DMing me
     ctx.message.reply_to_message !== undefined && // Replying to something
     ctx.message.reply_to_message.from !== undefined && // Replying to someone
     ctx.message.reply_to_message.from.id === bot.botInfo?.id && // Replying to me
@@ -75,7 +81,7 @@ bot.on('location', (ctx) => {
   } else {
     // not replying to me, need to handle anyway
     return ctx.reply(
-      'This is a temporary addition until i can make this better',
+      "Not sure why you're sending me a location randomly. Did you mean to reply to a previous message?",
     );
   }
 });
