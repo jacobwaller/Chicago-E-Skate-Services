@@ -75,7 +75,7 @@ const basicCommands: Array<CommandResponse> = [
       'Bern, Thousand, TSG, Ruroc.\n' +
       'Make sure any helmet you buy is certified. Most skate helmets are not certified.\n' +
       'http://www.bernunlimited.com/\n' +
-      'https://www.zeitbike.com/collections/helmets/'
+      'https://www.zeitbike.com/collections/helmets/\n' +
       'https://www.explorethousand.com/\n' +
       'https://www.ruroc.com/en/\n' +
       'https://www.youtube.com/watch?v=b9yL5usLFgY',
