@@ -54,13 +54,20 @@ const basicCommands: Array<CommandResponse> = [
       'https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing',
   },
   {
-    commands: ['links', 'link'],
+    commands: ['Groups', 'group'],
     response:
-      'Charging Map: https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing\n' +
-      'Boosted Board Riders Chicago: https://www.facebook.com/groups/BoostedCHI\n' +
-      'Chicago E-Skate: https://www.facebook.com/groups/chicagoeskate/\n' +
-      'Announcement Telegram: https://t.me/joinchat/AAAAAEwbHWf-hVIT53a75Q\n' +
-      'Telegram Invite Link: https://t.me/joinchat/GtOvohDOaknaq_0JfboLJg\n',
+      'Facebook Groups\n' +
+      'Chicago E-Skate (Main Group): https://www.facebook.com/groups/chicagoeskate/\n' +
+      'Chicago E-Bike: https://www.facebook.com/groups/665412891024870/\n' +
+      'Chicago Electric Scooters: https://www.facebook.com/groups/301631767538431/\n' +
+      'Chicago EUC: https://www.facebook.com/groups/chicagoeuc/\n' +
+      'Chicago Onewheel: facebook.com/groups/chicagoonewheel/\n' +
+      '\n' +
+      'Telegram Groups\n' +
+      'Chicago E-Skate (Main Chat): https://t.me/joinchat/UV7yRo0dvO3hNhpi/\n' +
+      'Chicago E-Bike: https://t.me/joinchat/Wf2XjBZ07edmYjBh/\n' +
+      'Chicago EUC: https://t.me/joinchat/KVjiJBwwz5YOwDJvBxX5ww/\n' +
+      'Chicago Onewheel: https://t.me/joinchat/Tmz9-bhYM7-ygtri/\n' +
   },
   {
     commands: ['helmet', 'helmets'],
@@ -68,6 +75,7 @@ const basicCommands: Array<CommandResponse> = [
       'Bern, Thousand, TSG, Ruroc.\n' +
       'Make sure any helmet you buy is certified. Most skate helmets are not certified.\n' +
       'http://www.bernunlimited.com/\n' +
+      'https://www.zeitbike.com/collections/helmets/\n' +
       'https://www.explorethousand.com/\n' +
       'https://www.ruroc.com/en/\n' +
       'https://www.youtube.com/watch?v=b9yL5usLFgY',
