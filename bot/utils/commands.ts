@@ -67,7 +67,7 @@ const basicCommands: Array<CommandResponse> = [
       'Chicago E-Skate (Main Chat): https://t.me/joinchat/UV7yRo0dvO3hNhpi/\n' +
       'Chicago E-Bike: https://t.me/joinchat/Wf2XjBZ07edmYjBh/\n' +
       'Chicago EUC: https://t.me/joinchat/KVjiJBwwz5YOwDJvBxX5ww/\n' +
-      'Chicago Onewheel: https://t.me/joinchat/Tmz9-bhYM7-ygtri/\n' +
+      'Chicago Onewheel: https://t.me/joinchat/Tmz9-bhYM7-ygtri/\n',
   },
   {
     commands: ['helmet', 'helmets'],
