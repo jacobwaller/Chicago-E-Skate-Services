@@ -9,6 +9,17 @@ steps:
     args:
       - run
       - build  
+  
+  # Deploy Bot
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - functions
+      - deploy
+      - botFunctionQA
+      - --source=./built/bot/
+      - --trigger-http
+      - --runtime=nodejs12
+      - --entry-point=botFunction
 
   # Deploy APIs
   - name: "gcr.io/cloud-builders/gcloud"
@@ -32,16 +43,7 @@ steps:
       - --runtime=nodejs12
       - --entry-point=chargingHandler
       - --allow-unauthenticated
-  # Deploy Bot
-  - name: "gcr.io/cloud-builders/gcloud"
-    args:
-      - functions
-      - deploy
-      - botFunctionQA
-      - --source=./built/bot/
-      - --trigger-http
-      - --runtime=nodejs12
-      - --entry-point=botFunction
+
 
   
   
