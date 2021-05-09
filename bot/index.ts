@@ -54,6 +54,9 @@ bot.command('announce', async (ctx, next) => {
   for (let i = 0; i < groupIds.length; i++) {
     await bot.telegram.forwardMessage(groupIds[i], mainId, msg.message_id);
     await bot.telegram.forwardMessage(groupIds[i], mainId, poll.message_id);
+
+    // Add a little wait to avoid rate limiting
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
   return await next();
 });
