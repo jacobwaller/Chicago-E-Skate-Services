@@ -38,7 +38,9 @@ bot.command('announce', async (ctx, next) => {
   });
 
   if (filtered.length === 0) {
-    return ctx.reply('Only admins of Chicago Eskate can use this command...');
+    return await ctx.reply(
+      'Only admins of Chicago Eskate can use this command...',
+    );
   }
 
   // Send group ride info to chicago Eskate
