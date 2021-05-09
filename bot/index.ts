@@ -51,6 +51,9 @@ bot.command('announce', async (ctx, next) => {
     mainId,
     'Will you make it to this group ride?',
     ['Hell yeah', 'Maybe (Watch the posted live location)', 'Next time...'],
+    {
+      is_anonymous: false,
+    },
   );
   // Forward poll and group ride to every group
   for (let i = 0; i < groupIds.length; i++) {
