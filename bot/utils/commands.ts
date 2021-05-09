@@ -54,7 +54,7 @@ const basicCommands: Array<CommandResponse> = [
       'https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing',
   },
   {
-    commands: ['Groups', 'group'],
+    commands: ['groups', 'group', 'Groups', 'Group'],
     response:
       'Facebook Groups\n' +
       'Chicago E-Skate (Main Group): https://www.facebook.com/groups/chicagoeskate/\n' +
@@ -106,7 +106,7 @@ const basicCommands: Array<CommandResponse> = [
       '12. Obey traffic signals.\n' +
       '13. Excersise caution.\n' +
       '14. Ride Defensively.\n' +
-      '15. Avoide Road Rage.\n' +
+      '15. Avoid Road Rage.\n' +
       '16. Keep some form of emergency contact info on your person.\n' +
       '17. Do not ride drunk.\n' +
       '18. No spamming.\n' +
