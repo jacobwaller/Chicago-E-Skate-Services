@@ -29,6 +29,18 @@ basicCommands.forEach((item) => {
 });
 
 bot.command('announce', async (ctx, next) => {
+  // Check if sender is admin of main chat
+  const senderId = ctx.from.id;
+  const admins = await bot.telegram.getChatAdministrators(mainId);
+
+  const filtered = admins.filter((admin) => {
+    return admin.user.id === senderId;
+  });
+
+  if (filtered.length === 0) {
+    return ctx.reply('Only admins of Chicago Eskate can use this command...');
+  }
+
   // Send group ride info to chicago Eskate
   const groupRideString = await groupRide();
   const msg = await bot.telegram.sendMessage(mainId, groupRideString);
