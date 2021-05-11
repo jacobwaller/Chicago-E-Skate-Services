@@ -28,27 +28,27 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['discount', 'discounts', 'codes', 'code'],
     response: `
-Brand	Code	Discount
-ORORO	CHICAGOONEWHEEL	25% OFF
-FLIPSKY	FLIP-NYC	10% OFF
-SHREDLIGHTS	EBOARDBRANDON	10% OFF
-TSG via Zeitbike.com	NYCEB25	25% OFF
-FLATLAND3D	SHARETHEROAD	10% OFF
-THOUSAND HELMETS	BOOSTED15	15% OFF
-BOA WHEELS	NYCROCKS	10% OFF
-HOYT ST	JOEESKATE	FREE SHIRT+SUNGLASSES WITH BOARD PURCHASE
-REVEL	https://www.revelboards.com/?ref=RObJTi6Y16mHf3	$25 OFF KIT PURCHASE
-EBOARDSTUFF	YEAH15	15% OFF
-ROMP	YEAH-15	15% OFF
-SPLATTERGOAT GRIP	YEAH10	10% OFF
-NOBLEMAN	YEAH5	5% OFF
-MONDAY MOTORBIKES	MONDAYEVE2020	$300 OFF
-EVOLVE	EBOARDBRANDON50	$50 OFF
-SUPER73	https://www.talkable.com/x/OVmh7E	$100 OFF
-CRAFT&RIDE	CHICAGOOW	FREE SHIPPING
-CHIBATTERYSYSTEMS	CHICAGOESK8	$25 OFF
-EOVAN	DAMES	5% OFF
-JAY&TRENT ONLYFANS	SKATE312	20% OFF   
+    Brand	Discount	Code
+    BoaWheels (10% OFF) - NYCROCKS
+    ChiBatterySystems	($25 OFF) - CHICAGOESK8
+    Craft&Ride (FREE SHIPPING) - CHICAGOOW
+    EBoardStuff (15% OFF) - YEAH15
+    Eovan	(5% OFF) - DAMES
+    Evolve ($50 OFF) - EBOARDBRANDON50
+    Flatland3D (10% OFF) - SHARETHEROAD
+    Flipsky (10% OFF) - FLIP-NYC
+    Hoyt ST	(FREE SHIRT+SUNGLASSES WITH BOARD PURCHASE) - JOEESKATE
+    Jay&Trent OnlyFans (20% OFF) - SKATE312
+    Monday Motorbikes - ($300 OFF) - MONDAYEVE2020
+    Nobleman (5% OFF) - YEAH5
+    Ororo	(25% OFF) - CHICAGOONEWHEEL
+    REVEL ($25 OFF KIT PURCHASE) - https://www.revelboards.com/?ref=RObJTi6Y16mHf3
+    ROMP (15% OFF) - YEAH-15
+    SHREDLIGHTS (10% OFF) - EBOARDBRANDON
+    SPLATTERGOAT GRIP (10% OFF) - YEAH10
+    SUPER73 ($100 OFF) - https://www.talkable.com/x/OVmh7E
+    THOUSAND HELMETS (15% OFF) - BOOSTED15
+    TSG via Zeitbike.com (25% OFF) - NYCEB25  
     `,
   },
   {
@@ -72,13 +72,13 @@ JAY&TRENT ONLYFANS	SKATE312	20% OFF
   },
   {
     commands: ['battery', 'batteries'],
-    response: `For custom batteries, check out [ChibatterySystems](https://chibatterysystems.com/)`,
+    response: `For custom batteries, check out [ChiBatterySystems](https://chibatterysystems.com/)`,
     parse_mode,
   },
   {
     commands: ['pads', 'kneepads', 'elbowpads'],
     response:
-      'TSG, G\\-Form, Revzilla' +
+      'TSG, G\\-Form, Revzilla\n\n' +
       '[GForm](https://g-form.com/)\n' +
       '[Revzilla](https://www.revzilla.com)\n',
     parse_mode,
@@ -93,15 +93,15 @@ JAY&TRENT ONLYFANS	SKATE312	20% OFF
     commands: ['groups', 'group', 'Groups', 'Group'],
     response:
       'Facebook Groups:\n' +
-      '[Chicago E-Skate](https://www.facebook.com/groups/chicagoeskate/)\n' +
-      '[Chicago E-Bike](https://www.facebook.com/groups/665412891024870/)\n' +
+      '[Chicago E\\-Skate](https://www.facebook.com/groups/chicagoeskate/)\n' +
+      '[Chicago E\\-Bike](https://www.facebook.com/groups/665412891024870/)\n' +
       '[Chicago Electric Scooters](https://www.facebook.com/groups/301631767538431/)\n' +
       '[Chicago EUC](https://www.facebook.com/groups/chicagoeuc/)\n' +
       '[Chicago Onewheel](facebook.com/groups/chicagoonewheel/)\n' +
       '\n' +
       'Telegram Groups:\n' +
-      '[Chicago E-Skate](https://t.me/joinchat/UV7yRo0dvO3hNhpi/)\n' +
-      '[Chicago E-Bike](https://t.me/joinchat/Wf2XjBZ07edmYjBh/)\n' +
+      '[Chicago E\\-Skate](https://t.me/joinchat/UV7yRo0dvO3hNhpi/)\n' +
+      '[Chicago E\\-Bike](https://t.me/joinchat/Wf2XjBZ07edmYjBh/)\n' +
       '[Chicago EUC](https://t.me/joinchat/KVjiJBwwz5YOwDJvBxX5ww/)\n' +
       '[Chicago Onewheel](https://t.me/joinchat/Tmz9-bhYM7-ygtri/)\n',
     parse_mode,
@@ -109,13 +109,13 @@ JAY&TRENT ONLYFANS	SKATE312	20% OFF
   {
     commands: ['helmet', 'helmets'],
     response:
+      '[I LOVE HELMETS](https://www.youtube.com/watch?v=b9yL5usLFgY)\n\n' +
       'Bern, Thousand, TSG, Ruroc\\.\n' +
-      'Make sure any helmet you buy is certified\\. Most skate helmets are not certified\\.\n' +
+      'Make sure any helmet you buy is certified\\. Most skate helmets are not certified\\.\n\n' +
       '[Bern](http://www.bernunlimited.com/)\n' +
       '[Zeitbike](https://www.zeitbike.com/collections/helmets/)\n' +
       '[Thousand](https://www.explorethousand.com/)\n' +
-      '[Ruroc](https://www.ruroc.com/en/)\n\n' +
-      '[I LOVE HELMETS](https://www.youtube.com/watch?v=b9yL5usLFgY)',
+      '[Ruroc](https://www.ruroc.com/en/)\n\n',
     parse_mode,
   },
   {
@@ -164,7 +164,7 @@ JAY&TRENT ONLYFANS	SKATE312	20% OFF
       '[Vega](http://vegausa.com/)\n' +
       '[Burris Racing](https://burrisracing.com/)\n' +
       '[Dunlop](https://www.dunloptires.com/)\n' +
-      'For tire upcycling, DM: @tire_sire',
+      'For tire upcycling, DM: @tire\\_sire',
     parse_mode,
   },
   {
