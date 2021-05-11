@@ -24,7 +24,18 @@ const bot = new Telegraf(BOT_TOKEN || '');
 //   `https://${REGION}-${PROJECT_ID}.cloudfunctions.net/${FUNCTION_NAME}`,
 // );
 
+const replaceAll = (input: string, ptrn: string, replace: string): string => {
+  let ret = input;
+  while (ret.includes(ptrn)) {
+    ret = ret.replace(ptrn, replace);
+  }
+
+  return ret;
+};
+
 basicCommands.forEach((item) => {
+  const escString = replaceAll(item.response, '.', '\\.');
+
   bot.command(
     item.commands,
     async (ctx) => await ctx.reply(item.response, { parse_mode: 'MarkdownV2' }),
