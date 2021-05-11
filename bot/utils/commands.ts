@@ -24,6 +24,32 @@ const basicCommands: Array<CommandResponse> = [
       'Thanks for adding me to this group. Use /help to learn what I can do',
   },
   {
+    commands: ['discount', 'discounts', 'codes', 'code'],
+    response: `
+Brand	Code	Discount
+ORORO	CHICAGOONEWHEEL	25% OFF
+FLIPSKY	FLIP-NYC	10% OFF
+SHREDLIGHTS	EBOARDBRANDON	10% OFF
+TSG via Zeitbike.com	NYCEB25	25% OFF
+FLATLAND3D	SHARETHEROAD	10% OFF
+THOUSAND HELMETS	BOOSTED15	15% OFF
+BOA WHEELS	NYCROCKS	10% OFF
+HOYT ST	JOEESKATE	FREE SHIRT+SUNGLASSES WITH BOARD PURCHASE
+REVEL	https://www.revelboards.com/?ref=RObJTi6Y16mHf3	$25 OFF KIT PURCHASE
+EBOARDSTUFF	YEAH15	15% OFF
+ROMP	YEAH-15	15% OFF
+SPLATTERGOAT GRIP	YEAH10	10% OFF
+NOBLEMAN	YEAH5	5% OFF
+MONDAY MOTORBIKES	MONDAYEVE2020	$300 OFF
+EVOLVE	EBOARDBRANDON50	$50 OFF
+SUPER73	https://www.talkable.com/x/OVmh7E	$100 OFF
+CRAFT&RIDE	CHICAGOOW	FREE SHIPPING
+CHIBATTERYSYSTEMS	CHICAGOESK8	$25 OFF
+EOVAN	DAMES	5% OFF
+JAY&TRENT ONLYFANS	SKATE312	20% OFF   
+    `,
+  },
+  {
     commands: ['help'],
     response:
       'I am here to help answer questions about Chicago E-Skate.\n' +
