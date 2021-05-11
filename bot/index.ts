@@ -25,7 +25,10 @@ const bot = new Telegraf(BOT_TOKEN || '');
 // );
 
 basicCommands.forEach((item) => {
-  bot.command(item.commands, async (ctx) => await ctx.reply(item.response));
+  bot.command(
+    item.commands,
+    async (ctx) => await ctx.reply(item.response, { parse_mode: 'MarkdownV2' }),
+  );
 });
 
 bot.command('announce', async (ctx, next) => {
