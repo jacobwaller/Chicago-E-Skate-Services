@@ -27,49 +27,10 @@ const basicCommands: Array<CommandResponse> = [
   },
   {
     commands: ['discount', 'discounts', 'codes', 'code'],
-    response: `
-Brand	Discount	Code
-
-BoaWheels (10% OFF) - NYCROCKS
-
-ChiBatterySystems	($25 OFF) - CHICAGOESK8
-
-Craft&Ride (FREE SHIPPING) - CHICAGOOW
-
-EBoardStuff (15% OFF) - YEAH15
-
-Eovan	(5% OFF) - DAMES
-
-Evolve ($50 OFF) - EBOARDBRANDON50
-
-Flatland3D (10% OFF) - SHARETHEROAD
-
-Flipsky (10% OFF) - FLIP-NYC
-
-Hoyt ST	(FREE SHIRT+SUNGLASSES WITH BOARD PURCHASE) - JOEESKATE
-
-Jay&Trent OnlyFans (20% OFF) - SKATE312
-
-Monday Motorbikes - ($300 OFF) - MONDAYEVE2020
-
-Nobleman (5% OFF) - YEAH5
-
-Ororo	(25% OFF) - CHICAGOONEWHEEL
-
-Revel ($25 OFF KIT PURCHASE) - https://www.revelboards.com/?ref=RObJTi6Y16mHf3
-
-ROMP (15% OFF) - YEAH-15
-
-Shredlights (10% OFF) - EBOARDBRANDON
-
-SPLATTERGOAT GRIP (10% OFF) - YEAH10
-
-Super73 ($100 OFF) - https://www.talkable.com/x/OVmh7E
-
-Thousand Helmets (15% OFF) - BOOSTED15
-
-TSG via Zeitbike.com (25% OFF) - NYCEB25  
-    `,
+    response:
+      'Jay&Trent OnlyFans \\(20% OFF\\) \\- SKATE312\n\n' +
+      'Check out all discounts available to Chicago ESkate members [here](https://docs.google.com/spreadsheets/d/1QTMuWO8k5719MeBt535rA_kPvSEVmiTI3wVA9Bcwu5g/edit?usp=sharing).',
+    parse_mode,
   },
   {
     commands: ['help'],
