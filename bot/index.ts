@@ -19,23 +19,23 @@ const groupIds = [
 
 /*
   Command - Description to send to Bot Father
-  ride - get the next group ride
-  random - get a random gif
-  discounts - get discount codes
-  help - view the help page
-  flashlight - get flashlight recommendations
-  battery - get a link to our preffered battery maker
-  pads - get pad recommendations
-  charge - get the map for charging locations
-  group - get links to the different facebook and telegram groups
-  helmet - get helmet recommendations
-  rules - read these
-  strava - get a link to our strava
-  tires - onewheel tire recommendations
-  track - rules for The Garden
-  sendit - gif
-  milk - FM pls sponsor me
-  nosedive - lmaoooo
+ride - get the next group ride
+random - get a random gif
+discounts - get discount codes
+help - view the help page
+flashlight - get flashlight recommendations
+battery - get a link to our preffered battery maker
+pads - get pad recommendations
+charge - get the map for charging locations
+group - get links to the different facebook and telegram groups
+helmet - get helmet recommendations
+rules - read these
+strava - get a link to our strava
+tires - onewheel tire recommendations
+track - rules for The Garden
+sendit - gif
+milk - FM pls sponsor me
+nosedive - lmaoooo
 */
 
 const bot = new Telegraf(BOT_TOKEN || '');
