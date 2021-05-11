@@ -28,7 +28,7 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['discount', 'discounts', 'codes', 'code'],
     response:
-      'Check out all discounts available to Chicago E\\-Skate members [here](https://docs.google.com/spreadsheets/d/1QTMuWO8k5719MeBt535rA_kPvSEVmiTI3wVA9Bcwu5g/edit?usp=sharing).',
+      'Check out all discounts available to Chicago E\\-Skate members [here](https://docs.google.com/spreadsheets/d/1QTMuWO8k5719MeBt535rA_kPvSEVmiTI3wVA9Bcwu5g/edit?usp=sharing)',
     parse_mode,
   },
   {
