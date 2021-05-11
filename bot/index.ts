@@ -25,7 +25,11 @@ const bot = new Telegraf(BOT_TOKEN || '');
 // );
 
 basicCommands.forEach((item) => {
-  bot.command(item.commands, async (ctx) => await ctx.reply(item.response));
+  bot.command(
+    item.commands,
+    async (ctx) =>
+      await ctx.reply(item.response, { parse_mode: item.parse_mode }),
+  );
 });
 
 bot.command('announce', async (ctx, next) => {
@@ -140,14 +144,16 @@ bot.command(commands.random, async (ctx) => await randomGif(ctx));
 bot.on('new_chat_members', async (ctx) => {
   let name = ctx.from.first_name;
 
+  const inviteLink = bot.telegram.exportChatInviteLink(mainId);
+
   const welcomeString =
     `Hello, ${name} Welcome to the Chicago E-Skate Network.\n` +
-    `Make sure to also join the main Chicago E-Skate Channel at: https://t.me/joinchat/NP_fsHcrXehkY2Qx\n` +
+    `Make sure to also join the main Chicago E-Skate Channel [here](${inviteLink}).\n` +
     `For info on the next group ride, click: /ride\n` +
-    `For more info on the group go to chicagoeskate.com\n` +
+    `For more info on the group, check out our [website](https://chicagoeskate.com)\n` +
     `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;
 
-  return await ctx.reply(welcomeString);
+  return await ctx.reply(welcomeString, { parse_mode: 'MarkdownV2' });
 });
 
 export const botFunction: HttpFunction = async (req, res) => {
