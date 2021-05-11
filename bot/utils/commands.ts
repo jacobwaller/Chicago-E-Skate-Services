@@ -10,6 +10,10 @@ type CommandResponse = {
   response: string;
 };
 
+const l = (name: string, url: string): string => {
+  return `[${name}](${url})`;
+};
+
 /**
  * Commands that are basic responses with no underlying logic are defined here
  */
@@ -31,7 +35,7 @@ const basicCommands: Array<CommandResponse> = [
     commands: ['flashlight', 'light', 'flashlights', 'lights'],
     response:
       "Check out the /r/flashlights post below to see some recommendations depending on what you're looking for\n" +
-      'https://www.reddit.com/r/flashlight/comments/hermh9/arbitrary_list_of_popular_lights_summer_solstice/\n',
+      '[Reddit List](https://www.reddit.com/r/flashlight/comments/hermh9/arbitrary_list_of_popular_lights_summer_solstice),',
   },
   {
     commands: ['sendit', 'send_it'],
@@ -39,46 +43,46 @@ const basicCommands: Array<CommandResponse> = [
   },
   {
     commands: ['battery', 'batteries'],
-    response: 'https://www.youtube.com/watch?v=g-JsaT8N6rk',
+    response: `For custom batteries, check out [ChibatterySystems](https://chibatterysystems.com/)`,
   },
   {
     commands: ['pads', 'kneepads', 'elbowpads'],
     response:
       'TSG, G-Form, Revzilla' +
-      'https://g-form.com/\n' +
-      'https://www.revzilla.com\n',
+      '[GForm](https://g-form.com/)\n' +
+      '[Revzilla](https://www.revzilla.com)\n',
   },
   {
     commands: ['charging', 'charge'],
     response:
-      'https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing',
+      '[Here](https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing) is the charging map.',
   },
   {
     commands: ['groups', 'group', 'Groups', 'Group'],
     response:
-      'Facebook Groups\n' +
-      'Chicago E-Skate (Main Group): https://www.facebook.com/groups/chicagoeskate/\n' +
-      'Chicago E-Bike: https://www.facebook.com/groups/665412891024870/\n' +
-      'Chicago Electric Scooters: https://www.facebook.com/groups/301631767538431/\n' +
-      'Chicago EUC: https://www.facebook.com/groups/chicagoeuc/\n' +
-      'Chicago Onewheel: facebook.com/groups/chicagoonewheel/\n' +
+      'Facebook Groups:\n' +
+      '[Chicago E-Skate](https://www.facebook.com/groups/chicagoeskate/)\n' +
+      '[Chicago E-Bike](https://www.facebook.com/groups/665412891024870/)\n' +
+      '[Chicago Electric Scooters](https://www.facebook.com/groups/301631767538431/)\n' +
+      '[Chicago EUC](https://www.facebook.com/groups/chicagoeuc/)\n' +
+      '[Chicago Onewheel](facebook.com/groups/chicagoonewheel/)\n' +
       '\n' +
-      'Telegram Groups\n' +
-      'Chicago E-Skate (Main Chat): https://t.me/joinchat/UV7yRo0dvO3hNhpi/\n' +
-      'Chicago E-Bike: https://t.me/joinchat/Wf2XjBZ07edmYjBh/\n' +
-      'Chicago EUC: https://t.me/joinchat/KVjiJBwwz5YOwDJvBxX5ww/\n' +
-      'Chicago Onewheel: https://t.me/joinchat/Tmz9-bhYM7-ygtri/\n',
+      'Telegram Groups:\n' +
+      '[Chicago E-Skate](https://t.me/joinchat/UV7yRo0dvO3hNhpi/)\n' +
+      '[Chicago E-Bike](https://t.me/joinchat/Wf2XjBZ07edmYjBh/)\n' +
+      '[Chicago EUC](https://t.me/joinchat/KVjiJBwwz5YOwDJvBxX5ww/)\n' +
+      '[Chicago Onewheel](https://t.me/joinchat/Tmz9-bhYM7-ygtri/)\n',
   },
   {
     commands: ['helmet', 'helmets'],
     response:
       'Bern, Thousand, TSG, Ruroc.\n' +
       'Make sure any helmet you buy is certified. Most skate helmets are not certified.\n' +
-      'http://www.bernunlimited.com/\n' +
-      'https://www.zeitbike.com/collections/helmets/\n' +
-      'https://www.explorethousand.com/\n' +
-      'https://www.ruroc.com/en/\n' +
-      'https://www.youtube.com/watch?v=b9yL5usLFgY',
+      '[Bern](http://www.bernunlimited.com/)\n' +
+      '[Zeitbike](https://www.zeitbike.com/collections/helmets/)\n' +
+      '[Thousand](https://www.explorethousand.com/)\n' +
+      '[Ruroc](https://www.ruroc.com/en/)\n\n' +
+      '[I LOVE HELMETS](https://www.youtube.com/watch?v=b9yL5usLFgY)',
   },
   {
     commands: ['nosedive'],
@@ -91,7 +95,7 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['rule', 'rules'],
     response:
-      'For more information on the rules, visit: http://bit.ly/CHIesk8Rules\n\n' +
+      'For more information on the rules, visit [here](http://bit.ly/CHIesk8Rules)\n\n' +
       '1. Wear a helmet.\n' +
       '2. Seriously, wear a helmet.\n' +
       '3. Keep a safe following distance.\n' +
@@ -115,16 +119,16 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['strava'],
     response:
-      'Track your miles and share your routes! Join Boosted Chicago on Strava by visiting:\nhttps://www.strava.com/clubs/boostedchi',
+      'Track your miles and share your routes! [Join Chicago Eskate on Strava](https://www.strava.com/clubs/chicagoeskate)\n',
   },
   {
     commands: ['tire', 'tires'],
     response:
       'Onewheel Tire Information:\n' +
-      'https://www.hoosiertire.com/\n' +
-      'http://vegausa.com/\n' +
-      'https://burrisracing.com/\n' +
-      'https://www.dunloptires.com/\n' +
+      '[Hoosier](https://www.hoosiertire.com/)\n' +
+      '[Vega](http://vegausa.com/)\n' +
+      '[Burris Racing](https://burrisracing.com/)\n' +
+      '[Dunlop](https://www.dunloptires.com/)\n' +
       'For tire upcycling, DM: @tire_sire',
   },
   {
