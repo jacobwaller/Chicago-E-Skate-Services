@@ -143,8 +143,7 @@ const basicCommands: Array<CommandResponse> = [
       '[Hoosier](https://www.hoosiertire.com/)\n' +
       '[Vega](http://vegausa.com/)\n' +
       '[Burris Racing](https://burrisracing.com/)\n' +
-      '[Dunlop](https://www.dunloptires.com/)\n' +
-      'For tire upcycling, DM: @tire\\_sire',
+      '[Dunlop](https://www.dunloptires.com/)',
     parse_mode,
   },
   {
