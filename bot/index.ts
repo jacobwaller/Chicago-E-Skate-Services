@@ -34,11 +34,15 @@ const replaceAll = (input: string, ptrn: string, replace: string): string => {
 };
 
 basicCommands.forEach((item) => {
-  const escString = replaceAll(item.response, '.', '\\.');
+  let escString = replaceAll(item.response, '.', '\\.');
+  escString = replaceAll(item.response, '!', '\\!');
+  escString = replaceAll(item.response, '~', '\\~');
+  escString = replaceAll(item.response, '`', '\\`');
+  escString = replaceAll(item.response, '*', '\\*');
 
   bot.command(
     item.commands,
-    async (ctx) => await ctx.reply(item.response, { parse_mode: 'MarkdownV2' }),
+    async (ctx) => await ctx.reply(escString, { parse_mode: 'MarkdownV2' }),
   );
 });
 
