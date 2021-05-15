@@ -8,14 +8,17 @@ import randomGif from './utils/randomGif';
 // import { encode, decode } from 'js-base64';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
-
-const mainId = -1001365176902; // ESkate
-const groupIds = [
-  -1001315765753, // Onewheel
-  -1001270121090, // EUC
-  -1001456184875, // EBike
-  -475206987, // EScooter
-];
+const bot = new Telegraf(BOT_TOKEN || '');
+const IS_PROD = FUNCTION_NAME?.includes('QA') ? false : true;
+const mainId = IS_PROD ? -1001365176902 : -1001218570823; // ESkate
+const groupIds = IS_PROD
+  ? [
+      -1001315765753, // Onewheel
+      -1001270121090, // EUC
+      -1001456184875, // EBike
+      -475206987, // EScooter
+    ]
+  : [];
 
 /*
   Command - Description to send to Bot Father
@@ -38,8 +41,6 @@ milk - FM pls sponsor me
 nosedive - lmaoooo
 */
 
-const bot = new Telegraf(BOT_TOKEN || '');
-
 // Supposedly only ever needs to be called once. Uncomment and deploy if changing anything
 // bot.telegram.setWebhook(
 //   `https://${REGION}-${PROJECT_ID}.cloudfunctions.net/${FUNCTION_NAME}`,
@@ -51,6 +52,33 @@ basicCommands.forEach((item) => {
     async (ctx) =>
       await ctx.reply(item.response, { parse_mode: item.parse_mode }),
   );
+});
+
+bot.command('shout', async (ctx, next) => {
+  // Check if sender is admin of main chat
+  const senderId = ctx.from.id;
+  const admins = await bot.telegram.getChatAdministrators(mainId);
+
+  const filtered = admins.filter((admin) => {
+    return admin.user.id === senderId;
+  });
+
+  if (filtered.length === 0) {
+    return await ctx.reply(
+      'Only admins of Chicago Eskate can use this command...',
+    );
+  }
+
+  const messageText = ctx.message.text.split(' ').slice(1).join(' ');
+  await bot.telegram.sendMessage(mainId, messageText);
+  // Send message to every group
+  for (let i = 0; i < groupIds.length; i++) {
+    await bot.telegram.sendMessage(groupIds[i], messageText);
+
+    // Add a little wait to avoid rate limiting
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  return await next();
 });
 
 bot.command(
