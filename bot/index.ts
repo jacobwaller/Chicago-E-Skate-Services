@@ -53,6 +53,54 @@ basicCommands.forEach((item) => {
   );
 });
 
+bot.command(
+  ['shutup', 'shh', 'thatsenough', 'thatsenoughfornow'],
+  async (ctx, next) => {
+    // Check if sender is admin of main chat
+    const senderId = ctx.from.id;
+    const admins = await bot.telegram.getChatAdministrators(mainId);
+
+    const filtered = admins.filter((admin) => {
+      return admin.user.id === senderId;
+    });
+
+    if (filtered.length === 0) {
+      return await ctx.reply(
+        'Only admins of Chicago Eskate can use this command...',
+      );
+    }
+
+    // Check if we're replying to a message
+    if (ctx.message.reply_to_message === undefined) {
+      return await ctx.reply('You must reply to a message to use this command');
+    }
+
+    // Get the user ID of the person we're trying to mute
+    const muteId = ctx.message.reply_to_message.from?.id;
+    if (muteId === undefined) {
+      return await ctx.reply('Something went wrong');
+    }
+
+    // Determine Unix time, 12 hours in the future. Mute until then
+    const time = new Date().setMinutes(new Date().getMinutes() + 5);
+
+    await bot.telegram.restrictChatMember(mainId, muteId, {
+      permissions: {
+        can_send_messages: false,
+      },
+      until_date: time.valueOf(),
+    });
+
+    const name = ctx.message.reply_to_message.from?.first_name;
+
+    return await ctx.reply(
+      `Hi ${name}. You have been muted for 12 hours. Or until :${time.toLocaleString(
+        'US',
+      )} UTC. You can check out our rules by DMing me /rules. Further violations of these rules may result in your removal from the group. Thanks.`,
+    );
+  },
+);
+
 bot.command('announce', async (ctx, next) => {
   // Check if sender is admin of main chat
   const senderId = ctx.from.id;
