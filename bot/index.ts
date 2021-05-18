@@ -8,14 +8,17 @@ import randomGif from './utils/randomGif';
 // import { encode, decode } from 'js-base64';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
-
-const mainId = -1001365176902; // ESkate
-const groupIds = [
-  -1001315765753, // Onewheel
-  -1001270121090, // EUC
-  -1001456184875, // EBike
-  -475206987, // EScooter
-];
+const bot = new Telegraf(BOT_TOKEN || '');
+const IS_PROD = FUNCTION_NAME?.includes('QA') ? false : true;
+const mainId = IS_PROD ? -1001365176902 : -1001218570823; // ESkate
+const groupIds = IS_PROD
+  ? [
+      -1001315765753, // Onewheel
+      -1001270121090, // EUC
+      -1001456184875, // EBike
+      -475206987, // EScooter
+    ]
+  : [];
 
 /*
   Command - Description to send to Bot Father
@@ -38,8 +41,6 @@ milk - FM pls sponsor me
 nosedive - lmaoooo
 */
 
-const bot = new Telegraf(BOT_TOKEN || '');
-
 // Supposedly only ever needs to be called once. Uncomment and deploy if changing anything
 // bot.telegram.setWebhook(
 //   `https://${REGION}-${PROJECT_ID}.cloudfunctions.net/${FUNCTION_NAME}`,
@@ -52,6 +53,81 @@ basicCommands.forEach((item) => {
       await ctx.reply(item.response, { parse_mode: item.parse_mode }),
   );
 });
+
+bot.command('shout', async (ctx, next) => {
+  // Check if sender is admin of main chat
+  const senderId = ctx.from.id;
+  const admins = await bot.telegram.getChatAdministrators(mainId);
+
+  const filtered = admins.filter((admin) => {
+    return admin.user.id === senderId;
+  });
+
+  if (filtered.length === 0) {
+    return await ctx.reply(
+      'Only admins of Chicago Eskate can use this command...',
+    );
+  }
+
+  const messageText = ctx.message.text.split(' ').slice(1).join(' ');
+  await bot.telegram.sendMessage(mainId, messageText);
+  // Send message to every group
+  for (let i = 0; i < groupIds.length; i++) {
+    await bot.telegram.sendMessage(groupIds[i], messageText);
+
+    // Add a little wait to avoid rate limiting
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  return await next();
+});
+
+bot.command(
+  ['shutup', 'shh', 'thatsenough', 'thatsenoughfornow'],
+  async (ctx, next) => {
+    // Check if sender is admin of main chat
+    const senderId = ctx.from.id;
+    const admins = await bot.telegram.getChatAdministrators(mainId);
+
+    const filtered = admins.filter((admin) => {
+      return admin.user.id === senderId;
+    });
+
+    if (filtered.length === 0) {
+      return await ctx.reply(
+        'Only admins of Chicago Eskate can use this command...',
+      );
+    }
+
+    // Check if we're replying to a message
+    if (ctx.message.reply_to_message === undefined) {
+      return await ctx.reply('You must reply to a message to use this command');
+    }
+
+    // Get the user ID of the person we're trying to mute
+    const muteId = ctx.message.reply_to_message.from?.id;
+    if (muteId === undefined) {
+      return await ctx.reply('Something went wrong');
+    }
+
+    // Determine Unix time, 12 hours in the future. Mute until then
+    const time = new Date().setMinutes(new Date().getMinutes() + 5);
+
+    await bot.telegram.restrictChatMember(mainId, muteId, {
+      permissions: {
+        can_send_messages: false,
+      },
+      until_date: time.valueOf(),
+    });
+
+    const name = ctx.message.reply_to_message.from?.first_name;
+
+    return await ctx.reply(
+      `Hi ${name}. You have been muted for 12 hours. Or until :${time.toLocaleString(
+        'US',
+      )} UTC. You can check out our rules by DMing me /rules. Further violations of these rules may result in your removal from the group. Thanks.`,
+    );
+  },
+);
 
 bot.command('announce', async (ctx, next) => {
   // Check if sender is admin of main chat
