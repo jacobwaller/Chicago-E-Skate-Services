@@ -54,6 +54,33 @@ basicCommands.forEach((item) => {
   );
 });
 
+bot.command(['groups', 'group', 'Groups', 'Group'], async (ctx) => {
+  const eskateInvite = await bot.telegram.exportChatInviteLink(mainId);
+  const restInvites = [];
+  // TODO: Verify admin-ship of EBike & Escooter to be able to just set this to length
+  for (let i = 0; i < 2; i++) {
+    const id = groupIds[i];
+    const link = await bot.telegram.exportChatInviteLink(id);
+    restInvites.push(link);
+  }
+
+  const msg =
+    'Facebook Groups:\n' +
+    '[Chicago E\\-Skate](https://www.facebook.com/groups/chicagoeskate/)\n' +
+    '[Chicago E\\-Bike](https://www.facebook.com/groups/665412891024870/)\n' +
+    '[Chicago Electric Scooters](https://www.facebook.com/groups/301631767538431/)\n' +
+    '[Chicago EUC](https://www.facebook.com/groups/chicagoeuc/)\n' +
+    '[Chicago Onewheel](facebook.com/groups/chicagoonewheel/)\n' +
+    '\n' +
+    'Telegram Groups:\n' +
+    `[Chicago E\\-Skate](${eskateInvite})\n` +
+    `[Chicago Onewheel](${restInvites[0]})\n` +
+    `[Chicago EUC](${restInvites[1]})\n` +
+    `[Chicago E\\-Bike](https://t.me/joinchat/Wf2XjBZ07edmYjBh/)\n`;
+
+  return await ctx.reply(msg);
+});
+
 bot.command('shout', async (ctx, next) => {
   // Check if sender is admin of main chat
   const senderId = ctx.from.id;

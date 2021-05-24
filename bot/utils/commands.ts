@@ -70,23 +70,6 @@ const basicCommands: Array<CommandResponse> = [
     parse_mode,
   },
   {
-    commands: ['groups', 'group', 'Groups', 'Group'],
-    response:
-      'Facebook Groups:\n' +
-      '[Chicago E\\-Skate](https://www.facebook.com/groups/chicagoeskate/)\n' +
-      '[Chicago E\\-Bike](https://www.facebook.com/groups/665412891024870/)\n' +
-      '[Chicago Electric Scooters](https://www.facebook.com/groups/301631767538431/)\n' +
-      '[Chicago EUC](https://www.facebook.com/groups/chicagoeuc/)\n' +
-      '[Chicago Onewheel](facebook.com/groups/chicagoonewheel/)\n' +
-      '\n' +
-      'Telegram Groups:\n' +
-      '[Chicago E\\-Skate](https://t.me/joinchat/UV7yRo0dvO3hNhpi/)\n' +
-      '[Chicago E\\-Bike](https://t.me/joinchat/Wf2XjBZ07edmYjBh/)\n' +
-      '[Chicago EUC](https://t.me/joinchat/KVjiJBwwz5YOwDJvBxX5ww/)\n' +
-      '[Chicago Onewheel](https://t.me/joinchat/Tmz9-bhYM7-ygtri/)\n',
-    parse_mode,
-  },
-  {
     commands: ['helmet', 'helmets'],
     response:
       '[I LOVE HELMETS](https://www.youtube.com/watch?v=b9yL5usLFgY)\n\n' +
