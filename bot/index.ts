@@ -78,7 +78,7 @@ bot.command(['groups', 'group', 'Groups', 'Group'], async (ctx) => {
     `[Chicago EUC](${restInvites[1]})\n` +
     `[Chicago E\\-Bike](https://t.me/joinchat/Wf2XjBZ07edmYjBh/)\n`;
 
-  return await ctx.reply(msg);
+  return await ctx.reply(msg, { parse_mode: 'MarkdownV2' });
 });
 
 bot.command('shout', async (ctx, next) => {
