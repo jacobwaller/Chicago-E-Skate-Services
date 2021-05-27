@@ -291,8 +291,9 @@ bot.on('message', async (ctx, next) => {
     updateGroupId === mainId;
 
   if (!inGroup) {
-    ctx.telegram.leaveChat(updateGroupId);
+    await ctx.telegram.leaveChat(updateGroupId);
   }
+  return await next();
 });
 
 export const botFunction: HttpFunction = async (req, res) => {
