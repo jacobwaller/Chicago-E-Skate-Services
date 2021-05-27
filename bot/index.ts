@@ -280,6 +280,21 @@ bot.on('new_chat_members', async (ctx) => {
   return await ctx.reply(welcomeString, { parse_mode: 'MarkdownV2' });
 });
 
+bot.on('message', async (ctx, next) => {
+  if (ctx.chat.type === 'private') {
+    return await next();
+  }
+
+  const updateGroupId = ctx.chat.id;
+  const inGroup =
+    groupIds.filter((id) => updateGroupId === id).length >= 1 ||
+    updateGroupId === mainId;
+
+  if (!inGroup) {
+    ctx.telegram.leaveChat(updateGroupId);
+  }
+});
+
 export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);
   try {
