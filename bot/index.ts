@@ -296,6 +296,10 @@ bot.on('message', async (ctx, next) => {
   return await next();
 });
 
+bot.on('pinned_message', async (ctx, next) => {
+  return await next();
+});
+
 export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);
   try {
