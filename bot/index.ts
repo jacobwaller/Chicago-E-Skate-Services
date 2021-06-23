@@ -271,8 +271,8 @@ bot.on('new_chat_members', async (ctx) => {
   const inviteLink = bot.telegram.exportChatInviteLink(mainId);
 
   const welcomeString =
-    `Hello, ${name} Welcome to the Chicago E-Skate Network.\n` +
-    `Make sure to also join the main Chicago E-Skate Channel [here](${inviteLink}).\n` +
+    `Hello, ${name} Welcome to the Chicago E\\-Skate Network.\n` +
+    `Make sure to also join the main Chicago E\\-Skate Channel [here](${inviteLink}).\n` +
     `For info on the next group ride, click: /ride\n` +
     `For more info on the group, check out our [website](https://chicagoeskate.com)\n` +
     `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;
@@ -293,6 +293,10 @@ bot.on('message', async (ctx, next) => {
   if (!inGroup) {
     await ctx.telegram.leaveChat(updateGroupId);
   }
+  return await next();
+});
+
+bot.on('pinned_message', async (ctx, next) => {
   return await next();
 });
 
