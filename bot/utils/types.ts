@@ -12,4 +12,21 @@ type ApiResponse = {
   description: string;
 };
 
-export { ApiResponse };
+type UserData = {
+  id: string;
+  firstname: string;
+  lastname?: string;
+  username?: string;
+  warnings: Array<Warning>;
+  additionalData: Array<{
+    key: string;
+    value: any;
+  }>;
+};
+
+type Warning = {
+  datetime: string;
+  reason: string;
+};
+
+export { ApiResponse, UserData, Warning };

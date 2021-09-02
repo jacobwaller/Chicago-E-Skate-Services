@@ -1,4 +1,4 @@
-import { Telegraf } from 'telegraf';
+import { Context, NarrowedContext, Telegraf, Types } from 'telegraf';
 import { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
 
 import { basicCommands, commands } from './utils/commands';
@@ -6,6 +6,11 @@ import { basicCommands, commands } from './utils/commands';
 import groupRide from './utils/groupRide';
 import randomGif from './utils/randomGif';
 import escapeChars from './utils/escapeChars';
+import isAdmin from './utils/isAdmin';
+import { Message, Update, User } from 'telegraf/typings/core/types/typegram';
+import { getUserById, tgToDbUser, updateUser } from './utils/dbHandler';
+import { Warning } from './utils/types';
+import moment from 'moment-timezone';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -54,6 +59,121 @@ basicCommands.forEach((item) => {
   );
 });
 
+const adminCommandHelper = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
+) => {
+  const senderId = ctx.from.id;
+  if (!isAdmin(senderId, mainId, bot)) {
+    await ctx.reply('Only admins of Chicago Eskate can use this command...');
+    return false;
+  }
+
+  const isReply = !!ctx.message.reply_to_message;
+  if (!isReply) {
+    await ctx.reply("Reply to the message of the person you'd like to warn...");
+    return false;
+  }
+  return true;
+};
+
+// Adds a warning to the replied to member
+// Use: /warn {reason}
+// ex: /warn rule 1 ( no helmet )
+bot.command('warn', async (ctx, next) => {
+  if (!adminCommandHelper(ctx)) return await next();
+
+  // Create warning
+  const reason = ctx.message.text.split(' ').slice(1).join(' ');
+
+  if (reason.trim() === '') {
+    return await ctx.reply("Must supply a reason '/warn {reason}");
+  }
+  const warning: Warning = {
+    datetime: moment(moment.now())
+      .tz('America/Chicago')
+      .format('MMM Do yyyy @ h:mm a'),
+    reason: reason,
+  };
+
+  // See if user exists in db
+  const replyMsg = ctx.message.reply_to_message;
+  const repliedUser = replyMsg?.from;
+  let user = await getUserById(`${repliedUser?.id}`);
+  // If not, create it
+  if (!user) {
+    user = tgToDbUser(repliedUser as User);
+  }
+  // Regardless, add a warning and update the user
+  user.warnings.push(warning);
+  await updateUser(user);
+
+  return await ctx.reply(`User now has ${user.warnings.length} warnings`);
+});
+
+// Removes the most recent warning to the replied to member
+bot.command('unwarn', async (ctx, next) => {
+  if (!adminCommandHelper(ctx)) return await next();
+
+  // See if user exists in db
+  const replyMsg = ctx.message.reply_to_message;
+  const repliedUser = replyMsg?.from;
+  let user = await getUserById(`${repliedUser?.id}`);
+  // If not, create it
+  if (!user) {
+    user = tgToDbUser(repliedUser as User);
+  } else {
+    // if so, pop a warning
+    user.warnings.pop();
+  }
+
+  await updateUser(user);
+
+  return await ctx.reply(`User has ${user.warnings.length} warnings`);
+});
+
+// Lists warnings to the replied to message
+bot.command('warnings', async (ctx, next) => {
+  if (!adminCommandHelper(ctx)) return await next();
+
+  // See if user exists in db
+  const replyMsg = ctx.message.reply_to_message;
+  const repliedUser = replyMsg?.from;
+  let user = await getUserById(`${repliedUser?.id}`);
+  // If not, create it
+  if (!user) {
+    user = tgToDbUser(repliedUser as User);
+  }
+  await updateUser(user);
+
+  const warningsList = user.warnings.map(
+    (warning) => `User was warned on ${warning.datetime} for ${warning.reason}`,
+  );
+
+  const response =
+    warningsList.length === 0
+      ? 'User has no warnings'
+      : warningsList.join('\n');
+
+  return await ctx.reply(response);
+});
+
+// Bans the replied to member
+bot.command('ban', async (ctx, next) => {
+  if (!adminCommandHelper(ctx)) return await next();
+
+  const replyMsg = ctx.message.reply_to_message;
+  const repliedUser = replyMsg?.from;
+  if (repliedUser === undefined) {
+    return await next();
+  }
+
+  return await ctx.kickChatMember(repliedUser?.id);
+});
+
+bot.command(['shh', 'silence', 'mute'], async (ctx, next) => {
+  if (!adminCommandHelper(ctx)) return await next();
+});
+
 bot.command(['groups', 'group', 'Groups', 'Group'], async (ctx) => {
   const eskateInvite = await bot.telegram.exportChatInviteLink(mainId);
   const restInvites = [];
@@ -84,13 +204,7 @@ bot.command(['groups', 'group', 'Groups', 'Group'], async (ctx) => {
 bot.command('shout', async (ctx, next) => {
   // Check if sender is admin of main chat
   const senderId = ctx.from.id;
-  const admins = await bot.telegram.getChatAdministrators(mainId);
-
-  const filtered = admins.filter((admin) => {
-    return admin.user.id === senderId;
-  });
-
-  if (filtered.length === 0) {
+  if (!isAdmin(senderId, mainId, bot)) {
     return await ctx.reply(
       'Only admins of Chicago Eskate can use this command...',
     );
@@ -111,13 +225,7 @@ bot.command('shout', async (ctx, next) => {
 bot.command('announce', async (ctx, next) => {
   // Check if sender is admin of main chat
   const senderId = ctx.from.id;
-  const admins = await bot.telegram.getChatAdministrators(mainId);
-
-  const filtered = admins.filter((admin) => {
-    return admin.user.id === senderId;
-  });
-
-  if (filtered.length === 0) {
+  if (!isAdmin(senderId, mainId, bot)) {
     return await ctx.reply(
       'Only admins of Chicago Eskate can use this command...',
     );
@@ -155,7 +263,9 @@ bot.on('new_chat_members', async (ctx) => {
   const inviteLink = bot.telegram.exportChatInviteLink(mainId);
 
   const welcomeString =
-    `Hello, ${escapeChars(name)} Welcome to the Chicago E\\-Skate Network\\.\n` +
+    `Hello, ${escapeChars(
+      name,
+    )} Welcome to the Chicago E\\-Skate Network\\.\n` +
     `Make sure to also join the main Chicago E\\-Skate Channel [here](${inviteLink})\\.\n` +
     `For info on the next group ride, click: /ride\n` +
     `For more info on the group, check out our [website](https://chicagoeskate.com)\n` +
