@@ -10,7 +10,7 @@ import isAdmin from './utils/isAdmin';
 import { Message, Update, User } from 'telegraf/typings/core/types/typegram';
 import { getUserById, tgToDbUser, updateUser } from './utils/dbHandler';
 import { Warning } from './utils/types';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -84,8 +84,14 @@ bot.command('warn', async (ctx, next) => {
 
   // Create warning
   const reason = ctx.message.text.split(' ').slice(1).join(' ');
+
+  if (reason.trim() === '') {
+    return await ctx.reply("Must supply a reason '/warn {reason}");
+  }
   const warning: Warning = {
-    datetime: Date(),
+    datetime: moment(moment.now())
+      .tz('America/Chicago')
+      .format('MMM Do yyyy @ h:mm a'),
     reason: reason,
   };
 
@@ -154,10 +160,14 @@ bot.command('warnings', async (ctx, next) => {
 // Bans the replied to member
 bot.command('ban', async (ctx, next) => {
   if (!adminCommandHelper(ctx)) return await next();
-});
 
-bot.command('unban', async (ctx, next) => {
-  if (!adminCommandHelper(ctx)) return await next();
+  const replyMsg = ctx.message.reply_to_message;
+  const repliedUser = replyMsg?.from;
+  if (repliedUser === undefined) {
+    return await next();
+  }
+
+  return await ctx.kickChatMember(repliedUser?.id);
 });
 
 bot.command(['shh', 'silence', 'mute'], async (ctx, next) => {
