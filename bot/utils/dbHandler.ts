@@ -16,6 +16,7 @@ const db = () => {
 
     _db = new Firestore({
       projectId: process.env.PROJECT_ID,
+      ignoreUndefinedProperties: true,
       credentials: {
         client_email: clientEmail,
         private_key: privateKey,
