@@ -12,6 +12,7 @@ import { getUserById, tgToDbUser, updateUser } from './utils/dbHandler';
 import { Warning } from './utils/types';
 import moment from 'moment-timezone';
 import { charge } from './handlers/chargeHandler';
+import conversationHandler from './handlers/conversationHandler';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -302,6 +303,15 @@ bot.on('message', async (ctx, next) => {
 bot.on('message', async (ctx, next) => {
   if (ctx.chat.type === 'private') {
     // We're in a DM, handle conversations
+    // grab the potential user / or add them to DB
+    const userId = `${ctx.from.id}`;
+    let user = await getUserById(userId);
+    if (user === undefined) {
+      user = tgToDbUser(ctx.from);
+      await updateUser(tgToDbUser(ctx.from));
+    }
+    await ctx.reply('trying to have convo?');
+    await conversationHandler(ctx, next, user);
   } else {
     // If this is from a group we don't know about, spam them
     const groups = [mainId, ...groupIds];
