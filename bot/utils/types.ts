@@ -15,7 +15,7 @@ export type ApiResponse = {
 };
 
 export enum ConversationCategory {
-  CHARGE,
+  CHARGE = 'CHARGE',
 }
 
 export enum ChargeType {
