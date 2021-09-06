@@ -1,5 +1,3 @@
-import { isConditionalExpression } from 'typescript';
-
 export type ApiResponse = {
   title: string;
   date: string;
@@ -36,7 +34,6 @@ export type ChargeSpot = {
   chargeType: ChargeType;
   lat: number;
   lon: number;
-  title: string;
   description?: string;
 };
 

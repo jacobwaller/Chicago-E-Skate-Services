@@ -1,7 +1,8 @@
+import { v4 } from 'uuid';
 import { Context, NarrowedContext, Scenes, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
-import { updateUser } from '../utils/dbHandler';
-import { ChargeSteps, ChargeType, UserData } from '../utils/types';
+import { addChargeSpot, updateUser } from '../utils/dbHandler';
+import { ChargeSpot, ChargeSteps, ChargeType, UserData } from '../utils/types';
 
 export const handleAddCharge = async () => {};
 export const handleGetCharge = async () => {};
@@ -76,6 +77,17 @@ export const charge = async (
     }
 
     user.conversationalStep.state.description = ctx.message.text;
+
+    const data: ChargeSpot = {
+      id: v4(),
+      chargeType: user.conversationalStep.state.indoors,
+      lat: user.conversationalStep.state.lat,
+      lon: user.conversationalStep.state.lon,
+      description: user.conversationalStep.state.description,
+      userAdded: ctx.from.id,
+    };
+
+    await addChargeSpot(data);
 
     user.conversationalStep = undefined;
     await updateUser(user);

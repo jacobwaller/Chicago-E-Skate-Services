@@ -1,7 +1,7 @@
 import { Firestore } from '@google-cloud/firestore';
 import { Base64 } from 'js-base64';
 import { User } from 'telegraf/typings/core/types/typegram';
-import { UserData } from './types';
+import { ChargeSpot, UserData } from './types';
 
 require('dotenv').config();
 
@@ -26,7 +26,11 @@ const db = () => {
   return _db;
 };
 
-const tgToDbUser = (tgUser: User): UserData => {
+export const addChargeSpot = async (spot: ChargeSpot) => {
+  return await db().collection('charge').doc(spot.id).set(spot);
+};
+
+export const tgToDbUser = (tgUser: User): UserData => {
   return {
     id: `${tgUser.id}`,
     firstname: tgUser.first_name,
@@ -42,7 +46,7 @@ const tgToDbUser = (tgUser: User): UserData => {
  * @param userId The ID of the user
  * @returns The UserData
  */
-const getUserById = async (userId: string) => {
+export const getUserById = async (userId: string) => {
   const userRef = db().collection('users').doc(userId);
   return (await userRef.get()).data() as UserData;
 };
@@ -51,8 +55,6 @@ const getUserById = async (userId: string) => {
  *
  * @param user The UserData to either add or update the entry with
  */
-const updateUser = async (user: UserData) => {
+export const updateUser = async (user: UserData) => {
   return await db().collection('users').doc(user.id).set(user);
 };
-
-export { getUserById, updateUser, tgToDbUser };
