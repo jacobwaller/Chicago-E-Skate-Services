@@ -64,12 +64,6 @@ const basicCommands: Array<CommandResponse> = [
     parse_mode,
   },
   {
-    commands: ['charging', 'charge'],
-    response:
-      '[Here](https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing) is the charging map\\.',
-    parse_mode,
-  },
-  {
     commands: ['helmet', 'helmets'],
     response:
       '[I LOVE HELMETS](https://www.youtube.com/watch?v=b9yL5usLFgY)\n\n' +

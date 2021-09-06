@@ -11,6 +11,7 @@ import { Message, Update, User } from 'telegraf/typings/core/types/typegram';
 import { getUserById, tgToDbUser, updateUser } from './utils/dbHandler';
 import { Warning } from './utils/types';
 import moment from 'moment-timezone';
+import { charge } from './handlers/chargeHandler';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -173,6 +174,8 @@ bot.command('ban', async (ctx, next) => {
 bot.command(['shh', 'silence', 'mute'], async (ctx, next) => {
   if (!adminCommandHelper(ctx)) return await next();
 });
+
+bot.command('charge', charge);
 
 bot.command(['groups', 'group', 'Groups', 'Group'], async (ctx) => {
   const eskateInvite = await bot.telegram.exportChatInviteLink(mainId);

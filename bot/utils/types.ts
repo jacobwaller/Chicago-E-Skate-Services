@@ -1,3 +1,5 @@
+import { isConditionalExpression } from 'typescript';
+
 type ApiResponse = {
   title: string;
   date: string;
@@ -10,6 +12,22 @@ type ApiResponse = {
   routeLink: string;
   routeDistance: string;
   description: string;
+};
+
+enum ChargeType {
+  UNKNOWN,
+  INDOOR,
+  OUTDOOR,
+}
+
+type ChargeSpot = {
+  id: string;
+  userAdded: number; // userId of the person who added it (-1 if unknown)
+  chargeType: ChargeType;
+  lat: number;
+  lon: number;
+  title: string;
+  description?: string;
 };
 
 type UserData = {
@@ -29,4 +47,4 @@ type Warning = {
   reason: string;
 };
 
-export { ApiResponse, UserData, Warning };
+export { ApiResponse, UserData, Warning, ChargeSpot };
