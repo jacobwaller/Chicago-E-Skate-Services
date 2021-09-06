@@ -13,13 +13,14 @@ export type ApiResponse = {
 };
 
 export enum ConversationCategory {
-  CHARGE = 'CHARGE',
+  ADD_CHARGE = 'CHARGE',
+  GET_CHARGE = 'GET_CHARGE',
 }
 
 export enum ChargeType {
-  UNKNOWN,
-  INDOOR,
-  OUTDOOR,
+  UNKNOWN = 'unknown',
+  INDOOR = 'indoor',
+  OUTDOOR = 'outdoor',
 }
 
 export enum ChargeSteps {

@@ -30,6 +30,15 @@ export const addChargeSpot = async (spot: ChargeSpot) => {
   return await db().collection('charge').doc(spot.id).set(spot);
 };
 
+export const getChargeSpots = async () => {
+  const dat = await db().collection('charge').get();
+  const ret: Array<ChargeSpot> = [];
+  dat.forEach((item) => {
+    ret.push(item.data() as ChargeSpot);
+  });
+  return ret;
+};
+
 export const tgToDbUser = (tgUser: User): UserData => {
   return {
     id: `${tgUser.id}`,

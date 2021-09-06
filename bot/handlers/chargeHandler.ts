@@ -1,25 +1,66 @@
 import { v4 } from 'uuid';
 import { Context, NarrowedContext, Scenes, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
-import { addChargeSpot, updateUser } from '../utils/dbHandler';
+import { addChargeSpot, getChargeSpots, updateUser } from '../utils/dbHandler';
 import { ChargeSpot, ChargeSteps, ChargeType, UserData } from '../utils/types';
 
-export const handleAddCharge = async () => {};
-export const handleGetCharge = async () => {};
-
-const processLocation = () => {};
-
-// how to handle:
-// Input Validation
-// save info to
-
-export const charge = async (
+export const getCharge = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
   next: () => Promise<void>,
   user: UserData,
 ) => {
-  await ctx.replyWithChatAction('typing');
+  if (!user.conversationalStep || !user.conversationalStep.state) {
+    return await ctx.reply('Something went wrong.');
+  }
+  const step = user.conversationalStep.stepInfo;
+  if (step === ChargeSteps.Location) {
+    if (!('location' in ctx.message)) {
+      user.conversationalStep = undefined;
+      await updateUser(user);
+      return await ctx.reply(
+        "I'm waiting for your current location. Send /charge to try again",
+      );
+    }
+    const lat = ctx.message.location.latitude;
+    const lon = ctx.message.location.longitude;
+    const spots = await getChargeSpots();
 
+    // Sort them by distance to our target location
+    const subset = spots
+      .sort((a, b) => {
+        const aToSearch = Math.pow(
+          Math.pow(a.lat - lat, 2) + Math.pow(a.lon - lon, 2),
+          0.5,
+        );
+        const bToSearch = Math.pow(
+          Math.pow(b.lat - lat, 2) + Math.pow(b.lon - lon, 2),
+          0.5,
+        );
+
+        return aToSearch - bToSearch;
+      })
+      .slice(0, 3);
+
+    for (const spot of spots) {
+      await ctx.replyWithLocation(spot.lat, spot.lon);
+      const msg = `The above location is described as: ${spot.chargeType}\nDescription: ${spot.description}`;
+      await ctx.reply(msg);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    user.conversationalStep = undefined;
+    await updateUser(user);
+    return await ctx.reply(
+      'If none of these charging locations help you, check out our old online charging map here: https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing',
+    );
+  }
+};
+
+export const addCharge = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
+  next: () => Promise<void>,
+  user: UserData,
+) => {
   if (!user.conversationalStep || !user.conversationalStep.state) {
     return await ctx.reply('Something went wrong.');
   }

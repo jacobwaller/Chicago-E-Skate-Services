@@ -11,7 +11,6 @@ import { Message, Update, User } from 'telegraf/typings/core/types/typegram';
 import { getUserById, tgToDbUser, updateUser } from './utils/dbHandler';
 import { ChargeSteps, ConversationCategory, Warning } from './utils/types';
 import moment from 'moment-timezone';
-import { charge } from './handlers/chargeHandler';
 import conversationHandler from './handlers/conversationHandler';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
@@ -176,10 +175,10 @@ bot.command(['shh', 'silence', 'mute'], async (ctx, next) => {
   if (!adminCommandHelper(ctx)) return await next();
 });
 
-bot.command('add', async (ctx, next) => {
+bot.command('charge', async (ctx, next) => {
   if (ctx.chat.type !== 'private') {
     return await ctx.reply(
-      'This needs to be done in DMs to prevent spam. Please click DM me the command /charge',
+      'This needs to be done in DMs to prevent spam. Please DM me the command /charge',
     );
   }
 
@@ -189,14 +188,36 @@ bot.command('add', async (ctx, next) => {
     user = tgToDbUser(ctx.from);
   }
   user.conversationalStep = {
-    category: ConversationCategory.CHARGE,
+    category: ConversationCategory.GET_CHARGE,
+    stepInfo: ChargeSteps.Location,
+    state: {},
+  };
+  await updateUser(user);
+
+  return await ctx.reply('Please send me your current location.');
+});
+
+bot.command('add', async (ctx, next) => {
+  if (ctx.chat.type !== 'private') {
+    return await ctx.reply(
+      'This needs to be done in DMs to prevent spam. Please DM me the command /add',
+    );
+  }
+
+  const userId = `${ctx.from.id}`;
+  let user = await getUserById(userId);
+  if (user === undefined) {
+    user = tgToDbUser(ctx.from);
+  }
+  user.conversationalStep = {
+    category: ConversationCategory.ADD_CHARGE,
     stepInfo: ChargeSteps.Location,
     state: {},
   };
   await updateUser(user);
 
   return await ctx.reply(
-    'Thank you for helping to add to the charge map! Please send the location of the charge location.\n\n(Click the paperclip in the bottom right, click location, click Send My Location)',
+    'Thank you for helping to add to the charge map! Please send the location of the charge spot.\n\n(Click the paperclip in the bottom right, click location, click Send My Location)',
   );
 });
 
