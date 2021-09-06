@@ -257,8 +257,14 @@ bot.command('announce', async (ctx, next) => {
   return await next();
 });
 
-bot.command(commands.groupRide, async (ctx) => ctx.reply(await groupRide()));
-bot.command(commands.random, async (ctx) => await randomGif(ctx));
+bot.command(commands.groupRide, async (ctx) => {
+  await ctx.replyWithChatAction('typing');
+  return await ctx.reply(await groupRide());
+});
+bot.command(commands.random, async (ctx) => {
+  await ctx.replyWithChatAction('upload_photo');
+  return await randomGif(ctx);
+});
 
 bot.on('new_chat_members', async (ctx) => {
   let name = ctx.from.first_name;
@@ -289,6 +295,21 @@ bot.on('message', async (ctx, next) => {
 
   if (!inGroup) {
     await ctx.telegram.leaveChat(updateGroupId);
+  }
+  return await next();
+});
+
+bot.on('message', async (ctx, next) => {
+  if (ctx.chat.type === 'private') {
+    // We're in a DM, handle conversations
+  } else {
+    // If this is from a group we don't know about, spam them
+    const groups = [mainId, ...groupIds];
+    if (groups.filter((id) => id === ctx.chat.id).length === 0) {
+      return await ctx.reply(
+        `PLEASE REMOVE ME FROM THIS GROUP. If you'd like me in this group, please DM @jacob_waller and be sure to include this number: ${ctx.chat.id}`,
+      );
+    }
   }
   return await next();
 });

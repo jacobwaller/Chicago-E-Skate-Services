@@ -36,6 +36,7 @@ type UserData = {
   lastname?: string;
   username?: string;
   warnings: Array<Warning>;
+  conversationalStep?: string;
   additionalData: Array<{
     key: string;
     value: any;
