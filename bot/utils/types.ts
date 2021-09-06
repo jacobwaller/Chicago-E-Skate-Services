@@ -1,6 +1,6 @@
 import { isConditionalExpression } from 'typescript';
 
-type ApiResponse = {
+export type ApiResponse = {
   title: string;
   date: string;
   meetTime: string;
@@ -14,13 +14,23 @@ type ApiResponse = {
   description: string;
 };
 
-enum ChargeType {
+export enum ConversationCategory {
+  CHARGE,
+}
+
+export enum ChargeType {
   UNKNOWN,
   INDOOR,
   OUTDOOR,
 }
 
-type ChargeSpot = {
+export enum ChargeSteps {
+  Type = 'WAIT_FOR_INSIDE',
+  Location = 'WAIT_FOR_LOCATION',
+  Description = 'WAIT_FOR_DESCRIPTION',
+}
+
+export type ChargeSpot = {
   id: string;
   userAdded: number; // userId of the person who added it (-1 if unknown)
   chargeType: ChargeType;
@@ -30,22 +40,26 @@ type ChargeSpot = {
   description?: string;
 };
 
-type UserData = {
+export type ConversationInfo = {
+  category: ConversationCategory;
+  stepInfo: string;
+  state?: any;
+};
+
+export type UserData = {
   id: string;
   firstname: string;
   lastname?: string;
   username?: string;
   warnings: Array<Warning>;
-  conversationalStep?: string;
+  conversationalStep?: ConversationInfo;
   additionalData: Array<{
     key: string;
     value: any;
   }>;
 };
 
-type Warning = {
+export type Warning = {
   datetime: string;
   reason: string;
 };
-
-export { ApiResponse, UserData, Warning, ChargeSpot };

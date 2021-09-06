@@ -21,11 +21,6 @@ const parse_mode = 'MarkdownV2';
  */
 const basicCommands: Array<CommandResponse> = [
   {
-    commands: ['start'],
-    response:
-      'Thanks for adding me to this group. Use /help to learn what I can do',
-  },
-  {
     commands: ['discount', 'discounts', 'codes', 'code'],
     response:
       'Check out all discounts available to Chicago E\\-Skate members [here](https://docs.google.com/spreadsheets/d/1QTMuWO8k5719MeBt535rA_kPvSEVmiTI3wVA9Bcwu5g/edit?usp=sharing)',

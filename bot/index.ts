@@ -9,7 +9,7 @@ import escapeChars from './utils/escapeChars';
 import isAdmin from './utils/isAdmin';
 import { Message, Update, User } from 'telegraf/typings/core/types/typegram';
 import { getUserById, tgToDbUser, updateUser } from './utils/dbHandler';
-import { Warning } from './utils/types';
+import { ChargeSteps, ConversationCategory, Warning } from './utils/types';
 import moment from 'moment-timezone';
 import { charge } from './handlers/chargeHandler';
 import conversationHandler from './handlers/conversationHandler';
@@ -172,11 +172,37 @@ bot.command('ban', async (ctx, next) => {
   return await ctx.kickChatMember(repliedUser?.id);
 });
 
+bot.on('location', (ctx) => {
+  ctx.message.location;
+});
+
 bot.command(['shh', 'silence', 'mute'], async (ctx, next) => {
   if (!adminCommandHelper(ctx)) return await next();
 });
 
-bot.command('charge', charge);
+bot.command('add', async (ctx, next) => {
+  if (ctx.chat.type !== 'private') {
+    return await ctx.reply(
+      'This needs to be done in DMs to prevent spam. Please click DM me the command /charge',
+    );
+  }
+
+  const userId = `${ctx.from.id}`;
+  let user = await getUserById(userId);
+  if (user === undefined) {
+    user = tgToDbUser(ctx.from);
+  }
+  user.conversationalStep = {
+    category: ConversationCategory.CHARGE,
+    stepInfo: ChargeSteps.Location,
+    state: {},
+  };
+  await updateUser(user);
+
+  return await ctx.reply(
+    'Thank you for helping to add to the charge map! Please send the location of the charge location.\n\n(Click the paperclip in the bottom right, click location, click Send My Location)',
+  );
+});
 
 bot.command(['groups', 'group', 'Groups', 'Group'], async (ctx) => {
   const eskateInvite = await bot.telegram.exportChatInviteLink(mainId);
@@ -284,22 +310,7 @@ bot.on('new_chat_members', async (ctx) => {
   return await ctx.reply(welcomeString, { parse_mode: 'MarkdownV2' });
 });
 
-bot.on('message', async (ctx, next) => {
-  if (ctx.chat.type === 'private') {
-    return await next();
-  }
-
-  const updateGroupId = ctx.chat.id;
-  const inGroup =
-    groupIds.filter((id) => updateGroupId === id).length >= 1 ||
-    updateGroupId === mainId;
-
-  if (!inGroup) {
-    await ctx.telegram.leaveChat(updateGroupId);
-  }
-  return await next();
-});
-
+// This has to be the last thing we do
 bot.on('message', async (ctx, next) => {
   if (ctx.chat.type === 'private') {
     // We're in a DM, handle conversations
@@ -310,7 +321,7 @@ bot.on('message', async (ctx, next) => {
       user = tgToDbUser(ctx.from);
       await updateUser(tgToDbUser(ctx.from));
     }
-    await ctx.reply('trying to have convo?');
+
     await conversationHandler(ctx, next, user);
   } else {
     // If this is from a group we don't know about, spam them
