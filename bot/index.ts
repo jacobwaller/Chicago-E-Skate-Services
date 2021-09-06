@@ -322,7 +322,7 @@ bot.on('message', async (ctx, next) => {
       await updateUser(tgToDbUser(ctx.from));
     }
 
-    await conversationHandler(ctx, next, user);
+    return await conversationHandler(ctx, next, user);
   } else {
     // If this is from a group we don't know about, spam them
     const groups = [mainId, ...groupIds];

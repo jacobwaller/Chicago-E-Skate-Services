@@ -12,7 +12,10 @@ export default async (
   if (!user.conversationalStep) {
     return await next();
   }
-
+  console.log(
+    'Trying to handle conversation: ',
+    JSON.stringify(user.conversationalStep),
+  );
   // In charge convo
   if (user.conversationalStep.category === ConversationCategory.CHARGE) {
     return await charge(ctx, next, user);
