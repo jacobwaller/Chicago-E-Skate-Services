@@ -172,10 +172,6 @@ bot.command('ban', async (ctx, next) => {
   return await ctx.kickChatMember(repliedUser?.id);
 });
 
-bot.on('location', (ctx) => {
-  ctx.message.location;
-});
-
 bot.command(['shh', 'silence', 'mute'], async (ctx, next) => {
   if (!adminCommandHelper(ctx)) return await next();
 });
