@@ -5,8 +5,39 @@ import {
   getChargingSpots,
 } from './sheetController';
 import Express from 'express';
-import { getChargeSpots } from '../bot/utils/dbHandler';
+import { Firestore } from '@google-cloud/firestore';
+import { Base64 } from 'js-base64';
 import { ChargeSpot } from '../bot/utils/types';
+
+let _db: Firestore;
+
+const db = () => {
+  if (_db === undefined) {
+    const tokenInfo = Base64.decode(process.env.FIRESTORE_TOKEN || '');
+    const tokenObject = JSON.parse(tokenInfo);
+    const clientEmail = tokenObject.client_email;
+    const privateKey = tokenObject.private_key;
+
+    _db = new Firestore({
+      projectId: process.env.PROJECT_ID,
+      ignoreUndefinedProperties: true,
+      credentials: {
+        client_email: clientEmail,
+        private_key: privateKey,
+      },
+    });
+  }
+  return _db;
+};
+
+const getChargeSpots = async () => {
+  const dat = await db().collection('charge').get();
+  const ret: Array<ChargeSpot> = [];
+  dat.forEach((item) => {
+    ret.push(item.data() as ChargeSpot);
+  });
+  return ret;
+};
 
 const createMarkerText = (spot: ChargeSpot): string => {
   return `
