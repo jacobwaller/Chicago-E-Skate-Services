@@ -1,5 +1,8 @@
 # Chicago E-Skate Services
 
+## Huge thank you to our sponsors!
+- jgiard6 - Joe Giardina
+
 ## This is a Mono-Repo for the
 
 - Chicago E-Skate Website
