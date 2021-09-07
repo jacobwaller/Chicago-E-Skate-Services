@@ -5,7 +5,6 @@ import {
   getChargingSpots,
 } from './sheetController';
 import Express from 'express';
-import { Loader } from '@googlemaps/js-api-loader';
 
 const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Origin', '*');
