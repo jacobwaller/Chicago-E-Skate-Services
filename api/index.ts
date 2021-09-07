@@ -9,7 +9,6 @@ import Express from 'express';
 const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
-  // key is not secret because usage is free and in most situations, this would be visible on the front end
   const ret = `
   <!DOCTYPE html>
   <html>
@@ -41,7 +40,7 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
     <body>
       <div id="map"></div>
       <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5ZXwvHY1T9HulHnO6arlUq4291WPdJRM&callback=initMap&libraries=&v=weekly"
+        src="https://maps.googleapis.com/maps/api/js?key=${process.env.MAPS_KEY}&callback=initMap&libraries=&v=weekly"
         async
       ></script>
     </body>
