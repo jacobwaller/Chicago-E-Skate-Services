@@ -2,6 +2,7 @@
 
 ## Huge thank you to our sponsors!
 - jgiard6 - Joe Giardina
+- dpromano76 - Donal (Lord) Romano
 
 ## This is a Mono-Repo for the
 
