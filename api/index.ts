@@ -11,7 +11,7 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
   // key is not secret because usage is free and in most situations, this would be visible on the front end
-  `
+  const ret = `
   <!DOCTYPE html>
   <html>
     <head>
@@ -49,7 +49,7 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   </html>
   `;
 
-  res.status(200).send('');
+  res.status(200).send(ret);
 };
 
 const fetchRide = async (req: Express.Request, res: Express.Response) => {
