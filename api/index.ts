@@ -47,8 +47,6 @@ const createMarkerText = (spot: ChargeSpot): string => {
         lng: ${spot.lon}
       },
       map,
-      title: "${spot.description}",
-      label: "${spot.id}",
       optimized: true,
     });
   `;
