@@ -89,6 +89,7 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
             center: { lat: 41.8781, lng: -87.6298 },
             zoom: 8,
           });
+          const infoWindow = new google.maps.InfoWindow();
           let marker;
           ${spots.map((spot) => createMarkerText(spot)).join('\n')}
         }
