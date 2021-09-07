@@ -5,45 +5,135 @@ import {
   getChargingSpots,
 } from './sheetController';
 import Express from 'express';
-import { ChargingSpot } from './types';
+import { Firestore } from '@google-cloud/firestore';
+import { Base64 } from 'js-base64';
+import { ChargeSpot } from '../bot/utils/types';
+
+let _db: Firestore;
+
+const db = () => {
+  if (_db === undefined) {
+    const tokenInfo = Base64.decode(process.env.FIRESTORE_TOKEN || '');
+    const tokenObject = JSON.parse(tokenInfo);
+    const clientEmail = tokenObject.client_email;
+    const privateKey = tokenObject.private_key;
+
+    _db = new Firestore({
+      projectId: process.env.PROJECT_ID,
+      ignoreUndefinedProperties: true,
+      credentials: {
+        client_email: clientEmail,
+        private_key: privateKey,
+      },
+    });
+  }
+  return _db;
+};
+
+const getChargeSpots = async () => {
+  const dat = await db().collection('charge').get();
+  const ret: Array<ChargeSpot> = [];
+  dat.forEach((item) => {
+    ret.push(item.data() as ChargeSpot);
+  });
+  return ret;
+};
+
+const createSpotEntry = (spot: ChargeSpot): string => {
+  return `[{ lat: ${spot.lat}, lng: ${spot.lon} }, "${spot.description}"]`;
+};
+
+const createArrayString = (spots: Array<ChargeSpot>): string => {
+  return `
+    const chargeSpots = [
+      ${spots.map((spot) => createSpotEntry(spot)).join(',\n')}
+    ]
+  `;
+};
+
+// const createMarkerText = (spot: ChargeSpot): string => {
+//   return `
+//     marker = new google.maps.Marker({
+//       position: {
+//         lat: ${spot.lat},
+//         lng: ${spot.lon}
+//       },
+//       title: "${spot.description}",
+//       map,
+//       optimized: false,
+//     });
+
+//     marker.addListener("click", () => {
+//       infoWindow.close();
+//       infoWindow.setContent(marker.getTitle());
+//       infoWindow.open(marker.getMap(), marker);
+//     });
+//   `;
+// };
 
 const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET, POST');
-  if (req.method === 'GET') {
-    const lat = req.params.lat;
-    const lon = req.params.lon;
-    if (lat === undefined || lon === undefined) {
-      res.status(400).send("Error: Must supply params 'lat' and 'lon'");
-    } else {
-      const results: Array<ChargingSpot> = await getChargingSpots(
-        parseFloat(lat),
-        parseFloat(lon),
-        3,
-      );
-      res.status(200).send(JSON.stringify(results));
-    }
-  } else if (req.method === 'POST') {
-    const body: ChargingSpot = req.body;
-    if (
-      body.lat == undefined ||
-      body.lon == undefined ||
-      body.addedBy == undefined ||
-      body.description == undefined ||
-      body.title == undefined
-    ) {
-      res.status(400).send('Error: Body in incorrect format');
-    } else {
-      const results = addChargingSpot(body);
-      if (results) {
-        res.status(200).send('Success');
-      } else {
-        res.status(500).send('Error: Something went wrong');
-      }
-    }
-  } else {
-    res.status(400).send('Error: wrong method');
-  }
+  res.set('Access-Control-Allow-Methods', 'GET');
+  const spots = await getChargeSpots();
+
+  const ret = `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Chicago Charge Map</title>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+      <style>
+        #map {
+          height: 100%;
+        }
+        html,
+        body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+
+      <script>
+        let map;
+        function initMap() {
+          map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 41.8781, lng: -87.6298 },
+            zoom: 8,
+          });
+          const infoWindow = new google.maps.InfoWindow();
+          // const chargeSpots = ...
+          ${createArrayString(spots)}
+          chargeSpots.forEach(([position, title], i) => {
+            const marker = new google.maps.Marker({
+              position,
+              map,
+              title: \`\${title}\`,
+              optimized: false,
+            });
+            // Add a click listener for each marker, and set up the info window.
+            marker.addListener("click", () => {
+              infoWindow.close();
+              infoWindow.setContent(marker.getTitle());
+              infoWindow.open(marker.getMap(), marker);
+            });
+          });
+        }
+      </script>
+    </head>
+    <body>
+      <div id="map"></div>
+      <script
+        src="https://maps.googleapis.com/maps/api/js?key=${
+          process.env.MAPS_KEY
+        }&callback=initMap&libraries=&v=weekly"
+        async
+      ></script>
+    </body>
+  </html>
+  `;
+
+  res.status(200).send(ret);
 };
 
 const fetchRide = async (req: Express.Request, res: Express.Response) => {

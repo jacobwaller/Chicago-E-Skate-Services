@@ -35,7 +35,8 @@ help - view the help page
 flashlight - get flashlight recommendations
 battery - get a link to our preffered battery maker
 pads - get pad recommendations
-charge - get the map for charging locations
+charge - get charging locations near you
+add - add a charging location
 group - get links to the different facebook and telegram groups
 helmet - get helmet recommendations
 rules - read these

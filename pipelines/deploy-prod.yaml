@@ -33,16 +33,16 @@ steps:
       - --entry-point=fetchRide
       - --allow-unauthenticated
 
-  # - name: "gcr.io/cloud-builders/gcloud"
-  #   args:
-  #     - functions
-  #     - deploy
-  #     - chargingHandler
-  #     - --source=./built/api/
-  #     - --trigger-http
-  #     - --runtime=nodejs12
-  #     - --entry-point=chargingHandler
-  #     - --allow-unauthenticated
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      - functions
+      - deploy
+      - chargingHandler
+      - --source=./built/api/
+      - --trigger-http
+      - --runtime=nodejs12
+      - --entry-point=chargingHandler
+      - --allow-unauthenticated
 
 
 # steps:
