@@ -41,13 +41,20 @@ const getChargeSpots = async () => {
 
 const createMarkerText = (spot: ChargeSpot): string => {
   return `
-    new google.maps.Marker({
+    marker = new google.maps.Marker({
       position: {
         lat: ${spot.lat}, 
         lng: ${spot.lon}
       },
+      title: "${spot.description}",
       map,
-      optimized: true,
+      optimized: false,
+    });
+
+    marker.addListener("click", () => {
+      infoWindow.close();
+      infoWindow.setContent(marker.getTitle());
+      infoWindow.open(marker.getMap(), marker);
     });
   `;
 };
@@ -82,6 +89,7 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
             center: { lat: 41.8781, lng: -87.6298 },
             zoom: 8,
           });
+          let marker;
           ${spots.map((spot) => createMarkerText(spot)).join('\n')}
         }
       </script>
