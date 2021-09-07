@@ -41,7 +41,7 @@ export const getCharge = async (
       })
       .slice(0, 3);
 
-    for (const spot of spots) {
+    for (const spot of subset) {
       await ctx.replyWithLocation(spot.lat, spot.lon);
       const msg = `The above location is described as: ${spot.chargeType}\nDescription: ${spot.description}`;
       await ctx.reply(msg);
