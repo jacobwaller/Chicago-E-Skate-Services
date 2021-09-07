@@ -39,25 +39,37 @@ const getChargeSpots = async () => {
   return ret;
 };
 
-const createMarkerText = (spot: ChargeSpot): string => {
-  return `
-    marker = new google.maps.Marker({
-      position: {
-        lat: ${spot.lat}, 
-        lng: ${spot.lon}
-      },
-      title: "${spot.description}",
-      map,
-      optimized: false,
-    });
+const createSpotEntry = (spot: ChargeSpot): string => {
+  return `[{ lat: ${spot.lat}, lng: ${spot.lon} }, "${spot.description}"]`;
+};
 
-    marker.addListener("click", () => {
-      infoWindow.close();
-      infoWindow.setContent(marker.getTitle());
-      infoWindow.open(marker.getMap(), marker);
-    });
+const createArrayString = (spots: Array<ChargeSpot>): string => {
+  return `
+    const chargeSpots = [
+      ${spots.map((spot) => createSpotEntry(spot)).join(',\n')}
+    ]
   `;
 };
+
+// const createMarkerText = (spot: ChargeSpot): string => {
+//   return `
+//     marker = new google.maps.Marker({
+//       position: {
+//         lat: ${spot.lat},
+//         lng: ${spot.lon}
+//       },
+//       title: "${spot.description}",
+//       map,
+//       optimized: false,
+//     });
+
+//     marker.addListener("click", () => {
+//       infoWindow.close();
+//       infoWindow.setContent(marker.getTitle());
+//       infoWindow.open(marker.getMap(), marker);
+//     });
+//   `;
+// };
 
 const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Origin', '*');
@@ -90,8 +102,22 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
             zoom: 8,
           });
           const infoWindow = new google.maps.InfoWindow();
-          let marker;
-          ${spots.map((spot) => createMarkerText(spot)).join('\n')}
+          // const chargeSpots = ...
+          ${createArrayString(spots)}
+          chargeSpots.forEach(([position, title], i) => {
+            const marker = new google.maps.Marker({
+              position,
+              map,
+              title: \`\${title}\`,
+              optimized: false,
+            });
+            // Add a click listener for each marker, and set up the info window.
+            marker.addListener("click", () => {
+              infoWindow.close();
+              infoWindow.setContent(marker.getTitle());
+              infoWindow.open(marker.getMap(), marker);
+            });
+          });
         }
       </script>
     </head>
