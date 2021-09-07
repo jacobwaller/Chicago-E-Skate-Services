@@ -43,7 +43,7 @@ export const getCharge = async (
 
     for (const spot of subset) {
       await ctx.replyWithLocation(spot.lat, spot.lon);
-      const msg = `The above location is described as: ${spot.chargeType}\nDescription: ${spot.description}`;
+      const msg = `The above location is described as: ${spot.chargeType}\n\nDescription:\n ${spot.description}\n\nid: ${spot.id}`;
       await ctx.reply(msg);
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
@@ -51,7 +51,7 @@ export const getCharge = async (
     user.conversationalStep = undefined;
     await updateUser(user);
     return await ctx.reply(
-      'If none of these charging locations help you, check out our old online charging map here: https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing',
+      "If any of these charging locations don't work or if there is a problem, DM the info message to @jacob_waller.\nIf none of these charging locations help you, check out our old online charging map here: https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing",
     );
   }
 };

@@ -217,7 +217,7 @@ bot.command('add', async (ctx, next) => {
   await updateUser(user);
 
   return await ctx.reply(
-    'Thank you for helping to add to the charge map! Please send the location of the charge spot.\n\n(Click the paperclip in the bottom right, click location, click Send My Location)',
+    "Thank you for helping to add to the charge map! Please send the location of the charge spot.\n\n(Click the paperclip in the bottom right, click location, click Send My Location or move the pin to where you'd like)",
   );
 });
 
