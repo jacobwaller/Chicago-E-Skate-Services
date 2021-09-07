@@ -5,45 +5,51 @@ import {
   getChargingSpots,
 } from './sheetController';
 import Express from 'express';
-import { ChargingSpot } from './types';
+import { Loader } from '@googlemaps/js-api-loader';
 
 const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET, POST');
-  if (req.method === 'GET') {
-    const lat = req.params.lat;
-    const lon = req.params.lon;
-    if (lat === undefined || lon === undefined) {
-      res.status(400).send("Error: Must supply params 'lat' and 'lon'");
-    } else {
-      const results: Array<ChargingSpot> = await getChargingSpots(
-        parseFloat(lat),
-        parseFloat(lon),
-        3,
-      );
-      res.status(200).send(JSON.stringify(results));
-    }
-  } else if (req.method === 'POST') {
-    const body: ChargingSpot = req.body;
-    if (
-      body.lat == undefined ||
-      body.lon == undefined ||
-      body.addedBy == undefined ||
-      body.description == undefined ||
-      body.title == undefined
-    ) {
-      res.status(400).send('Error: Body in incorrect format');
-    } else {
-      const results = addChargingSpot(body);
-      if (results) {
-        res.status(200).send('Success');
-      } else {
-        res.status(500).send('Error: Something went wrong');
+  res.set('Access-Control-Allow-Methods', 'GET');
+  // key is not secret because usage is free and in most situations, this would be visible on the front end
+  `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Simple Map</title>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+      <style>
+        #map {
+          height: 100%;
+        }
+        html,
+        body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+      let map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: -34.397, lng: 150.644 },
+          zoom: 8,
+        });
       }
-    }
-  } else {
-    res.status(400).send('Error: wrong method');
-  }
+      <script>
+
+      </script>
+    </head>
+    <body>
+      <div id="map"></div>
+      <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5ZXwvHY1T9HulHnO6arlUq4291WPdJRM&callback=initMap&libraries=&v=weekly"
+        async
+      ></script>
+    </body>
+  </html>
+  `;
+
+  res.status(200).send('');
 };
 
 const fetchRide = async (req: Express.Request, res: Express.Response) => {
