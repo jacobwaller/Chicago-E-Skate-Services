@@ -43,7 +43,11 @@ export const getCharge = async (
 
     for (const spot of subset) {
       await ctx.replyWithLocation(spot.lat, spot.lon);
-      const msg = `The above location is described as: ${spot.chargeType}\n\nDescription:\n ${spot.description}\n\nid: ${spot.id}`;
+      const loc =
+        spot.chargeType === ChargeType.UNKNOWN
+          ? ''
+          : `The above location is ${spot.chargeType}s.\n\n`;
+      const msg = `${loc}Description:\n${spot.description}\n\nid: ${spot.id}`;
       await ctx.reply(msg);
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
