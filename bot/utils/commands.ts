@@ -21,11 +21,6 @@ const parse_mode = 'MarkdownV2';
  */
 const basicCommands: Array<CommandResponse> = [
   {
-    commands: ['start'],
-    response:
-      'Thanks for adding me to this group. Use /help to learn what I can do',
-  },
-  {
     commands: ['discount', 'discounts', 'codes', 'code'],
     response:
       'Check out all discounts available to Chicago E\\-Skate members [here](https://docs.google.com/spreadsheets/d/1QTMuWO8k5719MeBt535rA_kPvSEVmiTI3wVA9Bcwu5g/edit?usp=sharing)',
@@ -61,12 +56,6 @@ const basicCommands: Array<CommandResponse> = [
       'TSG, G\\-Form, Revzilla\n\n' +
       '[GForm](https://g-form.com/)\n' +
       '[Revzilla](https://www.revzilla.com)\n',
-    parse_mode,
-  },
-  {
-    commands: ['charging', 'charge'],
-    response:
-      '[Here](https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing) is the charging map\\.',
     parse_mode,
   },
   {
