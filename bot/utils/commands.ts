@@ -27,6 +27,14 @@ const basicCommands: Array<CommandResponse> = [
     parse_mode,
   },
   {
+    commands: ['sponsor', 'sponsors', 'donate'],
+    response: 'https://github.com/sponsors/jacobwaller',
+  },
+  {
+    commands: ['map', 'chargemap', 'charge_map'],
+    response: 'map.chicagoeskate.com',
+  },
+  {
     commands: ['help'],
     response:
       'I am here to help answer questions about Chicago E-Skate.\n' +
