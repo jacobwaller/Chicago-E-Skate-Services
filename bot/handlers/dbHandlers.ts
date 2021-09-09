@@ -1,7 +1,7 @@
 import { Firestore } from '@google-cloud/firestore';
 import { Base64 } from 'js-base64';
 import { User } from 'telegraf/typings/core/types/typegram';
-import { ChargeSpot, UserData } from './types';
+import { ChargeSpot, UserData } from '../utils/types';
 
 require('dotenv').config();
 
