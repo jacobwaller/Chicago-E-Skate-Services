@@ -1,5 +1,11 @@
 # Chicago E-Skate Services
 
+## Huge thank you to our sponsors!
+- jgiard6 - Joe Giardina
+- dpromano76 - Donal (Lord) Romano
+- Rick Rivera
+- Stewart Ciesla
+
 ## This is a Mono-Repo for the
 
 - Chicago E-Skate Website
