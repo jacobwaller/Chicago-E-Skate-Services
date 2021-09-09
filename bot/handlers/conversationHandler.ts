@@ -1,7 +1,7 @@
 import { Context, NarrowedContext, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { ConversationCategory, UserData } from '../utils/types';
-import { addCharge, getCharge } from './chargeHandler';
+import { addCharge, getCharge } from './chargeHandlers';
 
 export default async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,

@@ -1,8 +1,72 @@
 import { v4 } from 'uuid';
 import { Context, NarrowedContext, Scenes, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
-import { addChargeSpot, getChargeSpots, updateUser } from '../utils/dbHandler';
-import { ChargeSpot, ChargeSteps, ChargeType, UserData } from '../utils/types';
+import {
+  addChargeSpot,
+  getChargeSpots,
+  getUserById,
+  tgToDbUser,
+  updateUser,
+} from './dbHandlers';
+import {
+  ChargeSpot,
+  ChargeSteps,
+  ChargeType,
+  ConversationCategory,
+  UserData,
+} from '../utils/types';
+
+export const charge = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
+  next: () => Promise<void>,
+) => {
+  if (ctx.chat.type !== 'private') {
+    return await ctx.reply(
+      'This needs to be done in DMs to prevent spam. Please DM me the command /charge',
+    );
+  }
+
+  const userId = `${ctx.from.id}`;
+  let user = await getUserById(userId);
+  if (user === undefined) {
+    user = tgToDbUser(ctx.from);
+  }
+  user.conversationalStep = {
+    category: ConversationCategory.GET_CHARGE,
+    stepInfo: ChargeSteps.Location,
+    state: {},
+  };
+  await updateUser(user);
+
+  return await ctx.reply('Please send me your current location.');
+};
+
+export const add = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
+  next: () => Promise<void>,
+) => {
+  if (ctx.chat.type !== 'private') {
+    return await ctx.reply(
+      'This needs to be done in DMs to prevent spam. Please DM me the command /add',
+    );
+  }
+
+  const userId = `${ctx.from.id}`;
+  let user = await getUserById(userId);
+  if (user === undefined) {
+    user = tgToDbUser(ctx.from);
+  }
+  user.conversationalStep = {
+    category: ConversationCategory.ADD_CHARGE,
+    stepInfo: ChargeSteps.Location,
+    state: {},
+  };
+  await updateUser(user);
+
+  return await ctx.reply(
+    "Thank you for helping to add to the charge map! Please send the location of the charge spot.\n\n(Click the paperclip in the bottom right, click location, click Send My Location or move the pin to where you'd like)",
+  );
+};
 
 export const getCharge = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
