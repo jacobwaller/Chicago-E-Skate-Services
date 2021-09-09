@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { Context, NarrowedContext, Types } from 'telegraf';
 import { Update, User } from 'telegraf/typings/core/types/typegram';
 import { getUserById, tgToDbUser, updateUser } from './dbHandlers';
@@ -46,7 +46,9 @@ export const warn = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
   next: () => Promise<void>,
 ) => {
-  if (!adminCommandHelper(ctx)) return await next();
+  if (!adminCommandHelper(ctx)) {
+    return await next();
+  }
 
   // Create warning
   const reason = ctx.message.text.split(' ').slice(1).join(' ');

@@ -98,7 +98,7 @@ bot.command('add', add);
 
 // Group commands
 bot.command(['groups', 'group', 'Groups', 'Group'], group);
-bot.command(commands.groupRide, async (ctx) => ride);
+bot.command(commands.groupRide, ride);
 
 // Misc
 bot.command(commands.random, random);
