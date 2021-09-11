@@ -7,4 +7,4 @@ export const GROUP_IDS = IS_PROD
       -1001456184875, // EBike
       -475206987, // EScooter
     ]
-  : [];
+  : [-1001588542714];

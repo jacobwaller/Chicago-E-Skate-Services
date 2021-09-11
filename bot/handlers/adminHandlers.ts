@@ -11,10 +11,16 @@ const isAdmin = async (
   userId: number,
   chatId: number,
 ): Promise<boolean> => {
+  console.log(`testing if ${userId} is admin of ${chatId}`);
   const admins = await ctx.telegram.getChatAdministrators(chatId);
   const filtered = admins.filter((admin) => {
     return admin.user.id === userId;
   });
+  console.log(
+    `User is ${filtered.length !== 0 ? '' : 'not'} an admin of ${chatId}`,
+  );
+
+  console.log('returning ', filtered.length !== 0);
   return filtered.length !== 0;
 };
 
@@ -23,19 +29,23 @@ const adminCommandHelper = async (
 ) => {
   const senderId = ctx.from.id;
 
-  // const isAdmin = ctx.telegram.getChatAdministrators(MAIN_GROUP_ID)
-
-  if (!isAdmin(ctx, senderId, MAIN_GROUP_ID)) {
+  if (!(await isAdmin(ctx, senderId, MAIN_GROUP_ID))) {
+    console.log(`${senderId} is not an admin`);
     await ctx.reply('Only admins of Chicago Eskate can use this command...');
     return false;
-  }
+  } else {
+    const isReply = !!ctx.message.reply_to_message;
+    if (!isReply) {
+      console.log(`Improperly used command`);
+      await ctx.reply(
+        "Reply to the message of the person you'd like to warn...",
+      );
 
-  const isReply = !!ctx.message.reply_to_message;
-  if (!isReply) {
-    await ctx.reply("Reply to the message of the person you'd like to warn...");
-    return false;
+      return false;
+    } else {
+      return true;
+    }
   }
-  return true;
 };
 
 // Adds a warning to the replied to member
@@ -47,6 +57,7 @@ export const warn = async (
   next: () => Promise<void>,
 ) => {
   if (!adminCommandHelper(ctx)) {
+    console.log('Someone who was not an admin tried to use the command warn');
     return await next();
   }
 
