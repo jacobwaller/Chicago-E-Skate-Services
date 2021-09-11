@@ -56,7 +56,7 @@ export const warn = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
   next: () => Promise<void>,
 ) => {
-  if (!adminCommandHelper(ctx)) {
+  if (!(await adminCommandHelper(ctx))) {
     console.log('Someone who was not an admin tried to use the command warn');
     return await next();
   }
