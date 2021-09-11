@@ -19,6 +19,8 @@ const isAdmin = async (
   console.log(
     `User is ${filtered.length !== 0 ? '' : 'not'} an admin of ${chatId}`,
   );
+
+  console.log('returning ', filtered.length !== 0);
   return filtered.length !== 0;
 };
 
