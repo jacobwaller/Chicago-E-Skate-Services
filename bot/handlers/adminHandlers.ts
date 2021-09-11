@@ -31,15 +31,19 @@ const adminCommandHelper = async (
     console.log(`${senderId} is not an admin`);
     await ctx.reply('Only admins of Chicago Eskate can use this command...');
     return false;
-  }
+  } else {
+    const isReply = !!ctx.message.reply_to_message;
+    if (!isReply) {
+      console.log(`Improperly used command`);
+      await ctx.reply(
+        "Reply to the message of the person you'd like to warn...",
+      );
 
-  const isReply = !!ctx.message.reply_to_message;
-  if (!isReply) {
-    console.log(`Improperly used command`);
-    await ctx.reply("Reply to the message of the person you'd like to warn...");
-    return false;
+      return false;
+    } else {
+      return true;
+    }
   }
-  return true;
 };
 
 // Adds a warning to the replied to member
