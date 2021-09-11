@@ -29,7 +29,7 @@ const adminCommandHelper = async (
 ) => {
   const senderId = ctx.from.id;
 
-  if (!isAdmin(ctx, senderId, MAIN_GROUP_ID)) {
+  if (!(await isAdmin(ctx, senderId, MAIN_GROUP_ID))) {
     console.log(`${senderId} is not an admin`);
     await ctx.reply('Only admins of Chicago Eskate can use this command...');
     return false;
