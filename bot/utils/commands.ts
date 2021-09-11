@@ -92,6 +92,7 @@ const basicCommands: Array<CommandResponse> = [
       'For more information on the rules, visit http://bit.ly/CHIesk8Rules\n\n' +
       '1. Wear a helmet.\n' +
       '2. Seriously, wear a helmet.\n' +
+      '2.5 Must follow city/state ordinances regarding COVID-19 mitigation.\n' +
       '3. Keep a safe following distance.\n' +
       '4. Stagger yourselves while riding.\n' +
       '5. Wear clothing that wont fly off or get caught in wheels.\n' +
