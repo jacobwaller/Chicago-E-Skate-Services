@@ -109,7 +109,8 @@ const basicCommands: Array<CommandResponse> = [
       '16. Keep some form of emergency contact info on your person.\n' +
       '17. Do not ride drunk.\n' +
       '18. No spamming.\n' +
-      '19. Be honest with transactions.',
+      '19. Be honest with transactions.\n' +
+      '20. Do not share crash videos of someone without their consent',
   },
   {
     commands: ['strava'],

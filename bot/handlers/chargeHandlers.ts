@@ -119,7 +119,7 @@ export const getCharge = async (
     user.conversationalStep = undefined;
     await updateUser(user);
     return await ctx.reply(
-      "If any of these charging locations don't work or if there is a problem, DM the info message to @jacob_waller.\nIf none of these charging locations help you, check out our old online charging map here: https://www.google.com/maps/d/edit?mid=1KIzwP95pZD0A3CWmjC6lcMD29f4&usp=sharing",
+      "If any of these charging locations don't work or if there is a problem, DM the info message to @jacob_waller.\nIf none of these charging locations help you, check out our charging map at: map.chicagoeskate.com",
     );
   }
 };
