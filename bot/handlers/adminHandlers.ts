@@ -88,10 +88,22 @@ export const warn = async (
 
   // If they have too many warnings, ban them
   if (user.warnings.length >= 3) {
-    ctx.kickChatMember(repliedUser?.id || 0);
-    return await ctx.reply(
+    // ctx.kickChatMember(repliedUser?.id || 0);
+    await ctx.telegram.kickChatMember(MAIN_GROUP_ID, repliedUser?.id || 0);
+    await ctx.telegram.sendMessage(
+      MAIN_GROUP_ID,
       `${user.firstname} is now banned for reason ${reason}`,
     );
+    for (let id of GROUP_IDS) {
+      await ctx.telegram.kickChatMember(id, repliedUser?.id || 0);
+      await ctx.telegram.sendMessage(
+        id,
+        `${user.firstname} is now banned for reason ${reason}`,
+      );
+      // Add a little wait to avoid rate limiting
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+    return await next();
   }
 
   return await ctx.reply(`User now has ${user.warnings.length} warnings`);
