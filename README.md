@@ -5,6 +5,7 @@
 - dpromano76 - Donal (Lord) Romano
 - Rick Rivera
 - Stewart Ciesla
+- Jared Auker
 
 ## This is a Mono-Repo for the
 
