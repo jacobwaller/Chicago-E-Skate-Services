@@ -7,8 +7,10 @@ import conversationHandler from './handlers/conversationHandler';
 import {
   announce,
   ban,
+  endContestSayWinners,
   shh,
   shout,
+  startContest,
   unwarn,
   warn,
   warnings,
@@ -91,6 +93,8 @@ bot.command('ban', ban);
 bot.command('shh', shh);
 bot.command('shout', shout);
 bot.command('announce', announce);
+bot.command('start_contest', startContest);
+bot.command('end_contest', endContestSayWinners);
 
 // Charging commands
 bot.command('charge', charge);

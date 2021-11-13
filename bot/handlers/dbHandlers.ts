@@ -67,3 +67,14 @@ export const getUserById = async (userId: string) => {
 export const updateUser = async (user: UserData) => {
   return await db().collection('users').doc(user.id).set(user);
 };
+
+export const setContestTime = async (): Promise<number> => {
+  const time = new Date().getTime();
+  await db().collection('time').doc('time').set({ time: new Date().getTime() });
+  return time;
+};
+
+export const getContestTime = async () => {
+  const timeRef = db().collection('time').doc('time');
+  return ((await timeRef.get()).data() as { time: number }).time;
+};

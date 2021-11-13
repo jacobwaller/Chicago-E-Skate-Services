@@ -35,6 +35,7 @@ export type ChargeSpot = {
   chargeType: ChargeType;
   lat: number;
   lon: number;
+  timeAdded: number; // Unix Epoch Time in ms
   description?: string;
 };
 

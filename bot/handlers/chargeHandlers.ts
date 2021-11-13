@@ -194,6 +194,7 @@ export const addCharge = async (
       lon: user.conversationalStep.state.lon,
       description: user.conversationalStep.state.description,
       userAdded: ctx.from.id,
+      timeAdded: new Date().getTime(),
     };
 
     await addChargeSpot(data);
