@@ -73,7 +73,6 @@ bot.on('message', async (ctx, next) => {
       );
     }
   }
-
   return await next();
 });
 
