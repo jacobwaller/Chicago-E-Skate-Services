@@ -1,5 +1,4 @@
 import { Telegraf } from 'telegraf';
-import { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
 import { basicCommands, commands } from './utils/commands';
 import escapeChars from './utils/escapeChars';
 import { getUserById, tgToDbUser, updateUser } from './handlers/dbHandlers';
@@ -20,6 +19,8 @@ import { add, charge } from './handlers/chargeHandlers';
 import { group } from './handlers/groupHandlers';
 import { ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
+import { Request, Response } from 'express';
+import { Update } from 'typegram';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -148,11 +149,11 @@ bot.on('message', async (ctx, next) => {
   return await next();
 });
 
-export const botFunction: HttpFunction = async (req, res) => {
+export const botFunction = async (req: Request, res: Response) => {
   console.log(req.body);
   try {
     // Handle the update
-    await bot.handleUpdate(req.body);
+    await bot.handleUpdate(req as unknown as Update);
     console.log('Success');
     res.status(200).send('Success');
   } catch (err) {
