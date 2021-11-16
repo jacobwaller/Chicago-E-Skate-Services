@@ -86,6 +86,10 @@ export const endContestSayWinners = async (
     (spot) => spot.timeAdded && spot.timeAdded > time,
   );
 
+  await ctx.reply(
+    `There were ${filteredSpots.length} charging spots added during the competition`,
+  );
+
   // Grab all the userIds and calculate how many things they found
   const includedUserIds: { [key: string]: number } = { '-1': -1 };
   for (const spot of filteredSpots) {
@@ -114,11 +118,13 @@ export const endContestSayWinners = async (
 
   usersPlusScores = usersPlusScores.sort((a, b) => b.score - a.score);
 
+  console.log(usersPlusScores);
+
   const winnersString = usersPlusScores
     .map((user) => {
-      const name = `${user.firstname} ${user.lastname || ''} ${
+      const name = `Name: ${user.firstname} ${user.lastname || ''} Username: ${
         user.username || ''
-      } ${user.id} has ${user.score} points`;
+      } UserId ${user.id} has ${user.score} points`;
     })
     .join('\n');
 
