@@ -59,7 +59,7 @@ export const startContest = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
   next: () => Promise<void>,
 ) => {
-  if (!(await adminCommandHelper(ctx))) {
+  if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
     console.log('Someone who was not an admin tried to use the command warn');
     return await next();
   }
@@ -73,7 +73,7 @@ export const endContestSayWinners = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
   next: () => Promise<void>,
 ) => {
-  if (!(await adminCommandHelper(ctx))) {
+  if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
     console.log('Someone who was not an admin tried to use the command warn');
     return await next();
   }

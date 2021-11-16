@@ -19,8 +19,6 @@ import { add, charge } from './handlers/chargeHandlers';
 import { group } from './handlers/groupHandlers';
 import { ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
-import { Request, Response } from 'express';
-import { Update } from 'typegram';
 import { HttpFunction } from '@google-cloud/functions-framework';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
