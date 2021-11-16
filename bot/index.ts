@@ -21,6 +21,7 @@ import { ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
 import { Request, Response } from 'express';
 import { Update } from 'typegram';
+import { HttpFunction } from '@google-cloud/functions-framework';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -149,8 +150,9 @@ bot.on('message', async (ctx, next) => {
   return await next();
 });
 
-export const botFunction = async (req: Request, res: Response) => {
+export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);
+
   try {
     // Handle the update
     await bot.handleUpdate(req as unknown as Update);
