@@ -201,7 +201,8 @@ export const addCharge = async (
       timeAdded: new Date().getTime(),
     };
 
-    await addChargeSpot(data);
+    // Allow people to test and make sure they understand it
+    if (data.description?.toLowerCase() !== 'fake') await addChargeSpot(data);
 
     user.conversationalStep = undefined;
     await updateUser(user);
