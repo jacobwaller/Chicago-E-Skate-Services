@@ -23,7 +23,7 @@ export const charge = async (
 ) => {
   if (ctx.chat.type !== 'private') {
     return await ctx.reply(
-      'This needs to be done in DMs to prevent spam. Please DM me the command /charge',
+      `This needs to be done in DMs to prevent spam. Please DM me the same command by clicking this: @${ctx.botInfo.username}`,
     );
   }
 
@@ -48,7 +48,7 @@ export const add = async (
 ) => {
   if (ctx.chat.type !== 'private') {
     return await ctx.reply(
-      'This needs to be done in DMs to prevent spam. Please DM me the command /add',
+      `This needs to be done in DMs to prevent spam. Please DM me the same command by clicking this: @${ctx.botInfo.username}`,
       cancelKeyboard,
     );
   }
