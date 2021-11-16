@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { Context, NarrowedContext, Scenes, Types } from 'telegraf';
+import { Context, Markup, NarrowedContext, Scenes, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import {
   addChargeSpot,
@@ -15,6 +15,7 @@ import {
   ConversationCategory,
   UserData,
 } from '../utils/types';
+import { cancelKeyboard, yesNoKeyboard } from './conversationHandler';
 
 export const charge = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
@@ -22,7 +23,7 @@ export const charge = async (
 ) => {
   if (ctx.chat.type !== 'private') {
     return await ctx.reply(
-      'This needs to be done in DMs to prevent spam. Please DM me the command /charge',
+      `This needs to be done in DMs to prevent spam. Please DM me the same command by clicking this: @${ctx.botInfo.username}`,
     );
   }
 
@@ -38,7 +39,10 @@ export const charge = async (
   };
   await updateUser(user);
 
-  return await ctx.reply('Please send me your current location.');
+  return await ctx.reply(
+    'Please send me your current location.',
+    cancelKeyboard,
+  );
 };
 
 export const add = async (
@@ -47,7 +51,7 @@ export const add = async (
 ) => {
   if (ctx.chat.type !== 'private') {
     return await ctx.reply(
-      'This needs to be done in DMs to prevent spam. Please DM me the command /add',
+      `This needs to be done in DMs to prevent spam. Please DM me the same command by clicking this: @${ctx.botInfo.username}`,
     );
   }
 
@@ -65,6 +69,7 @@ export const add = async (
 
   return await ctx.reply(
     "Thank you for helping to add to the charge map! Please send the location of the charge spot.\n\n(Click the paperclip in the bottom right, click location, click Send My Location or move the pin to where you'd like)",
+    cancelKeyboard,
   );
 };
 
@@ -149,33 +154,34 @@ export const addCharge = async (
     await updateUser(user);
 
     return await ctx.reply(
-      'Thanks! Is this charge location indoors? (yes, no)',
+      'Thanks! Is this charge location indoors?',
+      yesNoKeyboard,
     );
   }
-  if (step === ChargeSteps.Type) {
-    if (!('text' in ctx.message)) {
-      user.conversationalStep = undefined;
-      await updateUser(user);
-      return await ctx.reply(
-        "I'm waiting for a 'yes' or a 'no' if the charge location is indoors or not. To try again, send /add",
-      );
-    }
+  // if (step === ChargeSteps.Type) {
+  //   if (!('text' in ctx.message)) {
+  //     user.conversationalStep = undefined;
+  //     await updateUser(user);
+  //     return await ctx.reply(
+  //       "I'm waiting for a 'yes' or a 'no' if the charge location is indoors or not. To try again, send /add",
+  //     );
+  //   }
 
-    const msg = ctx.message.text.toLowerCase();
-    const indoors = msg.includes('yes');
+  //   const msg = ctx.message.text.toLowerCase();
+  //   const indoors = msg.includes('yes');
 
-    user.conversationalStep.state.indoors = indoors
-      ? ChargeType.INDOOR
-      : ChargeType.OUTDOOR;
-    user.conversationalStep.stepInfo = ChargeSteps.Description;
-    await updateUser(user);
+  //   user.conversationalStep.state.indoors = indoors
+  //     ? ChargeType.INDOOR
+  //     : ChargeType.OUTDOOR;
+  //   user.conversationalStep.stepInfo = ChargeSteps.Description;
+  //   await updateUser(user);
 
-    return await ctx.reply(
-      `Sweet. I've got that as ${
-        indoors ? 'indoors' : 'outdoors'
-      }. Last step, send a quick description of where this location is. For example, is it inside a business? on a light pole? etc`,
-    );
-  }
+  //   return await ctx.reply(
+  //     `Sweet. I've got that as ${
+  //       indoors ? 'indoors' : 'outdoors'
+  //     }. Last step, send a quick description of where this location is. For example, is it inside a business? on a light pole? etc`,
+  //   );
+  // }
   if (step === ChargeSteps.Description) {
     if (!('text' in ctx.message)) {
       user.conversationalStep = undefined;
@@ -194,9 +200,11 @@ export const addCharge = async (
       lon: user.conversationalStep.state.lon,
       description: user.conversationalStep.state.description,
       userAdded: ctx.from.id,
+      timeAdded: new Date().getTime(),
     };
 
-    await addChargeSpot(data);
+    // Allow people to test and make sure they understand it
+    if (data.description?.toLowerCase() !== 'fake') await addChargeSpot(data);
 
     user.conversationalStep = undefined;
     await updateUser(user);

@@ -1,14 +1,19 @@
 import { Telegraf } from 'telegraf';
-import { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
 import { basicCommands, commands } from './utils/commands';
 import escapeChars from './utils/escapeChars';
 import { getUserById, tgToDbUser, updateUser } from './handlers/dbHandlers';
-import conversationHandler from './handlers/conversationHandler';
+import conversationHandler, {
+  endConversation,
+  noCallback,
+  yesCallback,
+} from './handlers/conversationHandler';
 import {
   announce,
   ban,
+  endContestSayWinners,
   shh,
   shout,
+  startContest,
   unwarn,
   warn,
   warnings,
@@ -18,6 +23,7 @@ import { add, charge } from './handlers/chargeHandlers';
 import { group } from './handlers/groupHandlers';
 import { ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
+import { HttpFunction } from '@google-cloud/functions-framework';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -71,7 +77,6 @@ bot.on('message', async (ctx, next) => {
       );
     }
   }
-
   return await next();
 });
 
@@ -91,10 +96,17 @@ bot.command('ban', ban);
 bot.command('shh', shh);
 bot.command('shout', shout);
 bot.command('announce', announce);
+bot.command('start_contest', startContest);
+bot.command('end_contest', endContestSayWinners);
 
 // Charging commands
 bot.command('charge', charge);
 bot.command('add', add);
+
+// Button Handlers
+bot.action('🛑 Cancel', endConversation);
+bot.action('✅ Yes', yesCallback);
+bot.action('❎ No', noCallback);
 
 // Group commands
 bot.command(['groups', 'group', 'Groups', 'Group'], group);
@@ -147,6 +159,7 @@ bot.on('message', async (ctx, next) => {
 
 export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);
+
   try {
     // Handle the update
     await bot.handleUpdate(req.body);
