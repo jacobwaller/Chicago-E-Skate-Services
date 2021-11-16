@@ -27,8 +27,9 @@ export const endConversation = async (
   }
   const user = await getUserById(`${id}`);
   user.conversationalStep = undefined;
-
   await updateUser(user);
+
+  await ctx.editMessageReplyMarkup(undefined);
   await ctx.reply("Okay! I've cancelled the conversation.");
   return await next();
 };
