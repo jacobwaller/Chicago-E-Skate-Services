@@ -77,6 +77,7 @@ export const yesCallback = async (
   );
   await ctx.reply(
     `Sweet. I've got that as indoors. Last step, send a quick description of where this location is. For example, is it inside a business? on a light pole? etc`,
+    cancelKeyboard,
   );
   return await next();
 };
@@ -110,6 +111,7 @@ export const noCallback = async (
   );
   await ctx.reply(
     `Sweet. I've got that as outdoors. Last step, send a quick description of where this location is. For example, is it inside a business? on a light pole? etc`,
+    cancelKeyboard,
   );
   return await next();
 };
