@@ -124,8 +124,8 @@ export const endContestSayWinners = async (
 
   const winnersString = usersPlusScores
     .map((user) => {
-      const name = `${
-        user.firstname + (user.lastname || user.username || user.id)
+      const name = `${user.firstname} ${
+        user.lastname || user.username || user.id
       } has ${user.score} points`;
       return name;
     })
