@@ -101,9 +101,10 @@ bot.command('end_contest', endContestSayWinners);
 bot.command('charge', charge);
 bot.command('add', add);
 
-bot.hears('🛑 Cancel', endConversation);
-bot.hears('✅ Yes', () => {});
-bot.hears('❎ No', () => {});
+// Button Handlers
+bot.action('🛑 Cancel', endConversation);
+bot.action('✅ Yes', () => {});
+bot.action('❎ No', () => {});
 
 // Group commands
 bot.command(['groups', 'group', 'Groups', 'Group'], group);

@@ -4,9 +4,9 @@ import { ConversationCategory, UserData } from '../utils/types';
 import { addCharge, getCharge } from './chargeHandlers';
 import { getUserById, updateUser } from './dbHandlers';
 
-export const cancelKeyboard = Markup.keyboard([['🛑 Cancel']])
-  .oneTime()
-  .resize();
+export const cancelKeyboard = Markup.inlineKeyboard([
+  Markup.button.callback('🛑 Cancel', '🛑 Cancel'),
+]);
 
 export const yesNoKeyboard = Markup.keyboard([
   ['✅ Yes', '❎ No'],
@@ -16,11 +16,15 @@ export const yesNoKeyboard = Markup.keyboard([
   .resize();
 
 export const endConversation = async (
-  ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
   console.log('ending conversation');
-  const id = ctx.from.id;
+  const id = ctx.from?.id;
+  if (id === undefined) {
+    await ctx.reply('Something went wrong. Try again later');
+    return await next();
+  }
   const user = await getUserById(`${id}`);
   user.conversationalStep = undefined;
 
