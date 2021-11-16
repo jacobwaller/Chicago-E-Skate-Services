@@ -30,11 +30,10 @@ export const endConversation = async (
   await updateUser(user);
 
   // Remove the button from the message
-
   await ctx.telegram.editMessageReplyMarkup(
+    ctx.callbackQuery.message?.chat.id,
+    ctx.callbackQuery.message?.message_id,
     undefined,
-    undefined,
-    ctx.callbackQuery.inline_message_id,
     undefined,
   );
   await ctx.reply("Okay! I've cancelled the conversation.");
