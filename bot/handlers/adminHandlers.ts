@@ -100,6 +100,8 @@ export const endContestSayWinners = async (
     }
   }
 
+  console.log('Included User IDs table:', JSON.stringify(includedUserIds));
+
   const arrayOfPeopleScores: Array<{ id: string; score: number }> = Object.keys(
     includedUserIds,
   ).map((key) => {
@@ -109,6 +111,8 @@ export const endContestSayWinners = async (
     };
   });
 
+  console.log('arrayOfPeopleScores:', arrayOfPeopleScores);
+
   let usersPlusScores: Array<UserData & { score: number }> = [];
   // Map from ID & score to name & score
   for (const score of arrayOfPeopleScores) {
@@ -116,9 +120,11 @@ export const endContestSayWinners = async (
     usersPlusScores.push({ ...user, score: includedUserIds[score.id] });
   }
 
+  console.log('usersPlusScores:', usersPlusScores);
+
   usersPlusScores = usersPlusScores.sort((a, b) => b.score - a.score);
 
-  console.log(usersPlusScores);
+  console.log('usersPlusScores after sort:', usersPlusScores);
 
   const winnersString = usersPlusScores
     .map((user) => {
