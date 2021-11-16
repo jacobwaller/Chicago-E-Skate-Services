@@ -39,7 +39,10 @@ export const charge = async (
   };
   await updateUser(user);
 
-  return await ctx.reply('Please send me your current location.');
+  return await ctx.reply(
+    'Please send me your current location.',
+    cancelKeyboard,
+  );
 };
 
 export const add = async (
@@ -49,7 +52,6 @@ export const add = async (
   if (ctx.chat.type !== 'private') {
     return await ctx.reply(
       `This needs to be done in DMs to prevent spam. Please DM me the same command by clicking this: @${ctx.botInfo.username}`,
-      cancelKeyboard,
     );
   }
 
