@@ -131,6 +131,7 @@ export const endContestSayWinners = async (
       const name = `Name: ${user.firstname} ${user.lastname || ''} Username: ${
         user.username || ''
       } UserId ${user.id} has ${user.score} points`;
+      return name;
     })
     .join('\n');
 
