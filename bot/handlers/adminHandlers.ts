@@ -91,7 +91,7 @@ export const endContestSayWinners = async (
   );
 
   // Grab all the userIds and calculate how many things they found
-  const includedUserIds: { [key: string]: number } = { '-1': -1 };
+  const includedUserIds: { [key: string]: number } = {};
   for (const spot of filteredSpots) {
     if (!includedUserIds[spot.userAdded]) {
       includedUserIds[`${spot.userAdded}`] = 1;
@@ -120,17 +120,13 @@ export const endContestSayWinners = async (
     usersPlusScores.push({ ...user, score: includedUserIds[score.id] });
   }
 
-  console.log('usersPlusScores:', usersPlusScores);
-
   usersPlusScores = usersPlusScores.sort((a, b) => b.score - a.score);
-
-  console.log('usersPlusScores after sort:', usersPlusScores);
 
   const winnersString = usersPlusScores
     .map((user) => {
-      const name = `Name: ${user.firstname} ${user.lastname || ''} Username: ${
-        user.username || ''
-      } UserId ${user.id} has ${user.score} points`;
+      const name = `${
+        user.firstname + (user.lastname || user.username || user.id)
+      } has ${user.score} points`;
       return name;
     })
     .join('\n');
