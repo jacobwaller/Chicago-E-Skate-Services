@@ -15,7 +15,7 @@ import {
   ConversationCategory,
   UserData,
 } from '../utils/types';
-import { cancelKeyboard } from './conversationHandler';
+import { cancelKeyboard, yesNoKeyboard } from './conversationHandler';
 
 export const charge = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
@@ -152,33 +152,34 @@ export const addCharge = async (
     await updateUser(user);
 
     return await ctx.reply(
-      'Thanks! Is this charge location indoors? (yes, no)',
+      'Thanks! Is this charge location indoors?',
+      yesNoKeyboard,
     );
   }
-  if (step === ChargeSteps.Type) {
-    if (!('text' in ctx.message)) {
-      user.conversationalStep = undefined;
-      await updateUser(user);
-      return await ctx.reply(
-        "I'm waiting for a 'yes' or a 'no' if the charge location is indoors or not. To try again, send /add",
-      );
-    }
+  // if (step === ChargeSteps.Type) {
+  //   if (!('text' in ctx.message)) {
+  //     user.conversationalStep = undefined;
+  //     await updateUser(user);
+  //     return await ctx.reply(
+  //       "I'm waiting for a 'yes' or a 'no' if the charge location is indoors or not. To try again, send /add",
+  //     );
+  //   }
 
-    const msg = ctx.message.text.toLowerCase();
-    const indoors = msg.includes('yes');
+  //   const msg = ctx.message.text.toLowerCase();
+  //   const indoors = msg.includes('yes');
 
-    user.conversationalStep.state.indoors = indoors
-      ? ChargeType.INDOOR
-      : ChargeType.OUTDOOR;
-    user.conversationalStep.stepInfo = ChargeSteps.Description;
-    await updateUser(user);
+  //   user.conversationalStep.state.indoors = indoors
+  //     ? ChargeType.INDOOR
+  //     : ChargeType.OUTDOOR;
+  //   user.conversationalStep.stepInfo = ChargeSteps.Description;
+  //   await updateUser(user);
 
-    return await ctx.reply(
-      `Sweet. I've got that as ${
-        indoors ? 'indoors' : 'outdoors'
-      }. Last step, send a quick description of where this location is. For example, is it inside a business? on a light pole? etc`,
-    );
-  }
+  //   return await ctx.reply(
+  //     `Sweet. I've got that as ${
+  //       indoors ? 'indoors' : 'outdoors'
+  //     }. Last step, send a quick description of where this location is. For example, is it inside a business? on a light pole? etc`,
+  //   );
+  // }
   if (step === ChargeSteps.Description) {
     if (!('text' in ctx.message)) {
       user.conversationalStep = undefined;

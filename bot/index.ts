@@ -4,6 +4,8 @@ import escapeChars from './utils/escapeChars';
 import { getUserById, tgToDbUser, updateUser } from './handlers/dbHandlers';
 import conversationHandler, {
   endConversation,
+  noCallback,
+  yesCallback,
 } from './handlers/conversationHandler';
 import {
   announce,
@@ -103,8 +105,8 @@ bot.command('add', add);
 
 // Button Handlers
 bot.action('🛑 Cancel', endConversation);
-bot.action('✅ Yes', () => {});
-bot.action('❎ No', () => {});
+bot.action('✅ Yes', yesCallback);
+bot.action('❎ No', noCallback);
 
 // Group commands
 bot.command(['groups', 'group', 'Groups', 'Group'], group);
