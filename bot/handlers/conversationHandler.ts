@@ -1,7 +1,33 @@
-import { Context, NarrowedContext, Types } from 'telegraf';
+import { Context, Markup, NarrowedContext, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { ConversationCategory, UserData } from '../utils/types';
 import { addCharge, getCharge } from './chargeHandlers';
+import { getUserById, updateUser } from './dbHandlers';
+
+export const cancelKeyboard = Markup.keyboard([['🛑 Cancel']])
+  .oneTime()
+  .resize();
+
+export const yesNoKeyboard = Markup.keyboard([
+  ['✅ Yes', '❎ No'],
+  ['🛑 Cancel'],
+])
+  .oneTime()
+  .resize();
+
+export const endConversation = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
+  next: () => Promise<void>,
+) => {
+  console.log('ending conversation');
+  const id = ctx.from.id;
+  const user = await getUserById(`${id}`);
+  user.conversationalStep = undefined;
+
+  await updateUser(user);
+  await ctx.reply("Okay! I've cancelled the conversation.");
+  return await next();
+};
 
 export default async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,

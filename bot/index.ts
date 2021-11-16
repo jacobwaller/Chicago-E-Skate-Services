@@ -2,7 +2,9 @@ import { Telegraf } from 'telegraf';
 import { basicCommands, commands } from './utils/commands';
 import escapeChars from './utils/escapeChars';
 import { getUserById, tgToDbUser, updateUser } from './handlers/dbHandlers';
-import conversationHandler from './handlers/conversationHandler';
+import conversationHandler, {
+  endConversation,
+} from './handlers/conversationHandler';
 import {
   announce,
   ban,
@@ -98,6 +100,10 @@ bot.command('end_contest', endContestSayWinners);
 // Charging commands
 bot.command('charge', charge);
 bot.command('add', add);
+
+bot.hears('🛑 Cancel', endConversation);
+bot.hears('✅ Yes', () => {});
+bot.hears('❎ No', () => {});
 
 // Group commands
 bot.command(['groups', 'group', 'Groups', 'Group'], group);

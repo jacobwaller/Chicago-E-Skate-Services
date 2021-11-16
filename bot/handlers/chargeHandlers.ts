@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { Context, NarrowedContext, Scenes, Types } from 'telegraf';
+import { Context, Markup, NarrowedContext, Scenes, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import {
   addChargeSpot,
@@ -15,6 +15,7 @@ import {
   ConversationCategory,
   UserData,
 } from '../utils/types';
+import { cancelKeyboard } from './conversationHandler';
 
 export const charge = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
@@ -48,6 +49,7 @@ export const add = async (
   if (ctx.chat.type !== 'private') {
     return await ctx.reply(
       'This needs to be done in DMs to prevent spam. Please DM me the command /add',
+      cancelKeyboard,
     );
   }
 
@@ -65,6 +67,7 @@ export const add = async (
 
   return await ctx.reply(
     "Thank you for helping to add to the charge map! Please send the location of the charge spot.\n\n(Click the paperclip in the bottom right, click location, click Send My Location or move the pin to where you'd like)",
+    cancelKeyboard,
   );
 };
 
