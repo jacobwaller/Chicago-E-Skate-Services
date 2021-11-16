@@ -155,7 +155,7 @@ export const botFunction: HttpFunction = async (req, res) => {
 
   try {
     // Handle the update
-    await bot.handleUpdate(req as unknown as Update);
+    await bot.handleUpdate(req.body);
     console.log('Success');
     res.status(200).send('Success');
   } catch (err) {
