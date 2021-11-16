@@ -29,6 +29,8 @@ export const endConversation = async (
   user.conversationalStep = undefined;
   await updateUser(user);
 
+  console.log('CALLBACK:', JSON.stringify(ctx.callbackQuery));
+
   // Remove the button from the message
   await ctx.telegram.editMessageReplyMarkup(
     ctx.callbackQuery.message?.chat.id,
