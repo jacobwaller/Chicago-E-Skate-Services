@@ -13,13 +13,14 @@ export const getGroupRide = async (): Promise<string> => {
   console.log('Recieved', response);
   if (Object.keys(response).length != 0) {
     return (
-      `${response.title} (${response.group}):\n` +
+      `${response.title} (${response.group}):\n\n` +
+      //
+      `${response.description}\n\n` +
+      //
       `When: ${response.date} at ${response.meetTime}\n` +
       `From: ${response.startPoint}\n` +
       `To: ${response.endPoint}\n` +
       `Route: ${response.routeLink} (${response.routeDistance} Miles) in ${response.type} conditions\n\n` +
-      //
-      `${response.description}\n\n` +
       //
       `DON'T FORGET YOUR HELMET!`
     );

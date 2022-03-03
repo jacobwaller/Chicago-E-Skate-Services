@@ -24,7 +24,6 @@ import { group } from './handlers/groupHandlers';
 import { ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
 import { HttpFunction } from '@google-cloud/functions-framework';
-import { nextTick } from 'process';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -55,6 +54,15 @@ nosedive - lmaoooo
 // bot.telegram.setWebhook(
 //   `https://${REGION}-${PROJECT_ID}.cloudfunctions.net/${FUNCTION_NAME}`,
 // );
+
+function toCmd(command: string, description: string) {
+  return { command: command, description: description };
+}
+
+bot.telegram.setMyCommands([
+  toCmd('ride', 'Get the next group ride.'),
+  toCmd('random', 'get a random gif'),
+]);
 
 // Things to process first
 bot.on('message', async (ctx, next) => {
@@ -116,15 +124,17 @@ bot.command(commands.groupRide, ride);
 bot.command(commands.random, random);
 
 bot.on('new_chat_members', async (ctx) => {
-  let name = ctx.from.first_name;
+  const nameOrNames = ctx.message.new_chat_members
+    .map((member) => member.first_name)
+    .join(', ');
 
-  const inviteLink = bot.telegram.exportChatInviteLink(MAIN_GROUP_ID);
+  const inviteLink = await bot.telegram.exportChatInviteLink(MAIN_GROUP_ID);
 
   const welcomeString =
     `Hello, ${escapeChars(
-      name,
-    )} Welcome to the Chicago E\\-Skate Network\\.\n` +
-    `Make sure to also join the main Chicago E\\-Skate Channel [here](${inviteLink})\\.\n` +
+      nameOrNames,
+    )} Welcome to the Chicago E\\-Skate\\+ Network\\.\n` +
+    `Make sure to also join the main Chicago E\\-Skate\\+ Channel [here](${inviteLink})\\.\n` +
     `For info on the next group ride, click: /ride\n` +
     `For more info on the group, check out our [website](https://chicagoeskate.com)\n` +
     `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;

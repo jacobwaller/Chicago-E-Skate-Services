@@ -260,10 +260,11 @@ export const ban = async (
   const replyMsg = ctx.message.reply_to_message;
   const repliedUser = replyMsg?.from;
   if (repliedUser === undefined) {
+    await ctx.reply('Reply to the person you want to ban');
     return await next();
   }
-
-  return await ctx.kickChatMember(repliedUser?.id);
+  await ctx.reply(`banned ${repliedUser.first_name}`);
+  return await ctx.kickChatMember(repliedUser.id);
 };
 
 // TODO: Shh
