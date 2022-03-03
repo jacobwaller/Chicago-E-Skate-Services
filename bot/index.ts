@@ -24,6 +24,7 @@ import { group } from './handlers/groupHandlers';
 import { ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
 import { HttpFunction } from '@google-cloud/functions-framework';
+import { nextTick } from 'process';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -81,11 +82,10 @@ bot.on('message', async (ctx, next) => {
 });
 
 basicCommands.forEach((item) => {
-  bot.command(
-    item.commands,
-    async (ctx) =>
-      await ctx.reply(item.response, { parse_mode: item.parse_mode }),
-  );
+  bot.command(item.commands, async (ctx, next) => {
+    await ctx.reply(item.response, { parse_mode: item.parse_mode });
+    return await next();
+  });
 });
 
 // Admin commands

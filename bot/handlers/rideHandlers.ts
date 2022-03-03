@@ -14,18 +14,12 @@ export const getGroupRide = async (): Promise<string> => {
   if (Object.keys(response).length != 0) {
     return (
       `${response.title} (${response.group}):\n` +
-      `Date: ${response.date}\n` +
-      `Meet At: ${response.meetTime}\n` +
-      `Depart At: ${response.launchTime}\n` +
+      `When: ${response.date} at ${response.meetTime}\n` +
       `From: ${response.startPoint}\n` +
       `To: ${response.endPoint}\n` +
-      `Route: ${response.routeLink} (${response.routeDistance} Miles)\n\n` +
+      `Route: ${response.routeLink} (${response.routeDistance} Miles) in ${response.type} conditions\n\n` +
       //
       `${response.description}\n\n` +
-      //
-      `The ride will be conducted on ${response.type} conditions, so make sure your vehicle can handle that terrain.\n\n` +
-      //
-      `Arrive to the start point with enough charge to follow the route.\n\n` +
       //
       `DON'T FORGET YOUR HELMET!`
     );
