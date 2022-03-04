@@ -81,11 +81,10 @@ bot.on('message', async (ctx, next) => {
 });
 
 basicCommands.forEach((item) => {
-  bot.command(
-    item.commands,
-    async (ctx) =>
-      await ctx.reply(item.response, { parse_mode: item.parse_mode }),
-  );
+  bot.command(item.commands, async (ctx, next) => {
+    await ctx.reply(item.response, { parse_mode: item.parse_mode });
+    return await next();
+  });
 });
 
 // Admin commands
@@ -116,15 +115,17 @@ bot.command(commands.groupRide, ride);
 bot.command(commands.random, random);
 
 bot.on('new_chat_members', async (ctx) => {
-  let name = ctx.from.first_name;
+  const nameOrNames = ctx.message.new_chat_members
+    .map((member) => member.first_name)
+    .join(', ');
 
-  const inviteLink = bot.telegram.exportChatInviteLink(MAIN_GROUP_ID);
+  const inviteLink = await bot.telegram.exportChatInviteLink(MAIN_GROUP_ID);
 
   const welcomeString =
     `Hello, ${escapeChars(
-      name,
-    )} Welcome to the Chicago E\\-Skate Network\\.\n` +
-    `Make sure to also join the main Chicago E\\-Skate Channel [here](${inviteLink})\\.\n` +
+      nameOrNames,
+    )} Welcome to the Chicago E\\-Skate\\+ Network\\.\n` +
+    `Make sure to also join the main Chicago E\\-Skate\\+ Channel [here](${inviteLink})\\.\n` +
     `For info on the next group ride, click: /ride\n` +
     `For more info on the group, check out our [website](https://chicagoeskate.com)\n` +
     `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;
