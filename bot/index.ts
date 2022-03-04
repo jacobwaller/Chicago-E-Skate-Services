@@ -55,15 +55,6 @@ nosedive - lmaoooo
 //   `https://${REGION}-${PROJECT_ID}.cloudfunctions.net/${FUNCTION_NAME}`,
 // );
 
-function toCmd(command: string, description: string) {
-  return { command: command, description: description };
-}
-
-bot.telegram.setMyCommands([
-  toCmd('ride', 'Get the next group ride.'),
-  toCmd('random', 'get a random gif'),
-]);
-
 // Things to process first
 bot.on('message', async (ctx, next) => {
   // Add everyone who sends a message to the DB
