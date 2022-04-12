@@ -149,14 +149,18 @@ const getCalendar = async () => {
   console.log('Fetched data');
   allRides.forEach((ride) => {
     const a = calendar.createEvent({
-      start: tz(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma').tz(
+      start: tz(
+        `${ride.date} ${ride.meetTime}`,
+        'MM/DD/YYYY hh:mma',
         'America/Chicago',
       ),
-      end: tz(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma')
-        .add({
-          hours: 2,
-        })
-        .tz('America/Chicago'),
+      end: tz(
+        `${ride.date} ${ride.meetTime}`,
+        'MM/DD/YYYY hh:mma',
+        'America/Chicago',
+      ).add({
+        hours: 2,
+      }),
       summary: ride.title,
       description: ride.description,
       location: ride.startPoint,
