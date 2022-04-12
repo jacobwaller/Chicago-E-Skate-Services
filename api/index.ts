@@ -145,8 +145,10 @@ const getCalendar = async () => {
   console.log('Fetched data');
   allRides.forEach((ride) => {
     calendar.createEvent({
-      start: moment(`${ride.date} ${ride.meetTime}`),
-      end: moment(`${ride.date} ${ride.meetTime}`).add({ hours: 2 }),
+      start: moment(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma'),
+      end: moment(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma').add({
+        hours: 2,
+      }),
       summary: ride.title,
       description: ride.description,
       location: ride.startPoint,
