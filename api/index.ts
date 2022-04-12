@@ -162,7 +162,7 @@ const getCalendar = async () => {
       })
       .floating(true);
 
-    console.log(`Adding ${a.toJSON()}`);
+    console.log(`Adding ${a.toString()}`);
   });
   console.log('returning data...');
 
