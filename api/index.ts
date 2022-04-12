@@ -144,7 +144,6 @@ const getCalendar = async () => {
   const allRides = await listRides(10);
   const calendar = ical({
     name: 'Chicago E-Skate Group Rides',
-    timezone: 'America/Chicago',
   });
   console.log('Fetched data');
   allRides.forEach((ride) => {
@@ -161,7 +160,6 @@ const getCalendar = async () => {
       description: ride.description,
       location: ride.startPoint,
       url: 'chicagoeskate.com',
-      timezone: 'America/Chicago',
     });
 
     console.log(`Adding ${a.toString()}`);
