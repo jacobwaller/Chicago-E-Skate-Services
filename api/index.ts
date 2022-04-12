@@ -8,6 +8,8 @@ import Express from 'express';
 import { Firestore } from '@google-cloud/firestore';
 import { Base64 } from 'js-base64';
 import { ChargeSpot } from '../bot/utils/types';
+import ical from 'ical-generator';
+import moment from 'moment';
 
 let _db: Firestore;
 
@@ -136,11 +138,36 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   res.status(200).send(ret);
 };
 
+const getCalendar = async () => {
+  console.log('Starting to generate calendar...');
+  const allRides = await listRides(10);
+  const calendar = ical({ name: 'Chicago E-Skate Group Rides' });
+  console.log('Fetched data');
+  allRides.forEach((ride) => {
+    calendar.createEvent({
+      start: moment(`${ride.date} ${ride.meetTime}`),
+      end: moment(`${ride.date} ${ride.meetTime}`).add({ hours: 2 }),
+      summary: ride.title,
+      description: ride.description,
+      location: ride.startPoint,
+      url: 'chicagoeskate.com',
+      timezone: 'America/Chicago',
+    });
+  });
+  console.log('returning data...');
+
+  return calendar.toString();
+};
+
 const fetchRide = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
   if (req.method === 'GET') {
     const id = req.query.id;
+    if (req.path.includes('calendar.ics')) {
+      const getCal = await getCalendar();
+      res.status(200).send(getCal);
+    }
     if (id === undefined) {
       res.status(200).send(await listRides());
     } else {
