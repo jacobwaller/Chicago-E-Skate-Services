@@ -10,6 +10,7 @@ import { Base64 } from 'js-base64';
 import { ChargeSpot } from '../bot/utils/types';
 import ical from 'ical-generator';
 import moment from 'moment';
+import tz from 'moment-timezone';
 
 let _db: Firestore;
 
@@ -147,17 +148,21 @@ const getCalendar = async () => {
   });
   console.log('Fetched data');
   allRides.forEach((ride) => {
-    calendar.createEvent({
-      start: moment(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma'),
-      end: moment(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma').add({
-        hours: 2,
-      }),
-      summary: ride.title,
-      description: ride.description,
-      location: ride.startPoint,
-      url: 'chicagoeskate.com',
-      timezone: 'America/Chicago',
-    });
+    const a = calendar
+      .createEvent({
+        start: moment(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma'),
+        end: moment(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma').add({
+          hours: 2,
+        }),
+        summary: ride.title,
+        description: ride.description,
+        location: ride.startPoint,
+        url: 'chicagoeskate.com',
+        timezone: 'America/Chicago',
+      })
+      .floating(true);
+
+    console.log(`Adding ${a.toJSON()}`);
   });
   console.log('returning data...');
 
