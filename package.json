@@ -27,6 +27,7 @@
     "googleapis": "^61.0.0",
     "ical-generator": "^3.4.1",
     "js-base64": "^3.6.0",
+    "moment-timezone": "^0.5.34",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-query": "^2.25.2",
