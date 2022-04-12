@@ -8,7 +8,7 @@ import Express from 'express';
 import { Firestore } from '@google-cloud/firestore';
 import { Base64 } from 'js-base64';
 import { ChargeSpot } from '../bot/utils/types';
-import ical from 'ical-generator';
+import ical, { ICalTimezone } from 'ical-generator';
 import moment from 'moment';
 import tz from 'moment-timezone';
 
@@ -148,19 +148,21 @@ const getCalendar = async () => {
   });
   console.log('Fetched data');
   allRides.forEach((ride) => {
-    const a = calendar
-      .createEvent({
-        start: moment(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma'),
-        end: moment(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma').add({
+    const a = calendar.createEvent({
+      start: tz(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma').tz(
+        'America/Chicago',
+      ),
+      end: tz(`${ride.date} ${ride.meetTime}`, 'MM/DD/YYYY hh:mma')
+        .add({
           hours: 2,
-        }),
-        summary: ride.title,
-        description: ride.description,
-        location: ride.startPoint,
-        url: 'chicagoeskate.com',
-        timezone: 'America/Chicago',
-      })
-      .floating(true);
+        })
+        .tz('America/Chicago'),
+      summary: ride.title,
+      description: ride.description,
+      location: ride.startPoint,
+      url: 'chicagoeskate.com',
+      timezone: 'America/Chicago',
+    });
 
     console.log(`Adding ${a.toString()}`);
   });
@@ -177,8 +179,7 @@ const fetchRide = async (req: Express.Request, res: Express.Response) => {
     if (req.path.includes('calendar.ics')) {
       const getCal = await getCalendar();
       res.status(200).send(getCal);
-    }
-    if (id === undefined) {
+    } else if (id === undefined) {
       res.status(200).send(await listRides());
     } else {
       res.status(200).send(await getRide(parseInt(id.toString())));
