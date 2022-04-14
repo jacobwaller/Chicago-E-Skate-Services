@@ -9,8 +9,7 @@ import { Firestore } from '@google-cloud/firestore';
 import { Base64 } from 'js-base64';
 import { ChargeSpot } from '../bot/utils/types';
 import ical, { ICalTimezone } from 'ical-generator';
-import moment from 'moment';
-import tz from 'moment-timezone';
+import moment from 'moment-timezone';
 
 let _db: Firestore;
 
@@ -150,17 +149,17 @@ const getCalendar = async () => {
   allRides.forEach((ride) => {
     console.log('Attempting to add', JSON.stringify(ride));
 
+    const s = moment.tz(
+      `${ride.date} ${ride.meetTime}`,
+      'MM/DD/YYYY hh:mm a',
+      'America/Chicago',
+    );
+
+    console.log(`DT Object: ${s.toString()}`);
+
     const a = calendar.createEvent({
-      start: tz(
-        `${ride.date} ${ride.meetTime}`,
-        'MM/DD/YYYY hh:mma',
-        'America/Chicago',
-      ),
-      end: tz(
-        `${ride.date} ${ride.meetTime}`,
-        'MM/DD/YYYY hh:mma',
-        'America/Chicago',
-      ).add({
+      start: s,
+      end: s.add({
         hours: 2,
       }),
       summary: ride.title,
