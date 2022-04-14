@@ -155,7 +155,17 @@ const getCalendar = async () => {
       'America/Chicago',
     );
 
-    console.log(`DT Object: ${s.toString()}`);
+    const desc =
+      `${ride.title} (${ride.group}):\n\n` +
+      //
+      `When: ${ride.date} at ${ride.meetTime}\n` +
+      `From: ${ride.startPoint}\n` +
+      `To: ${ride.endPoint}\n` +
+      `Route: ${ride.routeLink} (${ride.routeDistance} Miles) in ${ride.type} conditions\n\n` +
+      //
+      `${ride.description}\n\n` +
+      //
+      `DON'T FORGET YOUR HELMET!`;
 
     const a = calendar.createEvent({
       start: s,
@@ -163,9 +173,9 @@ const getCalendar = async () => {
         hours: 2,
       }),
       summary: ride.title,
-      description: ride.description,
+      description: desc,
       location: ride.startPoint,
-      url: 'chicagoeskate.com',
+      url: 'https://chicagoeskate.com',
       timezone: 'America/Chicago',
     });
 
