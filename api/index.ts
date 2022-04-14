@@ -159,7 +159,7 @@ const getCalendar = async () => {
 
     const a = calendar.createEvent({
       start: s,
-      end: s.add({
+      end: s.clone().add({
         hours: 2,
       }),
       summary: ride.title,
