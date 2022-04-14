@@ -148,6 +148,8 @@ const getCalendar = async () => {
   });
   console.log('Fetched data');
   allRides.forEach((ride) => {
+    console.log('Attempting to add', JSON.stringify(ride));
+
     const a = calendar.createEvent({
       start: tz(
         `${ride.date} ${ride.meetTime}`,
