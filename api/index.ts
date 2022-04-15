@@ -167,6 +167,11 @@ const getCalendar = async () => {
       //
       `DON'T FORGET YOUR HELMET!`;
 
+    const optionalAttachments: string[] = [];
+    if (ride.image) {
+      optionalAttachments.push(ride.image.toString());
+    }
+
     const a = calendar.createEvent({
       start: s,
       end: s.clone().add({
@@ -177,6 +182,7 @@ const getCalendar = async () => {
       location: ride.startPoint,
       url: 'https://chicagoeskate.com',
       timezone: 'America/Chicago',
+      attachments: optionalAttachments,
     });
 
     console.log(`Adding ${a.toString()}`);
