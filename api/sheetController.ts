@@ -49,7 +49,7 @@ const getListOfRides = async () => {
   const sheets = google.sheets({ version: 'v4' });
   const results = await sheets.spreadsheets.values.get({
     spreadsheetId: '1SAssru-78PhVGSw_j-igSnmHKlxr5NsuRSZTjxgORxA',
-    range: 'Rides!A3:K',
+    range: 'Rides!A3:L',
     auth: getJwt(),
     key: getApiKey(),
   });
@@ -69,9 +69,10 @@ const getListOfRides = async () => {
       startPoint: row[5],
       endPoint: row[6],
       type: row[7],
-      routeLink: row[8],
-      routeDistance: row[9],
-      description: row[10],
+      image: row[8],
+      routeLink: row[9],
+      routeDistance: row[10],
+      description: row[11],
     };
   });
 
