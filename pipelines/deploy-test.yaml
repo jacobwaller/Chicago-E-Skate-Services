@@ -15,7 +15,7 @@ steps:
     args:
       - cp 
       - ./bot/handlers/model.nlp
-      - ./built/bot/handlers/model.nlp
+      - ./built/bot/model.nlp
   
   # Deploy Bot
   - name: "gcr.io/cloud-builders/gcloud"
