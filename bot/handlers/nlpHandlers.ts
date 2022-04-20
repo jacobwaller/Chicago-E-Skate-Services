@@ -1,5 +1,8 @@
 // @ts-ignore
 import { dockStart } from '@nlpjs/basic';
+const fs = require('fs');
+const { NlpManager } = require('node-nlp');
+
 let _nlp: any = undefined;
 
 type IntentResponse = {
@@ -73,7 +76,11 @@ const nlp = async () => {
 };
 
 const getNlpResponse = async (text: string): Promise<string> => {
-  const resp = await (await nlp()).process(text);
+  // const resp = await (await nlp()).process(text);
+  const data = fs.readFileSync('./model.nlp', 'utf8');
+  const manager = new NlpManager();
+  manager.import(data);
+  const resp = await manager.process(text);
   console.log(JSON.stringify(resp, null, 2));
   if (resp.intent != 'None' && resp.score > 0.95) {
     return resp.answer;
@@ -81,6 +88,6 @@ const getNlpResponse = async (text: string): Promise<string> => {
   return '';
 };
 
-getNlpResponse('how often do you guys ride?');
+getNlpResponse('whens the next ride');
 
 export default getNlpResponse;
