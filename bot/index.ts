@@ -24,6 +24,7 @@ import { group } from './handlers/groupHandlers';
 import { ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
 import { HttpFunction } from '@google-cloud/functions-framework';
+import getNlpResponse from './handlers/nlpHandlers';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -153,6 +154,18 @@ bot.on('message', async (ctx, next) => {
       return await ctx.reply(
         `PLEASE REMOVE ME FROM THIS GROUP. If you'd like me in this group, please DM @jacob_waller and be sure to include this number: ${ctx.chat.id}`,
       );
+    }
+  }
+  return await next();
+});
+
+bot.on('text', async (ctx, next) => {
+  // Don't process commands
+  if (!ctx.message.text.startsWith('/')) {
+    const resp = await getNlpResponse(ctx.message.text);
+
+    if (resp !== '') {
+      await ctx.reply(resp);
     }
   }
   return await next();
