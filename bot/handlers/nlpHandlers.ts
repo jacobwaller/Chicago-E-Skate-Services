@@ -158,8 +158,10 @@ const getNlpResponse = async (text: string): Promise<string> => {
   const manager = new NlpManager();
   manager.import(data);
   const resp = await manager.process(text);
-
-  return `${resp.answer}\n\nConfidence:${resp.score}. DM Jacob Waller if this didn't work properly.`;
+  if (resp.intent !== 'None') {
+    return `${resp.answer}\n\nConfidence:${resp.score}. DM Jacob Waller if this didn't work properly.`;
+  }
+  return '';
 };
 
 // train();
