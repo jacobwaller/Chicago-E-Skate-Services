@@ -52,7 +52,7 @@ steps:
       - --entry-point=chargingHandler
       - --allow-unauthenticated
 
-
+timeout: "900s"
 # steps:
 #   # Deploy Cloud Function
 #   # gcloud functions deploy fetchRideQA --source=./ --trigger-http --runtime=nodejs12 --entry-point=fetchRide --allow-unauthenticated

@@ -50,8 +50,8 @@ steps:
       - --runtime=nodejs12
       - --entry-point=chargingHandler
       - --allow-unauthenticated
-
-
+      
+timeout: "900s"
   
   
       # TODO: Re-Add Client Deploys
