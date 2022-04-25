@@ -32,6 +32,12 @@ const trainingData: IntentResponse[] = [
       'Where is a charging spot',
       'where is the charging map',
       'my battery is dead',
+      'charge map',
+      'give me the map',
+      'give me the charge map',
+      'can i get a charge map',
+      'where is the charge map',
+      'looking for the charge map',
     ],
   },
   {
@@ -159,13 +165,13 @@ const getNlpResponse = async (text: string): Promise<string> => {
   manager.import(data);
   const resp = await manager.process(text);
   if (resp.intent !== 'None') {
-    return `${resp.answer}\n\nConfidence:${resp.score}. DM Jacob Waller if this didn't work properly.`;
+    const scrPercentage = Math.floor(resp.score * 100);
+
+    return `${resp.answer}\n\nConfidence: ${scrPercentage}%. DM Jacob Waller if this didn't work properly.`;
   }
   return '';
 };
 
 // train();
-
-// getNlpResponse('who runs group rides?');
 
 export default getNlpResponse;
