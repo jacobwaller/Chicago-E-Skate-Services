@@ -9,7 +9,14 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args:
       - run
-      - build  
+      - build 
+
+  # Copy NLP over
+  - name: 'bash'
+    args:
+      - cp 
+      - ./bot/handlers/model.nlp
+      - ./built/bot/model.nlp
   
   # Deploy Bot
   - name: "gcr.io/cloud-builders/gcloud"
@@ -45,7 +52,7 @@ steps:
       - --entry-point=chargingHandler
       - --allow-unauthenticated
 
-
+timeout: "900s"
 # steps:
 #   # Deploy Cloud Function
 #   # gcloud functions deploy fetchRideQA --source=./ --trigger-http --runtime=nodejs12 --entry-point=fetchRide --allow-unauthenticated
