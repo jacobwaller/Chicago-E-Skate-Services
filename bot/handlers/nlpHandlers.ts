@@ -128,6 +128,18 @@ const trainingData: IntentResponse[] = [
       'For more info on the group, check out our website',
       'Also, make sure you look at the Group Ride Guidelines by clicking: /rules',
       'The best hands down. I have them on my Sherman and RS',
+      'when',
+      'where',
+      'how',
+      'It attempts to get an intent from every text message that is sent. If it matches the ride or map intent, it sends the appropriate message',
+      'Saturday confirmed, before the first ride starts',
+      'Whats the plan tomorrow? Where we meeting and when?',
+      'Meet where, when?  I can head out in an hour.',
+      'You can check the charging map',
+      'Lake Front Trail is the place to start.  Ride it downtown to Buckingham Fountain, Museum campus',
+      'I dont think right side passing is inherently wrong. Close passes are wrong, and should be mDe on the left or right, not wothout a warning. Given 6 feet of space, I make both left or right side passes The closest i will pass someone is just beyond arms lenght. If im close enough to touch someone, I do not pass',
+      'FOLLOW THE MAP MY SON 😂😂😂',
+      'Youll get more efficient as you get more practice and sweat less... most likely.  Everyone is different.  You probably sweat a lot less more than when you first started.',
     ],
   },
 ];
@@ -164,7 +176,9 @@ const getNlpResponse = async (text: string): Promise<string> => {
   const manager = new NlpManager();
   manager.import(data);
   const resp = await manager.process(text);
-  if (resp.intent !== 'None') {
+  console.log(resp);
+
+  if (resp.intent !== 'None' && resp.score > 0.95) {
     const scrPercentage = Math.floor(resp.score * 100);
 
     return `${resp.answer}\n\nConfidence: ${scrPercentage}%. DM Jacob Waller if this didn't work properly.`;
@@ -172,6 +186,11 @@ const getNlpResponse = async (text: string): Promise<string> => {
   return '';
 };
 
-// train();
+const a = async () => {
+  await train();
+  console.log(await getNlpResponse('hello'));
+};
+
+// a();
 
 export default getNlpResponse;
