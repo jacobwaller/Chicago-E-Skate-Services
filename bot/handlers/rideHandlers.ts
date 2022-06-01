@@ -11,8 +11,6 @@ export const prevCallback = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
-  console.log('saying prev');
-  await ctx.replyWithChatAction('typing');
   // Needs to be responding to a msg recently enough
   if (ctx.callbackQuery.message && 'text' in ctx.callbackQuery.message) {
     const matchedArr = ctx.callbackQuery.message.text.match(/=\d+,\d+=/);
@@ -41,11 +39,7 @@ export const prevCallback = async (
   } else {
     ctx.editMessageText('Something went wrong... code 1');
   }
-
-  if (ctx.callbackQuery.message) {
-    ctx.callbackQuery.message.message_id;
-    (await ctx.telegram.getChat(ctx.callbackQuery.chat_instance)).id;
-  }
+  await ctx.answerCbQuery();
   return await next();
 };
 
@@ -53,8 +47,6 @@ export const nextCallback = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
-  console.log('saying next');
-  await ctx.replyWithChatAction('typing');
   // Needs to be responding to a msg recently enough
   if (ctx.callbackQuery.message && 'text' in ctx.callbackQuery.message) {
     const matchedArr = ctx.callbackQuery.message.text.match(/=\d+,\d+=/);
@@ -83,11 +75,7 @@ export const nextCallback = async (
   } else {
     ctx.editMessageText('Something went wrong... code 1');
   }
-
-  if (ctx.callbackQuery.message) {
-    ctx.callbackQuery.message.message_id;
-    (await ctx.telegram.getChat(ctx.callbackQuery.chat_instance)).id;
-  }
+  await ctx.answerCbQuery();
   return await next();
 };
 
