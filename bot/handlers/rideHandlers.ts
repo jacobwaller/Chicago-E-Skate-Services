@@ -22,17 +22,41 @@ export const nextCallback = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
-  const buttonUserId = ctx.callbackQuery.from;
-  const originalCaller = ctx.callbackQuery.message;
-
-  await ctx.replyWithChatAction('typing');
   console.log('saying next');
+  await ctx.replyWithChatAction('typing');
+  // Needs to be responding to a msg recently enough
+  if (ctx.callbackQuery.message && 'text' in ctx.callbackQuery.message) {
+    const matchedArr = ctx.callbackQuery.message.text.match(/=\d+,\d+=/);
+    if (!matchedArr) {
+      await ctx.reply('Something went wrong... code 0');
+    } else {
+      const buttonUserId = ctx.callbackQuery.from.id;
+      const matchedStr = matchedArr[matchedArr.length - 1];
 
-  if ('message' in ctx.callbackQuery) {
-    ctx.reply(ctx.callbackQuery.data || 'your mom');
+      // splits =123,0= into 123 & 0
+      const originalCaller = parseInt(matchedStr.split(/,|=/)[1]);
+      const sentIndex = parseInt(matchedStr.split(/,|=/)[2]);
+
+      if (buttonUserId === originalCaller) {
+        const str =
+          getGroupRide(sentIndex + 1) +
+          `\n=${originalCaller},${sentIndex + 1}=`;
+
+        await ctx.editMessageText(str, {
+          reply_markup: prevNextKeyboard.reply_markup,
+        });
+      } else {
+        return await next();
+      }
+    }
+  } else {
+    ctx.editMessageText('Something went wrong... code 1');
   }
 
-  await ctx.editMessageText('edited next');
+  if (ctx.callbackQuery.message) {
+    ctx.callbackQuery.message.message_id;
+    (await ctx.telegram.getChat(ctx.callbackQuery.chat_instance)).id;
+  }
   return await next();
 };
 
@@ -67,15 +91,9 @@ export const ride = async (
 ) => {
   await ctx.replyWithChatAction('typing');
 
-  const tempKeyboard = Markup.inlineKeyboard([
-    [
-      Markup.button.callback('⏮️', `${ctx.from.id}`),
-      Markup.button.callback('⏭️', `${ctx.from.id}`),
-    ],
-  ]);
+  const str = (await getGroupRide(0)) + `\n=${ctx.from.id},0=`;
 
-  return await ctx.reply(await getGroupRide(0), {
-    reply_to_message_id: ctx.message.message_id,
-    reply_markup: tempKeyboard.reply_markup,
+  return await ctx.reply(str, {
+    reply_markup: prevNextKeyboard.reply_markup,
   });
 };
