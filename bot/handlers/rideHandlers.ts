@@ -27,9 +27,9 @@ export const prevCallback = async (
       const sentIndex = parseInt(matchedStr.split(/,|=/)[2]);
 
       if (buttonUserId === originalCaller) {
+        const newIdx = sentIndex - 1 < 0 ? 0 : sentIndex - 1;
         const str =
-          (await getGroupRide(sentIndex - 1)) +
-          `\n=${originalCaller},${sentIndex - 1}=`;
+          (await getGroupRide(newIdx)) + `\n=${originalCaller},${newIdx}=`;
 
         await ctx.editMessageText(str, {
           reply_markup: prevNextKeyboard.reply_markup,
@@ -113,7 +113,7 @@ export const getGroupRide = async (index: number): Promise<string> => {
       `DON'T FORGET YOUR HELMET!`
     );
   } else {
-    return 'There are currently no group rides planned';
+    return `There are currently no group rides planned for index ${index}`;
   }
 };
 
