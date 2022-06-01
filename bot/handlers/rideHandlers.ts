@@ -33,6 +33,9 @@ export const prevCallback = async (
           reply_markup: prevNextKeyboard.reply_markup,
         });
       } else {
+        await ctx.answerCbQuery(
+          'Only the original sender can use the buttons. Send a /ride to go through the rides yourself',
+        );
         return await next();
       }
     }
@@ -69,6 +72,9 @@ export const nextCallback = async (
           reply_markup: prevNextKeyboard.reply_markup,
         });
       } else {
+        await ctx.answerCbQuery(
+          'Only the original sender can use the buttons. Send a /ride to go through the rides yourself',
+        );
         return await next();
       }
     }
