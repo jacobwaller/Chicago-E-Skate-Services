@@ -11,10 +11,41 @@ export const prevCallback = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
-  await ctx.replyWithChatAction('typing');
   console.log('saying prev');
+  await ctx.replyWithChatAction('typing');
+  // Needs to be responding to a msg recently enough
+  if (ctx.callbackQuery.message && 'text' in ctx.callbackQuery.message) {
+    const matchedArr = ctx.callbackQuery.message.text.match(/=\d+,\d+=/);
+    if (!matchedArr) {
+      await ctx.reply('Something went wrong... code 0');
+    } else {
+      const buttonUserId = ctx.callbackQuery.from.id;
+      const matchedStr = matchedArr[matchedArr.length - 1];
 
-  await ctx.editMessageText('edited prev');
+      // splits =123,0= into 123 & 0
+      const originalCaller = parseInt(matchedStr.split(/,|=/)[1]);
+      const sentIndex = parseInt(matchedStr.split(/,|=/)[2]);
+
+      if (buttonUserId === originalCaller) {
+        const str =
+          (await getGroupRide(sentIndex - 1)) +
+          `\n=${originalCaller},${sentIndex - 1}=`;
+
+        await ctx.editMessageText(str, {
+          reply_markup: prevNextKeyboard.reply_markup,
+        });
+      } else {
+        return await next();
+      }
+    }
+  } else {
+    ctx.editMessageText('Something went wrong... code 1');
+  }
+
+  if (ctx.callbackQuery.message) {
+    ctx.callbackQuery.message.message_id;
+    (await ctx.telegram.getChat(ctx.callbackQuery.chat_instance)).id;
+  }
   return await next();
 };
 
