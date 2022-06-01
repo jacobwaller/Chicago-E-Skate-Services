@@ -39,7 +39,7 @@ export const nextCallback = async (
 
       if (buttonUserId === originalCaller) {
         const str =
-          getGroupRide(sentIndex + 1) +
+          (await getGroupRide(sentIndex + 1)) +
           `\n=${originalCaller},${sentIndex + 1}=`;
 
         await ctx.editMessageText(str, {
