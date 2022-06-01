@@ -312,7 +312,7 @@ export const announce = async (
   }
 
   // Send group ride info to chicago Eskate
-  const groupRideString = await getGroupRide();
+  const groupRideString = await getGroupRide(0);
   const msg = await ctx.telegram.sendMessage(MAIN_GROUP_ID, groupRideString);
   // Post poll to Chicago Eskate
   const poll = await ctx.telegram.sendPoll(
