@@ -21,7 +21,7 @@ import {
 import { GROUP_IDS, MAIN_GROUP_ID } from './utils/ids';
 import { add, charge } from './handlers/chargeHandlers';
 import { group } from './handlers/groupHandlers';
-import { ride } from './handlers/rideHandlers';
+import { nextCallback, prevCallback, ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
 import { HttpFunction } from '@google-cloud/functions-framework';
 import getNlpResponse from './handlers/nlpHandlers';
@@ -107,6 +107,8 @@ bot.command('add', add);
 bot.action('🛑 Cancel', endConversation);
 bot.action('✅ Yes', yesCallback);
 bot.action('❎ No', noCallback);
+bot.action('⏮️', prevCallback);
+bot.action('⏭️', nextCallback);
 
 // Group commands
 bot.command(['groups', 'group', 'Groups', 'Group'], group);
