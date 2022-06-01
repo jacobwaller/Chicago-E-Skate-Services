@@ -66,8 +66,16 @@ export const ride = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
 ) => {
   await ctx.replyWithChatAction('typing');
+
+  const tempKeyboard = Markup.inlineKeyboard([
+    [
+      Markup.button.callback('⏮️', `${ctx.from.id}`),
+      Markup.button.callback('⏭️', `${ctx.from.id}`),
+    ],
+  ]);
+
   return await ctx.reply(await getGroupRide(0), {
     reply_to_message_id: ctx.message.message_id,
-    reply_markup: prevNextKeyboard.reply_markup,
+    reply_markup: tempKeyboard.reply_markup,
   });
 };
