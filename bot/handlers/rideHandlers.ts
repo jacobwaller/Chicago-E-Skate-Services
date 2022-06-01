@@ -11,10 +11,10 @@ export const prevCallback = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
+  await ctx.replyWithChatAction('typing');
   console.log('saying prev');
 
-  ctx.editMessageText('edited prev');
-
+  await ctx.editMessageText('edited prev');
   return await next();
 };
 
@@ -22,10 +22,17 @@ export const nextCallback = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
+  const buttonUserId = ctx.callbackQuery.from;
+  const originalCaller = ctx.callbackQuery.message;
+
+  await ctx.replyWithChatAction('typing');
   console.log('saying next');
 
-  ctx.editMessageText('edited next');
+  if ('message' in ctx.callbackQuery) {
+    ctx.reply(ctx.callbackQuery.data || 'your mom');
+  }
 
+  await ctx.editMessageText('edited next');
   return await next();
 };
 
