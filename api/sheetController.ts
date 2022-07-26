@@ -69,10 +69,9 @@ const getListOfRides = async () => {
       startPoint: row[5],
       endPoint: row[6],
       type: row[7],
-      image: row[8],
-      routeLink: row[9],
-      routeDistance: row[10],
-      description: row[11],
+      routeLink: row[8],
+      routeDistance: row[9],
+      description: row[10],
     };
   });
 

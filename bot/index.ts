@@ -25,6 +25,7 @@ import { nextCallback, prevCallback, ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
 import { HttpFunction } from '@google-cloud/functions-framework';
 import getNlpResponse from './handlers/nlpHandlers';
+import { locationHandler, optIn, optOut } from './handlers/locationHandlers';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -116,6 +117,8 @@ bot.command(commands.groupRide, ride);
 
 // Misc
 bot.command(commands.random, random);
+bot.command(['optout', 'optOut', 'opt-out', 'opt_out'], optOut);
+bot.command(['optin', 'optIn', 'opt-in', 'opt_in'], optIn);
 
 bot.on('new_chat_members', async (ctx) => {
   const nameOrNames = ctx.message.new_chat_members
@@ -172,6 +175,8 @@ bot.on('text', async (ctx, next) => {
   }
   return await next();
 });
+
+bot.on('location', locationHandler);
 
 export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);
