@@ -26,6 +26,7 @@ import { random } from './handlers/externalHandlers';
 import { HttpFunction } from '@google-cloud/functions-framework';
 import getNlpResponse from './handlers/nlpHandlers';
 import { locationHandler, optIn, optOut } from './handlers/locationHandlers';
+import { myDataHandler } from './handlers/dataHandlers';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -117,6 +118,7 @@ bot.command(commands.groupRide, ride);
 
 // Misc
 bot.command(commands.random, random);
+bot.command(['mydata', 'myData', 'my-data', 'my_data'], myDataHandler);
 bot.command(['optout', 'optOut', 'opt-out', 'opt_out'], optOut);
 bot.command(['optin', 'optIn', 'opt-in', 'opt_in'], optIn);
 

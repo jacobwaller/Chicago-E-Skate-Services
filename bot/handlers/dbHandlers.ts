@@ -47,6 +47,8 @@ export const tgToDbUser = (tgUser: User): UserData => {
     username: tgUser.username,
     warnings: [],
     additionalData: [],
+    conversationalStep: undefined,
+    locationOptOut: false,
   };
 };
 
