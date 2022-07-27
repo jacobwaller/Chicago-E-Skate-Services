@@ -1,5 +1,5 @@
-import { Telegraf } from 'telegraf';
 import { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
+import { Context, NarrowedContext, Telegraf, Types } from 'telegraf';
 import { basicCommands, commands } from './utils/commands';
 import escapeChars from './utils/escapeChars';
 import { getUserById, tgToDbUser, updateUser } from './handlers/dbHandlers';
@@ -143,6 +143,27 @@ bot.on('message', async (ctx, next) => {
     }
   }
   return await next();
+});
+
+bot.on('text', async (ctx, next) => {
+  // Don't process commands
+  if (!ctx.message.text.startsWith('/')) {
+    const resp = await getNlpResponse(ctx.message.text);
+
+    if (resp !== '') {
+      await ctx.reply(resp);
+    }
+  }
+  return await next();
+});
+
+bot.use((ctx, next) => {
+  if (ctx.message && 'location' in ctx.message) {
+    return locationHandler(
+      ctx as NarrowedContext<Context<Update>, Types.MountMap['location']>,
+      next,
+    );
+  }
 });
 
 export const botFunction: HttpFunction = async (req, res) => {
