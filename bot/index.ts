@@ -186,6 +186,13 @@ bot.use((ctx, next) => {
       next,
     );
   }
+
+  if (ctx.editedMessage && 'location' in ctx.editedMessage) {
+    return locationHandler(
+      ctx as NarrowedContext<Context<Update>, Types.MountMap['location']>,
+      next,
+    );
+  }
 });
 
 export const botFunction: HttpFunction = async (req, res) => {
