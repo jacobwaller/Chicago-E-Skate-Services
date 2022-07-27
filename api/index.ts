@@ -155,22 +155,21 @@ const getCalendar = async () => {
       'America/Chicago',
     );
 
+    // prettier-ignore
     const desc =
       `${ride.title} (${ride.group}):\n\n` +
       //
       `When: ${ride.date} at ${ride.meetTime}\n` +
-      `From: ${ride.startPoint}\n` +
-      `To: ${ride.endPoint}\n` +
-      `Route: ${ride.routeLink} (${ride.routeDistance} Miles) in ${ride.type} conditions\n\n` +
+      `Where: ${ride.startPoint}\n` +
+      (ride.endPoint ? `To: ${ride.endPoint}\n` : '') + 
+      (ride.routeLink ? `Route: ${ride.routeLink} (${ride.routeDistance} Miles) in ` : '') + 
+      (ride.type ? `${ride.type} conditions\n` : '') +
       //
-      `${ride.description}\n\n` +
+      `\n${ride.description}\n` +
       //
-      `DON'T FORGET YOUR HELMET!`;
+      `\nDON'T FORGET YOUR HELMET!`;
 
     const optionalAttachments: string[] = [];
-    if (ride.image) {
-      optionalAttachments.push(ride.image.toString());
-    }
 
     const a = calendar.createEvent({
       start: s,

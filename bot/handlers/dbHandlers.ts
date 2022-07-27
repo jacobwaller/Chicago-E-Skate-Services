@@ -47,6 +47,8 @@ export const tgToDbUser = (tgUser: User): UserData => {
     username: tgUser.username,
     warnings: [],
     additionalData: [],
+    conversationalStep: undefined,
+    locationOptOut: false,
   };
 };
 
@@ -77,4 +79,16 @@ export const setContestTime = async (): Promise<number> => {
 export const getContestTime = async () => {
   const timeRef = db().collection('time').doc('time');
   return ((await timeRef.get()).data() as { time: number }).time;
+};
+
+export const createLocationEntry = async (
+  latitude: number,
+  longitude: number,
+  time: string,
+) => {
+  await db().collection('locations').add({
+    latitude,
+    longitude,
+    time,
+  });
 };

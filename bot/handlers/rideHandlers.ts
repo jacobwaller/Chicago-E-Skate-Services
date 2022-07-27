@@ -94,17 +94,20 @@ export const getGroupRide = async (index: number): Promise<string> => {
   const response = axiosResponse.data;
   console.log('Recieved', response);
   if (Object.keys(response).length != 0) {
+    // prettier-ignore
     return (
       `${response.title} (${response.group}):\n\n` +
       //
       `When: ${response.date} at ${response.meetTime}\n` +
-      `From: ${response.startPoint}\n` +
-      `To: ${response.endPoint}\n` +
-      `Route: ${response.routeLink} (${response.routeDistance} Miles) in ${response.type} conditions\n\n` +
+      `Where: ${response.startPoint}\n` +
+      (response.endPoint ? `To: ${response.endPoint}\n` : '') +
+      (response.routeLink ? `Route: ${response.routeLink}\n` : '') +   
+      (response.routeDistance ? `(${response.routeDistance} Miles)` : '') +
+      (response.type ? ` in ${response.type} conditions\n` : '\n') +
       //
-      `${response.description}\n\n` +
+      `\n${response.description}\n` +
       //
-      `DON'T FORGET YOUR HELMET!`
+      `\nDON'T FORGET YOUR HELMET!`
     );
   } else {
     return `There are currently no group rides planned for index ${index}`;
