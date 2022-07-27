@@ -161,9 +161,9 @@ const getCalendar = async () => {
       //
       `When: ${ride.date} at ${ride.meetTime}\n` +
       `Where: ${ride.startPoint}\n` +
-      ride.endPoint ? `To: ${ride.endPoint}\n` : '' + 
-      ride.routeLink ? `Route: ${ride.routeLink} (${ride.routeDistance} Miles) in ` : '' + 
-      ride.type ? `${ride.type} conditions\n` : '' +
+      (ride.endPoint ? `To: ${ride.endPoint}\n` : '') + 
+      (ride.routeLink ? `Route: ${ride.routeLink} (${ride.routeDistance} Miles) in ` : '') + 
+      (ride.type ? `${ride.type} conditions\n` : '') +
       //
       `\n${ride.description}\n` +
       //

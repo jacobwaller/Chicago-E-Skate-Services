@@ -14,6 +14,8 @@ export const myDataHandler = async (
 
   const userId = ctx.update.message.from.id;
   const userData = await getUserById(`${userId}`);
-  await ctx.reply(`Your data: ${JSON.stringify(userData)}`);
+  await ctx.reply(
+    `Your data: \n\n\`\`\`${JSON.stringify(userData, null, 2)}\`\`\``,
+  );
   return await next();
 };
