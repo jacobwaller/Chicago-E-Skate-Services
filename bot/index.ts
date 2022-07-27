@@ -1,14 +1,19 @@
-import { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
 import { Context, NarrowedContext, Telegraf, Types } from 'telegraf';
 import { basicCommands, commands } from './utils/commands';
 import escapeChars from './utils/escapeChars';
 import { getUserById, tgToDbUser, updateUser } from './handlers/dbHandlers';
-import conversationHandler from './handlers/conversationHandler';
+import conversationHandler, {
+  endConversation,
+  noCallback,
+  yesCallback,
+} from './handlers/conversationHandler';
 import {
   announce,
   ban,
+  endContestSayWinners,
   shh,
   shout,
+  startContest,
   unwarn,
   warn,
   warnings,
@@ -16,8 +21,13 @@ import {
 import { GROUP_IDS, MAIN_GROUP_ID } from './utils/ids';
 import { add, charge } from './handlers/chargeHandlers';
 import { group } from './handlers/groupHandlers';
-import { ride } from './handlers/rideHandlers';
+import { nextCallback, prevCallback, ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
+import { HttpFunction } from '@google-cloud/functions-framework';
+import getNlpResponse from './handlers/nlpHandlers';
+import { locationHandler, optIn, optOut } from './handlers/locationHandlers';
+import { myDataHandler } from './handlers/dataHandlers';
+import { Update } from 'telegraf/typings/core/types/typegram';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -71,16 +81,14 @@ bot.on('message', async (ctx, next) => {
       );
     }
   }
-
   return await next();
 });
 
 basicCommands.forEach((item) => {
-  bot.command(
-    item.commands,
-    async (ctx) =>
-      await ctx.reply(item.response, { parse_mode: item.parse_mode }),
-  );
+  bot.command(item.commands, async (ctx, next) => {
+    await ctx.reply(item.response, { parse_mode: item.parse_mode });
+    return await next();
+  });
 });
 
 // Admin commands
@@ -91,10 +99,19 @@ bot.command('ban', ban);
 bot.command('shh', shh);
 bot.command('shout', shout);
 bot.command('announce', announce);
+bot.command('start_contest', startContest);
+bot.command('end_contest', endContestSayWinners);
 
 // Charging commands
 bot.command('charge', charge);
 bot.command('add', add);
+
+// Button Handlers
+bot.action('🛑 Cancel', endConversation);
+bot.action('✅ Yes', yesCallback);
+bot.action('❎ No', noCallback);
+bot.action('⏮️', prevCallback);
+bot.action('⏭️', nextCallback);
 
 // Group commands
 bot.command(['groups', 'group', 'Groups', 'Group'], group);
@@ -102,17 +119,22 @@ bot.command(commands.groupRide, ride);
 
 // Misc
 bot.command(commands.random, random);
+bot.command(['mydata', 'myData', 'my-data', 'my_data'], myDataHandler);
+bot.command(['optout', 'optOut', 'opt-out', 'opt_out'], optOut);
+bot.command(['optin', 'optIn', 'opt-in', 'opt_in'], optIn);
 
 bot.on('new_chat_members', async (ctx) => {
-  let name = ctx.from.first_name;
+  const nameOrNames = ctx.message.new_chat_members
+    .map((member) => member.first_name)
+    .join(', ');
 
-  const inviteLink = bot.telegram.exportChatInviteLink(MAIN_GROUP_ID);
+  const inviteLink = await bot.telegram.exportChatInviteLink(MAIN_GROUP_ID);
 
   const welcomeString =
     `Hello, ${escapeChars(
-      name,
-    )} Welcome to the Chicago E\\-Skate Network\\.\n` +
-    `Make sure to also join the main Chicago E\\-Skate Channel [here](${inviteLink})\\.\n` +
+      nameOrNames,
+    )} Welcome to the Chicago E\\-Skate\\+ Network\\.\n` +
+    `Make sure to also join the main Chicago E\\-Skate\\+ Channel [here](${inviteLink})\\.\n` +
     `For info on the next group ride, click: /ride\n` +
     `For more info on the group, check out our [website](https://chicagoeskate.com)\n` +
     `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;
@@ -168,6 +190,7 @@ bot.use((ctx, next) => {
 
 export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);
+
   try {
     // Handle the update
     await bot.handleUpdate(req.body);

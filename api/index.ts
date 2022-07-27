@@ -8,6 +8,8 @@ import Express from 'express';
 import { Firestore } from '@google-cloud/firestore';
 import { Base64 } from 'js-base64';
 import { ChargeSpot } from '../bot/utils/types';
+import ical, { ICalTimezone } from 'ical-generator';
+import moment from 'moment-timezone';
 
 let _db: Firestore;
 
@@ -136,12 +138,68 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
   res.status(200).send(ret);
 };
 
+const getCalendar = async () => {
+  console.log('Starting to generate calendar...');
+  const allRides = await listRides(10);
+  const calendar = ical({
+    name: 'Chicago E-Skate Group Rides',
+    timezone: 'America/Chicago',
+  });
+  console.log('Fetched data');
+  allRides.forEach((ride) => {
+    console.log('Attempting to add', JSON.stringify(ride));
+
+    const s = moment.tz(
+      `${ride.date} ${ride.meetTime}`,
+      'MM/DD/YYYY hh:mm a',
+      'America/Chicago',
+    );
+
+    // prettier-ignore
+    const desc =
+      `${ride.title} (${ride.group}):\n\n` +
+      //
+      `When: ${ride.date} at ${ride.meetTime}\n` +
+      `Where: ${ride.startPoint}\n` +
+      (ride.endPoint ? `To: ${ride.endPoint}\n` : '') + 
+      (ride.routeLink ? `Route: ${ride.routeLink} (${ride.routeDistance} Miles) in ` : '') + 
+      (ride.type ? `${ride.type} conditions\n` : '') +
+      //
+      `\n${ride.description}\n` +
+      //
+      `\nDON'T FORGET YOUR HELMET!`;
+
+    const optionalAttachments: string[] = [];
+
+    const a = calendar.createEvent({
+      start: s,
+      end: s.clone().add({
+        hours: 2,
+      }),
+      summary: ride.title,
+      description: desc,
+      location: ride.startPoint,
+      url: 'https://chicagoeskate.com',
+      timezone: 'America/Chicago',
+      attachments: optionalAttachments,
+    });
+
+    console.log(`Adding ${a.toString()}`);
+  });
+  console.log('returning data...');
+
+  return calendar.toString();
+};
+
 const fetchRide = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
   if (req.method === 'GET') {
     const id = req.query.id;
-    if (id === undefined) {
+    if (req.path.includes('calendar.ics')) {
+      const getCal = await getCalendar();
+      res.status(200).send(getCal);
+    } else if (id === undefined) {
       res.status(200).send(await listRides());
     } else {
       res.status(200).send(await getRide(parseInt(id.toString())));

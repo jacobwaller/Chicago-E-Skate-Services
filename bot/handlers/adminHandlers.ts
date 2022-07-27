@@ -1,9 +1,16 @@
 import moment from 'moment-timezone';
 import { Context, NarrowedContext, Types } from 'telegraf';
 import { Update, User } from 'telegraf/typings/core/types/typegram';
-import { getUserById, tgToDbUser, updateUser } from './dbHandlers';
+import {
+  getChargeSpots,
+  getContestTime,
+  getUserById,
+  setContestTime,
+  tgToDbUser,
+  updateUser,
+} from './dbHandlers';
 import { GROUP_IDS, MAIN_GROUP_ID } from '../utils/ids';
-import { Warning } from '../utils/types';
+import { UserData, Warning } from '../utils/types';
 import { getGroupRide } from './rideHandlers';
 
 const isAdmin = async (
@@ -46,6 +53,87 @@ const adminCommandHelper = async (
       return true;
     }
   }
+};
+
+export const startContest = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
+  next: () => Promise<void>,
+) => {
+  if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
+    console.log('Someone who was not an admin tried to use the command warn');
+    return await next();
+  }
+
+  const startTime = await setContestTime();
+  await ctx.reply(`Starting contest at time ${startTime}...`);
+  return await next();
+};
+
+export const endContestSayWinners = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
+  next: () => Promise<void>,
+) => {
+  if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
+    console.log('Someone who was not an admin tried to use the command warn');
+    return await next();
+  }
+  await ctx.reply('getting results...');
+  const time = await getContestTime();
+
+  // Get all spots added after a certain time
+  const allSpots = await getChargeSpots();
+  const filteredSpots = allSpots.filter(
+    (spot) => spot.timeAdded && spot.timeAdded > time,
+  );
+
+  await ctx.reply(
+    `There were ${filteredSpots.length} charging spots added during the competition`,
+  );
+
+  // Grab all the userIds and calculate how many things they found
+  const includedUserIds: { [key: string]: number } = {};
+  for (const spot of filteredSpots) {
+    if (!includedUserIds[spot.userAdded]) {
+      includedUserIds[`${spot.userAdded}`] = 1;
+    } else {
+      includedUserIds[`${spot.userAdded}`]++;
+    }
+  }
+
+  console.log('Included User IDs table:', JSON.stringify(includedUserIds));
+
+  const arrayOfPeopleScores: Array<{ id: string; score: number }> = Object.keys(
+    includedUserIds,
+  ).map((key) => {
+    return {
+      id: key,
+      score: includedUserIds[key],
+    };
+  });
+
+  console.log('arrayOfPeopleScores:', arrayOfPeopleScores);
+
+  let usersPlusScores: Array<UserData & { score: number }> = [];
+  // Map from ID & score to name & score
+  for (const score of arrayOfPeopleScores) {
+    const user = await getUserById(score.id);
+    usersPlusScores.push({ ...user, score: includedUserIds[score.id] });
+  }
+
+  usersPlusScores = usersPlusScores.sort((a, b) => b.score - a.score);
+
+  const winnersString = usersPlusScores
+    .map((user) => {
+      const name = `${user.firstname} ${
+        user.lastname || user.username || user.id
+      } has ${user.score} points`;
+      return name;
+    })
+    .join('\n');
+
+  await ctx.reply(winnersString);
+
+  return await next();
 };
 
 // Adds a warning to the replied to member
@@ -172,10 +260,11 @@ export const ban = async (
   const replyMsg = ctx.message.reply_to_message;
   const repliedUser = replyMsg?.from;
   if (repliedUser === undefined) {
+    await ctx.reply('Reply to the person you want to ban');
     return await next();
   }
-
-  return await ctx.kickChatMember(repliedUser?.id);
+  await ctx.reply(`banned ${repliedUser.first_name}`);
+  return await ctx.kickChatMember(repliedUser.id);
 };
 
 // TODO: Shh
@@ -223,7 +312,7 @@ export const announce = async (
   }
 
   // Send group ride info to chicago Eskate
-  const groupRideString = await getGroupRide();
+  const groupRideString = await getGroupRide(0);
   const msg = await ctx.telegram.sendMessage(MAIN_GROUP_ID, groupRideString);
   // Post poll to Chicago Eskate
   const poll = await ctx.telegram.sendPoll(

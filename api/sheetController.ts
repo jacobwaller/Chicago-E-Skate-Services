@@ -4,8 +4,6 @@ import { Base64 } from 'js-base64';
 import { ChargingSpot } from './types';
 require('dotenv').config();
 
-const NUM_RIDES = 5;
-
 const getJwt = () => {
   return new google.auth.JWT(
     process.env.CLIENT_EMAIL,
@@ -51,7 +49,7 @@ const getListOfRides = async () => {
   const sheets = google.sheets({ version: 'v4' });
   const results = await sheets.spreadsheets.values.get({
     spreadsheetId: '1SAssru-78PhVGSw_j-igSnmHKlxr5NsuRSZTjxgORxA',
-    range: 'Rides!A3:K',
+    range: 'Rides!A3:L',
     auth: getJwt(),
     key: getApiKey(),
   });
@@ -83,7 +81,7 @@ const getListOfRides = async () => {
 /**
  * Returns a list of the next NUM_RIDES rides
  */
-export const listRides = async () => {
+export const listRides = async (NUM_RIDES = 5) => {
   const list = await getListOfRides();
   const currentDate = moment();
   currentDate.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
