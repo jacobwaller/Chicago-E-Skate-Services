@@ -100,9 +100,9 @@ export const getGroupRide = async (index: number): Promise<string> => {
       //
       `When: ${response.date} at ${response.meetTime}\n` +
       `Where: ${response.startPoint}\n` +
-      response.endPoint ? `To: ${response.endPoint}\n` : '' +
-      response.routeLink ? `Route: ${response.routeLink} (${response.routeDistance} Miles) in ` : '' +
-      response.type ? `${response.type} conditions\n` : '' +
+      (response.endPoint ? `To: ${response.endPoint}\n` : '') +
+      (response.routeLink ? `Route: ${response.routeLink} (${response.routeDistance} Miles) in ` : '') +
+      (response.type ? `${response.type} conditions\n` : '') +
       //
       `\n${response.description}\n` +
       //
