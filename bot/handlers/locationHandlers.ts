@@ -37,8 +37,14 @@ export const locationHandler = async (
     return await next();
   }
 
-  const lat = ctx.message.location.latitude;
-  const lon = ctx.message.location.longitude;
+  const lat = ctx.message
+    ? ctx.message.location.latitude
+    : // @ts-ignore
+      ctx.editedMessage.location.latitude;
+  const lon = ctx.message
+    ? ctx.message.location.longitude
+    : // @ts-ignore
+      ctx.editedMessage.location.longitude;
   const time = new Date().toISOString();
 
   await createLocationEntry(lat, lon, time);
