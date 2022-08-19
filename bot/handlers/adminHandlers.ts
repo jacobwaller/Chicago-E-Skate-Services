@@ -38,7 +38,7 @@ const adminCommandHelper = async (
 
   if (!(await isAdmin(ctx, senderId, MAIN_GROUP_ID))) {
     console.log(`${senderId} is not an admin`);
-    await ctx.reply('Only admins of Chicago Eskate can use this command...');
+    await ctx.reply('Only admins of Chicago PEV can use this command...');
     return false;
   } else {
     const isReply = !!ctx.message.reply_to_message;
@@ -307,14 +307,14 @@ export const announce = async (
   const senderId = ctx.from.id;
   if (!isAdmin(ctx, senderId, MAIN_GROUP_ID)) {
     return await ctx.reply(
-      'Only admins of Chicago Eskate can use this command...',
+      'Only admins of Chicago PEV can use this command...',
     );
   }
 
-  // Send group ride info to chicago Eskate
+  // Send group ride info to chicago PEV
   const groupRideString = await getGroupRide(0);
   const msg = await ctx.telegram.sendMessage(MAIN_GROUP_ID, groupRideString);
-  // Post poll to Chicago Eskate
+  // Post poll to Chicago PEV
   const poll = await ctx.telegram.sendPoll(
     MAIN_GROUP_ID,
     'Will you make it to this group ride?',
