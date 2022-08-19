@@ -23,7 +23,7 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['discount', 'discounts', 'codes', 'code'],
     response:
-      'Check out all discounts available to Chicago E\\-Skate members [here](https://docs.google.com/spreadsheets/d/1QTMuWO8k5719MeBt535rA_kPvSEVmiTI3wVA9Bcwu5g/edit?usp=sharing)',
+      'Check out all discounts available to Chicago PEV members [here](https://docs.google.com/spreadsheets/d/1QTMuWO8k5719MeBt535rA_kPvSEVmiTI3wVA9Bcwu5g/edit?usp=sharing)',
     parse_mode,
   },
   {
@@ -37,7 +37,7 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['help'],
     response:
-      'I am here to help answer questions about Chicago E-Skate.\n' +
+      'I am here to help answer questions about Chicago PEV.\n' +
       'Find out when the next group ride is with the command /ride\n' +
       'To request that your group ride or event is available with that command, DM @jacob_waller\n' +
       "for a list of commands that I have available, type a '/' and select the command you'd like",
@@ -115,7 +115,7 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['strava'],
     response:
-      'Track your miles and share your routes\\! [Join Chicago Eskate on Strava](https://www.strava.com/clubs/chicagoeskate)\n',
+      'Track your miles and share your routes\\! [Join Chicago PEV on Strava](https://www.strava.com/clubs/chicagopev)\n',
     parse_mode,
   },
   {

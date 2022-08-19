@@ -76,7 +76,7 @@ bot.on('message', async (ctx, next) => {
         .join('\n');
 
       return await ctx.reply(
-        `Sorry, unfortunately you have warnings for:\n${warningText}\n\nWhat does this mean? You cannot use commands anymore until the warnings go away. Contact an admin of Chicago ESkate if you have any questions. Any more warnings will have you banned from all Chicago PEV Groups.`,
+        `Sorry, unfortunately you have warnings for:\n${warningText}\n\nWhat does this mean? You cannot use commands anymore until the warnings go away. Contact an admin of Chicago PEV if you have any questions. Any more warnings will have you banned from all Chicago PEV Groups.`,
       );
     }
   }
@@ -132,8 +132,8 @@ bot.on('new_chat_members', async (ctx) => {
   const welcomeString =
     `Hello, ${escapeChars(
       nameOrNames,
-    )} Welcome to the Chicago E\\-Skate\\+ Network\\.\n` +
-    `Make sure to also join the main Chicago E\\-Skate\\+ Channel [here](${inviteLink})\\.\n` +
+    )} Welcome to the Chicago PEV Network\\.\n` +
+    `Make sure to also join the main Chicago PEV Channel [here](${inviteLink})\\.\n` +
     `For info on the next group ride, click: /ride\n` +
     `For more info on the group, check out our [website](https://chicagoeskate.com)\n` +
     `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;
