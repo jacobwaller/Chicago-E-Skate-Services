@@ -1,4 +1,4 @@
-import { Telegraf } from 'telegraf';
+import { Context, NarrowedContext, Telegraf, Types } from 'telegraf';
 import { basicCommands, commands } from './utils/commands';
 import escapeChars from './utils/escapeChars';
 import { getUserById, tgToDbUser, updateUser } from './handlers/dbHandlers';
@@ -27,6 +27,7 @@ import { HttpFunction } from '@google-cloud/functions-framework';
 import getNlpResponse from './handlers/nlpHandlers';
 import { locationHandler, optIn, optOut } from './handlers/locationHandlers';
 import { myDataHandler } from './handlers/dataHandlers';
+import { Update } from 'telegraf/typings/core/types/typegram';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -178,7 +179,21 @@ bot.on('text', async (ctx, next) => {
   return await next();
 });
 
-bot.on('location', locationHandler);
+bot.use((ctx, next) => {
+  if (ctx.message && 'location' in ctx.message) {
+    return locationHandler(
+      ctx as NarrowedContext<Context<Update>, Types.MountMap['location']>,
+      next,
+    );
+  }
+
+  if (ctx.editedMessage && 'location' in ctx.editedMessage) {
+    return locationHandler(
+      ctx as NarrowedContext<Context<Update>, Types.MountMap['location']>,
+      next,
+    );
+  }
+});
 
 export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);
