@@ -167,18 +167,6 @@ bot.on('message', async (ctx, next) => {
   return await next();
 });
 
-bot.on('text', async (ctx, next) => {
-  // Don't process commands
-  if (!ctx.message.text.startsWith('/')) {
-    const resp = await getNlpResponse(ctx.message.text);
-
-    if (resp !== '') {
-      await ctx.reply(resp);
-    }
-  }
-  return await next();
-});
-
 bot.use((ctx, next) => {
   if (ctx.message && 'location' in ctx.message) {
     return locationHandler(
