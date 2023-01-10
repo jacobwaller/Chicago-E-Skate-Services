@@ -9,14 +9,14 @@ import conversationHandler, {
 } from './handlers/conversationHandler';
 import {
   announce,
-  ban,
-  endContestSayWinners,
-  shh,
+  //   ban,
+  //   endContestSayWinners,
+  //   shh,
   shout,
-  startContest,
-  unwarn,
-  warn,
-  warnings,
+  //   startContest,
+  //   unwarn,
+  //   warn,
+  //   warnings,
 } from './handlers/adminHandlers';
 import { GROUP_IDS, MAIN_GROUP_ID } from './utils/ids';
 import { add, charge } from './handlers/chargeHandlers';
@@ -25,7 +25,7 @@ import { nextCallback, prevCallback, ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
 import { HttpFunction } from '@google-cloud/functions-framework';
 import getNlpResponse from './handlers/nlpHandlers';
-import { locationHandler, optIn, optOut } from './handlers/locationHandlers';
+// import { locationHandler, optIn, optOut } from './handlers/locationHandlers';
 import { myDataHandler } from './handlers/dataHandlers';
 import { Update } from 'telegraf/typings/core/types/typegram';
 
@@ -92,15 +92,15 @@ basicCommands.forEach((item) => {
 });
 
 // Admin commands
-bot.command('warn', warn);
-bot.command('unwarn', unwarn);
-bot.command('warnings', warnings);
-bot.command('ban', ban);
-bot.command('shh', shh);
+// bot.command('warn', warn);
+// bot.command('unwarn', unwarn);
+// bot.command('warnings', warnings);
+// bot.command('ban', ban);
+// bot.command('shh', shh);
 bot.command('shout', shout);
 bot.command('announce', announce);
-bot.command('start_contest', startContest);
-bot.command('end_contest', endContestSayWinners);
+// bot.command('start_contest', startContest);
+// bot.command('end_contest', endContestSayWinners);
 
 // Charging commands
 bot.command('charge', charge);
@@ -120,8 +120,8 @@ bot.command(commands.groupRide, ride);
 // Misc
 bot.command(commands.random, random);
 bot.command(['mydata', 'myData', 'my-data', 'my_data'], myDataHandler);
-bot.command(['optout', 'optOut', 'opt-out', 'opt_out'], optOut);
-bot.command(['optin', 'optIn', 'opt-in', 'opt_in'], optIn);
+// bot.command(['optout', 'optOut', 'opt-out', 'opt_out'], optOut);
+// bot.command(['optin', 'optIn', 'opt-in', 'opt_in'], optIn);
 
 bot.on('new_chat_members', async (ctx) => {
   const nameOrNames = ctx.message.new_chat_members
@@ -167,21 +167,21 @@ bot.on('message', async (ctx, next) => {
   return await next();
 });
 
-bot.use((ctx, next) => {
-  if (ctx.message && 'location' in ctx.message) {
-    return locationHandler(
-      ctx as NarrowedContext<Context<Update>, Types.MountMap['location']>,
-      next,
-    );
-  }
+// bot.use((ctx, next) => {
+//   if (ctx.message && 'location' in ctx.message) {
+//     return locationHandler(
+//       ctx as NarrowedContext<Context<Update>, Types.MountMap['location']>,
+//       next,
+//     );
+//   }
 
-  if (ctx.editedMessage && 'location' in ctx.editedMessage) {
-    return locationHandler(
-      ctx as NarrowedContext<Context<Update>, Types.MountMap['location']>,
-      next,
-    );
-  }
-});
+//   if (ctx.editedMessage && 'location' in ctx.editedMessage) {
+//     return locationHandler(
+//       ctx as NarrowedContext<Context<Update>, Types.MountMap['location']>,
+//       next,
+//     );
+//   }
+// });
 
 export const botFunction: HttpFunction = async (req, res) => {
   console.log(req.body);
