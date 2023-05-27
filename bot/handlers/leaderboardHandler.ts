@@ -24,26 +24,56 @@ export const leaderboardHandler = async (
   // create CCW section
   let ccwSection = 'CCW:\n';
   leaderboard.sort((a: leaderboardEntry, b: leaderboardEntry) => {
-    return b.ccw - a.ccw;
+    return a.ccw - b.ccw;
   });
 
-  for (let entry of leaderboard) {
-    if (entry.ccw) {
-      ccwSection += `${entry.name}: ${entry.ccw}\n`;
-    }
-  }
+  ccwSection += leaderboard
+    .map((item, idx) => {
+      if (!item.ccw) return '';
+      if (idx === 0) {
+        return `🥇 ${item.name}: ${item.ccw}`;
+      }
+      if (idx === 1) {
+        return `🥈 ${item.name}: ${item.ccw}`;
+      }
+      if (idx === 2) {
+        return `🥉 ${item.name}: ${item.ccw}`;
+      }
+      return `${item.name}: ${item.ccw}`;
+    })
+    .join('\n');
+
+  // for (let entry of leaderboard) {
+  //   if (entry.ccw) {
+  //     ccwSection += `${entry.name}: ${entry.ccw}\n`;
+  //   }
+  // }
 
   // create CW section
   let cwSection = 'CW:\n';
   leaderboard.sort((a: leaderboardEntry, b: leaderboardEntry) => {
-    return b.cw - a.cw;
+    return a.cw - b.cw;
   });
 
-  for (let entry of leaderboard) {
-    if (entry.cw) {
-      cwSection += `${entry.name}: ${entry.cw}\n`;
+  cwSection += leaderboard.map((item, idx) => {
+    if (!item.cw) return '';
+    if (idx === 0) {
+      return `🥇 ${item.name}: ${item.cw}`;
     }
-  }
+    if (idx === 1) {
+      return `🥈 ${item.name}: ${item.cw}`;
+    }
+    if (idx === 2) {
+      return `🥉 ${item.name}: ${item.cw}`;
+    }
+    return `${item.name}: ${item.cw}`;
+  });
+
+  // for (let entry of leaderboard) {
+  //   if (entry.cw) {
+  //     cwSection += `${entry.name}: ${entry.cw}\n`;
+  //   }
+  // }
 
   return await ctx.reply(ccwSection + '\n' + cwSection);
 };
