@@ -140,3 +140,28 @@ export const getChargingSpots = async (
 ): Promise<Array<ChargingSpot>> => {
   return [];
 };
+
+export const getLeaderboard = async () => {
+  const sheets = google.sheets({ version: 'v4' });
+  const results = await sheets.spreadsheets.values.get({
+    spreadsheetId: '1SAssru-78PhVGSw_j-igSnmHKlxr5NsuRSZTjxgORxA',
+    range: 'Leaderboard!A3:C',
+    auth: getJwt(),
+    key: getApiKey(),
+  });
+
+  const rows = results.data.values;
+  if (rows === null || rows === undefined) {
+    return [];
+  }
+  //Map rows to a list of object
+  const list = rows.map((row) => {
+    return {
+      name: row[0],
+      ccw: row[1],
+      cw: row[2],
+    };
+  });
+
+  return list;
+};
