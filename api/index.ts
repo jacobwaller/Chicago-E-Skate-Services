@@ -3,6 +3,7 @@ import {
   getRide,
   addChargingSpot,
   getChargingSpots,
+  getLeaderboard,
 } from './sheetController';
 import Express from 'express';
 import { Firestore } from '@google-cloud/firestore';
@@ -199,6 +200,8 @@ const fetchRide = async (req: Express.Request, res: Express.Response) => {
     if (req.path.includes('calendar.ics')) {
       const getCal = await getCalendar();
       res.status(200).send(getCal);
+    } else if (req.path.includes('leaderboard')) {
+      res.status(200).send(await getLeaderboard());
     } else if (id === undefined) {
       res.status(200).send(await listRides());
     } else {

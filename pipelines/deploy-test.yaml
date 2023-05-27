@@ -8,15 +8,15 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args:
       - run
-      - build
+      - compile
+    id: setup
 
   # Copy NLP over
-  - name: 'bash'
-    args:
-      - cp 
-      - ./bot/handlers/model.nlp
-      - ./built/bot/model.nlp
-    id: setup
+  # - name: 'bash'
+  #   args:
+  #     - cp 
+  #     - ./bot/handlers/model.nlp
+  #     - ./built/bot/model.nlp
   
   # Deploy Bot
   - name: "gcr.io/cloud-builders/gcloud"
@@ -28,7 +28,7 @@ steps:
       - botFunctionQA
       - --source=./built/bot/
       - --trigger-http
-      - --runtime=nodejs12
+      - --runtime=nodejs18
       - --entry-point=botFunction
 
   # Deploy APIs
@@ -41,7 +41,7 @@ steps:
       - fetchRideQA
       - --source=./built/api/
       - --trigger-http
-      - --runtime=nodejs12
+      - --runtime=nodejs18
       - --entry-point=fetchRide
       - --allow-unauthenticated
 
@@ -54,7 +54,7 @@ steps:
       - chargingHandlerQA
       - --source=./built/api/
       - --trigger-http
-      - --runtime=nodejs12
+      - --runtime=nodejs18
       - --entry-point=chargingHandler
       - --allow-unauthenticated
 

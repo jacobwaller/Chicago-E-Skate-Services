@@ -28,6 +28,7 @@ import getNlpResponse from './handlers/nlpHandlers';
 // import { locationHandler, optIn, optOut } from './handlers/locationHandlers';
 import { myDataHandler } from './handlers/dataHandlers';
 import { Update } from 'telegraf/typings/core/types/typegram';
+import { leaderboardHandler } from './handlers/leaderboardHandler';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -52,6 +53,7 @@ track - rules for The Garden
 sendit - gif
 milk - FM pls sponsor me
 nosedive - lmaoooo
+leaderboard - show the leaderboard times
 */
 
 // Supposedly only ever needs to be called once. Uncomment and deploy if changing anything
@@ -120,6 +122,7 @@ bot.command(commands.groupRide, ride);
 // Misc
 bot.command(commands.random, random);
 bot.command(['mydata', 'myData', 'my-data', 'my_data'], myDataHandler);
+bot.command(['leaderboard', 'Leaderboard'], leaderboardHandler);
 // bot.command(['optout', 'optOut', 'opt-out', 'opt_out'], optOut);
 // bot.command(['optin', 'optIn', 'opt-in', 'opt_in'], optIn);
 
