@@ -27,27 +27,26 @@ export const leaderboardHandler = async (
     return a.ccw - b.ccw;
   });
 
-  ccwSection += leaderboard
-    .map((item, idx) => {
-      if (!item.ccw) return '';
-      if (idx === 0) {
-        return `🥇 ${item.name}: ${item.ccw}`;
+  let place = 1;
+  for (let entry of leaderboard) {
+    if (entry.ccw) {
+      switch (place) {
+        case 1:
+          ccwSection += '🥇 ';
+          break;
+        case 2:
+          ccwSection += '🥈 ';
+          break;
+        case 3:
+          ccwSection += '🥉 ';
+          break;
+        default:
+          ccwSection += `${place}. `;
       }
-      if (idx === 1) {
-        return `🥈 ${item.name}: ${item.ccw}`;
-      }
-      if (idx === 2) {
-        return `🥉 ${item.name}: ${item.ccw}`;
-      }
-      return `${item.name}: ${item.ccw}`;
-    })
-    .join('\n');
-
-  // for (let entry of leaderboard) {
-  //   if (entry.ccw) {
-  //     ccwSection += `${entry.name}: ${entry.ccw}\n`;
-  //   }
-  // }
+      ccwSection += `${entry.name}: ${entry.ccw}\n`;
+      place++;
+    }
+  }
 
   // create CW section
   let cwSection = 'CW:\n';
@@ -55,25 +54,26 @@ export const leaderboardHandler = async (
     return a.cw - b.cw;
   });
 
-  cwSection += leaderboard.map((item, idx) => {
-    if (!item.cw) return '';
-    if (idx === 0) {
-      return `🥇 ${item.name}: ${item.cw}`;
+  place = 1;
+  for (let entry of leaderboard) {
+    if (entry.cw) {
+      switch (place) {
+        case 1:
+          cwSection += '🥇 ';
+          break;
+        case 2:
+          cwSection += '🥈 ';
+          break;
+        case 3:
+          cwSection += '🥉 ';
+          break;
+        default:
+          cwSection += `${place}. `;
+      }
+      cwSection += `${entry.name}: ${entry.cw}\n`;
+      place++;
     }
-    if (idx === 1) {
-      return `🥈 ${item.name}: ${item.cw}`;
-    }
-    if (idx === 2) {
-      return `🥉 ${item.name}: ${item.cw}`;
-    }
-    return `${item.name}: ${item.cw}`;
-  });
-
-  // for (let entry of leaderboard) {
-  //   if (entry.cw) {
-  //     cwSection += `${entry.name}: ${entry.cw}\n`;
-  //   }
-  // }
+  }
 
   return await ctx.reply(ccwSection + '\n' + cwSection);
 };
