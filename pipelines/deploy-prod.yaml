@@ -9,15 +9,15 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args:
       - run
-      - build 
+      - compile 
+    id: setup
 
   # Copy NLP over
-  - name: 'bash'
-    args:
-      - cp 
-      - ./bot/handlers/model.nlp
-      - ./built/bot/model.nlp
-    id: setup
+  # - name: 'bash'
+  #   args:
+  #     - cp 
+  #     - ./bot/handlers/model.nlp
+  #     - ./built/bot/model.nlp
   
   # Deploy Bot
   - name: "gcr.io/cloud-builders/gcloud"

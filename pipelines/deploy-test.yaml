@@ -8,7 +8,7 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args:
       - run
-      - build
+      - compile
     id: setup
 
   # Copy NLP over
