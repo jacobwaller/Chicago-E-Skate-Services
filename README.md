@@ -2,10 +2,6 @@
 
 ## Huge thank you to our sponsors!
 - jgiard6 - Joe Giardina
-- dpromano76 - Donal (Lord) Romano
-- Rick Rivera
-- Stewart Ciesla
-- Jared Auker
 
 ## This is a Mono-Repo for the
 
