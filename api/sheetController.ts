@@ -156,10 +156,13 @@ export const getLeaderboard = async () => {
   }
   //Map rows to a list of object
   const list = rows.map((row) => {
+    const ccwNumber = parseFloat(row[1]) || 0;
+    const cwNumber = parseFloat(row[2]) || 0;
+
     return {
       name: row[0],
-      ccw: row[1],
-      cw: row[2],
+      ccw: ccwNumber,
+      cw: cwNumber,
     };
   });
 
