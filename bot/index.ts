@@ -9,7 +9,7 @@ import conversationHandler, {
 } from './handlers/conversationHandler';
 import {
   announce,
-  //   ban,
+  ban,
   //   endContestSayWinners,
   //   shh,
   shout,
