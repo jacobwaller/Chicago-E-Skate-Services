@@ -250,22 +250,22 @@ const adminCommandHelper = async (
 //   return await ctx.reply(response);
 // };
 
-// // Bans the replied to user
-// export const ban = async (
-//   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
-//   next: () => Promise<void>,
-// ) => {
-//   if (!adminCommandHelper(ctx)) return await next();
+// Bans the replied to user
+export const ban = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
+  next: () => Promise<void>,
+) => {
+  if (!adminCommandHelper(ctx)) return await next();
 
-//   const replyMsg = ctx.message.reply_to_message;
-//   const repliedUser = replyMsg?.from;
-//   if (repliedUser === undefined) {
-//     await ctx.reply('Reply to the person you want to ban');
-//     return await next();
-//   }
-//   await ctx.reply(`banned ${repliedUser.first_name}`);
-//   return await ctx.kickChatMember(repliedUser.id);
-// };
+  const replyMsg = ctx.message.reply_to_message;
+  const repliedUser = replyMsg?.from;
+  if (repliedUser === undefined) {
+    await ctx.reply('Reply to the person you want to ban');
+    return await next();
+  }
+  await ctx.reply(`banned ${repliedUser.first_name}`);
+  return await ctx.banChatMember(repliedUser.id);
+};
 
 // // TODO: Shh
 // export const shh = async (
