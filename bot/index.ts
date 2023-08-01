@@ -19,7 +19,7 @@ import {
   //   warnings,
 } from './handlers/adminHandlers';
 import { GROUP_IDS, MAIN_GROUP_ID } from './utils/ids';
-import { add, charge } from './handlers/chargeHandlers';
+import { add, charge, deleteCharge } from './handlers/chargeHandlers';
 import { group } from './handlers/groupHandlers';
 import { nextCallback, prevCallback, ride } from './handlers/rideHandlers';
 import { random } from './handlers/externalHandlers';
@@ -101,6 +101,7 @@ basicCommands.forEach((item) => {
 // bot.command('shh', shh);
 bot.command('shout', shout);
 bot.command('announce', announce);
+bot.command('delete', deleteCharge);
 // bot.command('start_contest', startContest);
 // bot.command('end_contest', endContestSayWinners);
 

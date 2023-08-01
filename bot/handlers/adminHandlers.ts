@@ -13,7 +13,7 @@ import { GROUP_IDS, MAIN_GROUP_ID } from '../utils/ids';
 import { UserData, Warning } from '../utils/types';
 import { getGroupRide } from './rideHandlers';
 
-const isAdmin = async (
+export const isAdmin = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
   userId: number,
   chatId: number,
@@ -31,7 +31,7 @@ const isAdmin = async (
   return filtered.length !== 0;
 };
 
-const adminCommandHelper = async (
+export const adminCommandHelper = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
 ) => {
   const senderId = ctx.from.id;
