@@ -31,6 +31,12 @@ export const isAdmin = async (
   return filtered.length !== 0;
 };
 
+export const isMainAdmin = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
+): Promise<boolean> => {
+  return await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID);
+};
+
 export const adminCommandHelper = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
 ) => {

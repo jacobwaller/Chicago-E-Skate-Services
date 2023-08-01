@@ -17,7 +17,7 @@ import {
   UserData,
 } from '../utils/types';
 import { cancelKeyboard, yesNoKeyboard } from './conversationHandler';
-import { adminCommandHelper, isAdmin } from './adminHandlers';
+import { adminCommandHelper, isAdmin, isMainAdmin } from './adminHandlers';
 import { MAIN_GROUP_ID } from '../utils/ids';
 
 export const charge = async (
@@ -52,7 +52,10 @@ export const deleteCharge = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
   next: () => Promise<void>,
 ) => {
-  if (!(await adminCommandHelper(ctx))) return await next();
+  if (!(await isMainAdmin(ctx))) {
+    return await ctx.reply('Only admins can do this.');
+  }
+
   const id = ctx.message.text.split(' ')[1];
   if (!id) {
     return await ctx.reply('Please provide an ID.');
