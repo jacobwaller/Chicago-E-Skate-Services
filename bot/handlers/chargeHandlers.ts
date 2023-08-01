@@ -3,6 +3,7 @@ import { Context, Markup, NarrowedContext, Scenes, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import {
   addChargeSpot,
+  deleteChargeSpot,
   getChargeSpots,
   getUserById,
   tgToDbUser,
@@ -16,6 +17,8 @@ import {
   UserData,
 } from '../utils/types';
 import { cancelKeyboard, yesNoKeyboard } from './conversationHandler';
+import { adminCommandHelper, isAdmin, isMainAdmin } from './adminHandlers';
+import { MAIN_GROUP_ID } from '../utils/ids';
 
 export const charge = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['message']>,
@@ -43,6 +46,26 @@ export const charge = async (
     'Please send me your current location.',
     cancelKeyboard,
   );
+};
+
+export const deleteCharge = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
+  next: () => Promise<void>,
+) => {
+  if (!(await isMainAdmin(ctx))) {
+    return await ctx.reply('Only admins can do this.');
+  }
+
+  const id = ctx.message.text.split(' ')[1];
+  if (!id) {
+    return await ctx.reply('Please provide an ID.');
+  }
+  const spotDeleted = await deleteChargeSpot(id);
+
+  if (spotDeleted) {
+    return await ctx.reply('Charge spot deleted.');
+  }
+  return await ctx.reply('Charge spot not found or error occurred.');
 };
 
 export const add = async (

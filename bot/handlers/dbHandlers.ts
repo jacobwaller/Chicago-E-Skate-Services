@@ -39,6 +39,10 @@ export const getChargeSpots = async () => {
   return ret;
 };
 
+export const deleteChargeSpot = async (id: string) => {
+  return await db().collection('charge').doc(id).delete();
+};
+
 export const tgToDbUser = (tgUser: User): UserData => {
   return {
     id: `${tgUser.id}`,
