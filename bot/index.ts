@@ -9,7 +9,7 @@ import conversationHandler, {
 } from './handlers/conversationHandler';
 import {
   announce,
-  //   ban,
+  ban,
   //   endContestSayWinners,
   //   shh,
   shout,
@@ -97,7 +97,7 @@ basicCommands.forEach((item) => {
 // bot.command('warn', warn);
 // bot.command('unwarn', unwarn);
 // bot.command('warnings', warnings);
-// bot.command('ban', ban);
+bot.command('ban', ban);
 // bot.command('shh', shh);
 bot.command('shout', shout);
 bot.command('announce', announce);
