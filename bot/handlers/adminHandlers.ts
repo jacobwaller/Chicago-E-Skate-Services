@@ -261,7 +261,7 @@ export const ban = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
   next: () => Promise<void>,
 ) => {
-  if (!adminCommandHelper(ctx)) return await next();
+  if (!(await adminCommandHelper(ctx))) return await next();
 
   const replyMsg = ctx.message.reply_to_message;
   const repliedUser = replyMsg?.from;
@@ -287,7 +287,7 @@ export const shout = async (
 ) => {
   // Check if sender is admin of main chat
   const senderId = ctx.from.id;
-  if (!isAdmin(ctx, senderId, MAIN_GROUP_ID)) {
+  if (!(await isAdmin(ctx, senderId, MAIN_GROUP_ID))) {
     return await ctx.reply(
       'Only admins of Chicago Eskate can use this command...',
     );
@@ -311,7 +311,7 @@ export const announce = async (
 ) => {
   // Check if sender is admin of main chat
   const senderId = ctx.from.id;
-  if (!isAdmin(ctx, senderId, MAIN_GROUP_ID)) {
+  if (!(await isAdmin(ctx, senderId, MAIN_GROUP_ID))) {
     return await ctx.reply(
       'Only admins of Chicago PEV can use this command...',
     );
