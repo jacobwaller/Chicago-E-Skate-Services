@@ -10,10 +10,10 @@ import conversationHandler, {
 import {
   announce,
   ban,
-  //   endContestSayWinners,
+  endContestSayWinners,
   //   shh,
   shout,
-  //   startContest,
+  startContest,
   //   unwarn,
   //   warn,
   //   warnings,
@@ -102,8 +102,8 @@ bot.command('ban', ban);
 bot.command('shout', shout);
 bot.command('announce', announce);
 bot.command('delete', deleteCharge);
-// bot.command('start_contest', startContest);
-// bot.command('end_contest', endContestSayWinners);
+bot.command('start_contest', startContest);
+bot.command('end_contest', endContestSayWinners);
 
 // Charging commands
 bot.command('charge', charge);

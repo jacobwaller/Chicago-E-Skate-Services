@@ -61,86 +61,86 @@ export const adminCommandHelper = async (
   }
 };
 
-// export const startContest = async (
-//   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
-//   next: () => Promise<void>,
-// ) => {
-//   if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
-//     console.log('Someone who was not an admin tried to use the command warn');
-//     return await next();
-//   }
+export const startContest = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
+  next: () => Promise<void>,
+) => {
+  if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
+    console.log('Someone who was not an admin tried to use the command warn');
+    return await next();
+  }
 
-//   const startTime = await setContestTime();
-//   await ctx.reply(`Starting contest at time ${startTime}...`);
-//   return await next();
-// };
+  const startTime = await setContestTime();
+  await ctx.reply(`Starting contest at time ${startTime}...`);
+  return await next();
+};
 
-// export const endContestSayWinners = async (
-//   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
-//   next: () => Promise<void>,
-// ) => {
-//   if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
-//     console.log('Someone who was not an admin tried to use the command warn');
-//     return await next();
-//   }
-//   await ctx.reply('getting results...');
-//   const time = await getContestTime();
+export const endContestSayWinners = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
+  next: () => Promise<void>,
+) => {
+  if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
+    console.log('Someone who was not an admin tried to use the command warn');
+    return await next();
+  }
+  await ctx.reply('getting results...');
+  const time = await getContestTime();
 
-//   // Get all spots added after a certain time
-//   const allSpots = await getChargeSpots();
-//   const filteredSpots = allSpots.filter(
-//     (spot) => spot.timeAdded && spot.timeAdded > time,
-//   );
+  // Get all spots added after a certain time
+  const allSpots = await getChargeSpots();
+  const filteredSpots = allSpots.filter(
+    (spot) => spot.timeAdded && spot.timeAdded > time,
+  );
 
-//   await ctx.reply(
-//     `There were ${filteredSpots.length} charging spots added during the competition`,
-//   );
+  await ctx.reply(
+    `There were ${filteredSpots.length} charging spots added during the competition`,
+  );
 
-//   // Grab all the userIds and calculate how many things they found
-//   const includedUserIds: { [key: string]: number } = {};
-//   for (const spot of filteredSpots) {
-//     if (!includedUserIds[spot.userAdded]) {
-//       includedUserIds[`${spot.userAdded}`] = 1;
-//     } else {
-//       includedUserIds[`${spot.userAdded}`]++;
-//     }
-//   }
+  // Grab all the userIds and calculate how many things they found
+  const includedUserIds: { [key: string]: number } = {};
+  for (const spot of filteredSpots) {
+    if (!includedUserIds[spot.userAdded]) {
+      includedUserIds[`${spot.userAdded}`] = 1;
+    } else {
+      includedUserIds[`${spot.userAdded}`]++;
+    }
+  }
 
-//   console.log('Included User IDs table:', JSON.stringify(includedUserIds));
+  console.log('Included User IDs table:', JSON.stringify(includedUserIds));
 
-//   const arrayOfPeopleScores: Array<{ id: string; score: number }> = Object.keys(
-//     includedUserIds,
-//   ).map((key) => {
-//     return {
-//       id: key,
-//       score: includedUserIds[key],
-//     };
-//   });
+  const arrayOfPeopleScores: Array<{ id: string; score: number }> = Object.keys(
+    includedUserIds,
+  ).map((key) => {
+    return {
+      id: key,
+      score: includedUserIds[key],
+    };
+  });
 
-//   console.log('arrayOfPeopleScores:', arrayOfPeopleScores);
+  console.log('arrayOfPeopleScores:', arrayOfPeopleScores);
 
-//   let usersPlusScores: Array<UserData & { score: number }> = [];
-//   // Map from ID & score to name & score
-//   for (const score of arrayOfPeopleScores) {
-//     const user = await getUserById(score.id);
-//     usersPlusScores.push({ ...user, score: includedUserIds[score.id] });
-//   }
+  let usersPlusScores: Array<UserData & { score: number }> = [];
+  // Map from ID & score to name & score
+  for (const score of arrayOfPeopleScores) {
+    const user = await getUserById(score.id);
+    usersPlusScores.push({ ...user, score: includedUserIds[score.id] });
+  }
 
-//   usersPlusScores = usersPlusScores.sort((a, b) => b.score - a.score);
+  usersPlusScores = usersPlusScores.sort((a, b) => b.score - a.score);
 
-//   const winnersString = usersPlusScores
-//     .map((user) => {
-//       const name = `${user.firstname} ${
-//         user.lastname || user.username || user.id
-//       } has ${user.score} points`;
-//       return name;
-//     })
-//     .join('\n');
+  const winnersString = usersPlusScores
+    .map((user) => {
+      const name = `${user.firstname} ${
+        user.lastname || user.username || user.id
+      } has ${user.score} points`;
+      return name;
+    })
+    .join('\n');
 
-//   await ctx.reply(winnersString);
+  await ctx.reply(winnersString);
 
-//   return await next();
-// };
+  return await next();
+};
 
 // // Adds a warning to the replied to member
 // // Automatically bans them if they have 3 or more warnings
