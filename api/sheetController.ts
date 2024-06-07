@@ -81,7 +81,7 @@ const getListOfRides = async () => {
 /**
  * Returns a list of the next NUM_RIDES rides
  */
-export const listRides = async (NUM_RIDES = 5) => {
+export const listRides = async () => {
   const list = await getListOfRides();
   const currentDate = moment();
   currentDate.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
@@ -106,7 +106,7 @@ export const listRides = async (NUM_RIDES = 5) => {
     }
   });
 
-  return futureRides.slice(0, NUM_RIDES);
+  return futureRides; //.slice(0, NUM_RIDES);
 };
 
 export const getRide = async (id: number) => {

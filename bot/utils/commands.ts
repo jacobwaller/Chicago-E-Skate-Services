@@ -39,7 +39,6 @@ const basicCommands: Array<CommandResponse> = [
     response:
       'I am here to help answer questions about Chicago PEV.\n' +
       'Find out when the next group ride is with the command /ride\n' +
-      'To request that your group ride or event is available with that command, DM @jacob_waller\n' +
       "for a list of commands that I have available, type a '/' and select the command you'd like",
   },
   {
@@ -92,7 +91,6 @@ const basicCommands: Array<CommandResponse> = [
       'For more information on the rules, visit http://bit.ly/CHIesk8Rules\n\n' +
       '1. Wear a helmet.\n' +
       '2. Seriously, wear a helmet.\n' +
-      '2.5 Must follow city/state ordinances regarding COVID-19 mitigation.\n' +
       '3. Keep a safe following distance.\n' +
       '4. Stagger yourselves while riding.\n' +
       '5. Wear clothing that wont fly off or get caught in wheels.\n' +
