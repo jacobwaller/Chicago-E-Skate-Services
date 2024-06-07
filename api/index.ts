@@ -141,7 +141,7 @@ const chargingHandler = async (req: Express.Request, res: Express.Response) => {
 
 const getCalendar = async () => {
   console.log('Starting to generate calendar...');
-  const allRides = await listRides(10);
+  const allRides = await listRides();
   const calendar = ical({
     name: 'Chicago E-Skate Group Rides',
     timezone: 'America/Chicago',
