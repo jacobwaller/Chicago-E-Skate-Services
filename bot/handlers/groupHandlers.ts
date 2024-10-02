@@ -8,7 +8,7 @@ export const group = async (
   const pevInvite = await ctx.telegram.exportChatInviteLink(MAIN_GROUP_ID);
   const restInvites = [];
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < GROUP_IDS.length; i++) {
     const id = GROUP_IDS[i];
     const link = await ctx.telegram.exportChatInviteLink(id);
     restInvites.push(link);
