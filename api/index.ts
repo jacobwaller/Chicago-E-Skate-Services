@@ -197,7 +197,18 @@ const fetchRide = async (req: Express.Request, res: Express.Response) => {
   res.set('Access-Control-Allow-Methods', 'GET');
   if (req.method === 'GET') {
     const id = req.query.id;
-    if (req.path.includes('calendar.ics')) {
+    if (req.path.includes('charge-spots')) {
+      const chargeSpotsList = await getChargeSpots();
+      res.status(200).send(
+        chargeSpotsList.map((spot) => {
+          return {
+            lat: spot.lat,
+            lon: spot.lon,
+            description: spot.description + '\n' + spot.chargeType,
+          };
+        }),
+      );
+    } else if (req.path.includes('calendar.ics')) {
       const getCal = await getCalendar();
       res.status(200).send(getCal);
     } else if (req.path.includes('leaderboard')) {
