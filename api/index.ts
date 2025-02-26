@@ -200,15 +200,13 @@ const fetchRide = async (req: Express.Request, res: Express.Response) => {
     if (req.path.includes('charge-spots')) {
       const chargeSpotsList = await getChargeSpots();
       res.status(200).send(
-        JSON.stringify(
-          chargeSpotsList.map((spot) => {
-            return {
-              lat: spot.lat,
-              lon: spot.lon,
-              description: spot.description + '\n' + spot.chargeType,
-            };
-          }),
-        ),
+        chargeSpotsList.map((spot) => {
+          return {
+            lat: spot.lat,
+            lon: spot.lon,
+            description: spot.description + '\n' + spot.chargeType,
+          };
+        }),
       );
     } else if (req.path.includes('calendar.ics')) {
       const getCal = await getCalendar();
