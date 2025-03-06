@@ -324,7 +324,16 @@ export const announce = async (
   const poll = await ctx.telegram.sendPoll(
     MAIN_GROUP_ID,
     'Will you make it to this group ride?',
-    ['Hell yeah', 'Maybe (Watch the posted live location)', 'Next time...'],
+    [
+      'Yes - eBike', 
+      'Yes - eSk8',
+      'Yes - eMoto',
+      'Yes - EUC', 
+      'Yes - eScooter',
+      'Yes - Something else',
+      'Maybe...',
+      "Next time",
+    ],
     {
       is_anonymous: false,
     },
