@@ -32,7 +32,7 @@ const basicCommands: Array<CommandResponse> = [
   },
   {
     commands: ['map', 'chargemap', 'charge_map'],
-    response: 'map.chicagoeskate.com',
+    response: 'New Map Here: map.jacobwaller.org\n\nOld Map Here: map.chicagoeskate.com',
   },
   {
     commands: ['help'],
