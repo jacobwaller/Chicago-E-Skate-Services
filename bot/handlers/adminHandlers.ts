@@ -317,8 +317,11 @@ export const announce = async (
     );
   }
 
+  const optionalId = ctx.message.text.split(" ")[1] ?? "0";
+  const optionalIdNumber = parseInt(optionalId)
+
   // Send group ride info to chicago PEV
-  const groupRideString = await getGroupRide(0);
+  const groupRideString = await getGroupRide(optionalIdNumber);
   const msg = await ctx.telegram.sendMessage(MAIN_GROUP_ID, groupRideString);
   // Post poll to Chicago PEV
   const poll = await ctx.telegram.sendPoll(
