@@ -23,7 +23,9 @@ export const group = async (
     'Telegram Groups:\n' +
     `[Chicago PEV](${pevInvite})\n` +
     `[Chicago Onewheel](${restInvites[0]})\n` +
-    `[Chicago EUC](${restInvites[1]})\n`;
+    `[Chicago EUC](${restInvites[1]})\n\n` +
+    `[Discord](https://discord.gg/8TvtZSYCrs)`
+    ;
 
   return await ctx.reply(msg, { parse_mode: 'MarkdownV2' });
 };

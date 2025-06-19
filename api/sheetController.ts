@@ -83,12 +83,12 @@ const getListOfRides = async () => {
  */
 export const listRides = async () => {
   const list = await getListOfRides();
-  const currentDate = moment();
+  const currentDate = moment().tz("America/Chicago");
   currentDate.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
 
   //Only fetch rides in future
   const futureRides = list.filter((ride) => {
-    const date = moment(ride.date, 'MM/DD/YYYY');
+    const date = moment(ride.date, 'MM/DD/YYYY').tz("America/Chicago");
     return currentDate <= date;
   });
 
