@@ -1,6 +1,7 @@
 import { Context, NarrowedContext, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { MAIN_GROUP_ID, GROUP_IDS } from '../utils/ids';
+import QRCode from 'qrcode';
 
 export const group = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
@@ -26,6 +27,5 @@ export const group = async (
     `[Chicago EUC](${restInvites[1]})\n\n` +
     `[Discord](https://discord.gg/8TvtZSYCrs)`
     ;
-
-  return await ctx.reply(msg, { parse_mode: 'MarkdownV2' });
+  return await Promise.all([ctx.reply(msg, { parse_mode: 'MarkdownV2' }), ctx.replyWithPhoto({ source: await QRCode.toDataURL(pevInvite) })]);
 };
