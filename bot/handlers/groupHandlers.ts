@@ -27,5 +27,5 @@ export const group = async (
     `[Chicago EUC](${restInvites[1]})\n\n` +
     `[Discord](https://discord.gg/8TvtZSYCrs)`
     ;
-  return await Promise.all([ctx.reply(msg, { parse_mode: 'MarkdownV2' }), ctx.replyWithPhoto({ source: await QRCode.toDataURL(pevInvite) })]);
+  return await Promise.all([ctx.reply(msg, { parse_mode: 'MarkdownV2' }), ctx.replyWithPhoto({ source: await QRCode.toBuffer(pevInvite) })]);
 };
