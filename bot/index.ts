@@ -72,6 +72,10 @@ bot.on('message', async (ctx, next) => {
     await updateUser(user);
   }
 
+  if(user.banned === true) {
+    return await ctx.reply("You cannot use the bot. You are banned.");
+  }
+
   if ('text' in ctx.message && ctx.message.text.startsWith('/')) {
     if (user.warnings.length >= 3) {
       const warningText = user.warnings
@@ -156,10 +160,6 @@ bot.on('message', async (ctx, next) => {
     if (user === undefined) {
       user = tgToDbUser(ctx.from);
       await updateUser(tgToDbUser(ctx.from));
-    }
-
-    if(user.banned === true) {
-      return await ctx.reply("You cannot use the bot. You are banned.");
     }
 
     return await conversationHandler(ctx, next, user);
