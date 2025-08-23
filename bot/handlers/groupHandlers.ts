@@ -14,6 +14,10 @@ export const group = async (
   const userId = `${ctx.from.id}`;
   const user = await getUserById(userId);
 
+  if(ctx.chat.type === 'private') {
+    return await ctx.reply("Unfortunately, due to recent AI Slop Spam, this must be done in a group. Please re-send this inside a group chat.")
+  }
+
   logger.info(`Creating group invite links for ${userId}. Links. PEV: ${pevInvite}, others: ${restInvites}`)
 
   for (let i = 0; i < GROUP_IDS.length; i++) {
