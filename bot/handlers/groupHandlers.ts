@@ -2,12 +2,18 @@ import { Context, NarrowedContext, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { MAIN_GROUP_ID, GROUP_IDS } from '../utils/ids';
 import QRCode from 'qrcode';
+import { getUserById } from './dbHandlers';
 
 export const group = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
 ) => {
   const pevInvite = await ctx.telegram.exportChatInviteLink(MAIN_GROUP_ID);
-  const restInvites = [];
+  const restInvites: String[] = [];
+
+  const userId = `${ctx.from.id}`;
+  const user = await getUserById(userId);
+
+  console.log(`Creating group invite links for ${userId}. Links. PEV: ${pevInvite}, others: ${restInvites}`)
 
   for (let i = 0; i < GROUP_IDS.length; i++) {
     const id = GROUP_IDS[i];
