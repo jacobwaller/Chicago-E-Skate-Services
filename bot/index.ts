@@ -131,18 +131,22 @@ bot.command(['leaderboard', 'Leaderboard'], leaderboardHandler);
 // bot.command(['optout', 'optOut', 'opt-out', 'opt_out'], optOut);
 // bot.command(['optin', 'optIn', 'opt-in', 'opt_in'], optIn);
 
+bot.on('chat_join_request', async (ctx) => {
+  console.log("new person joined", ctx?.chatJoinRequest?.invite_link)
+})
+
 bot.on('new_chat_members', async (ctx) => {
   const nameOrNames = ctx.message.new_chat_members
     .map((member) => member.first_name)
     .join(', ');
 
-  const inviteLink = await bot.telegram.exportChatInviteLink(MAIN_GROUP_ID);
+  const newInviteLink = await bot.telegram.exportChatInviteLink(MAIN_GROUP_ID);
 
   const welcomeString =
     `Hello, ${escapeChars(
       nameOrNames,
     )} Welcome to the Chicago PEV Network\\.\n` +
-    `Make sure to also join the main Chicago PEV Channel [here](${inviteLink})\\.\n` +
+    `Make sure to also join the main Chicago PEV Channel [here](${newInviteLink})\\.\n` +
     `For info on the next group ride, click: /ride\n` +
     `For more info on the group, check out our [website](https://chicagoeskate.com)\n` +
     `Also, make sure you look at the Group Ride Guidelines by clicking: /rules\n`;
