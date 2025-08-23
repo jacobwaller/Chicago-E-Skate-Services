@@ -6,3 +6,5 @@ export const GROUP_IDS = IS_PROD
     -1001270121090, // EUC
   ]
   : [-1001588542714];
+
+export const LOGGING_GROUP_ID = -4901832452
