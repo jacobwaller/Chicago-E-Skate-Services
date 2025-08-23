@@ -158,6 +158,10 @@ bot.on('message', async (ctx, next) => {
       await updateUser(tgToDbUser(ctx.from));
     }
 
+    if(user.banned === true) {
+      return await ctx.reply("You cannot use the bot. You are banned.");
+    }
+
     return await conversationHandler(ctx, next, user);
   } else {
     // If this is from a group we don't know about, spam them

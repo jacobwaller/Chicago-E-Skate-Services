@@ -51,6 +51,7 @@ export type UserData = {
   lastname?: string;
   username?: string;
   warnings: Array<Warning>;
+  banned?: boolean;
   locationOptOut?: boolean;
   conversationalStep?: ConversationInfo;
   additionalData: Array<{
