@@ -18,7 +18,7 @@ import {
   //   warn,
   //   warnings,
 } from './handlers/adminHandlers';
-import { GROUP_IDS, MAIN_GROUP_ID } from './utils/ids';
+import { GROUP_IDS, LOGGING_GROUP_ID, MAIN_GROUP_ID } from './utils/ids';
 import { add, charge, deleteCharge } from './handlers/chargeHandlers';
 import { group } from './handlers/groupHandlers';
 import { nextCallback, prevCallback, ride } from './handlers/rideHandlers';
@@ -170,7 +170,7 @@ bot.on('message', async (ctx, next) => {
     return await conversationHandler(ctx, next, user);
   } else {
     // If this is from a group we don't know about, spam them
-    const groups = [MAIN_GROUP_ID, ...GROUP_IDS];
+    const groups = [MAIN_GROUP_ID, ...GROUP_IDS, LOGGING_GROUP_ID];
     if (groups.filter((id) => id === ctx.chat.id).length === 0) {
       return await ctx.reply(
         `PLEASE REMOVE ME FROM THIS GROUP. If you'd like me in this group, please DM @jacob_waller and be sure to include this number: ${ctx.chat.id}`,
