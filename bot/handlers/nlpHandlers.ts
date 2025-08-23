@@ -1,5 +1,6 @@
 // @ts-ignore
 import { dockStart } from '@nlpjs/basic';
+import logger from './logHandler';
 const fs = require('fs');
 const { NlpManager } = require('node-nlp');
 
@@ -176,7 +177,7 @@ const getNlpResponse = async (text: string): Promise<string> => {
   const manager = new NlpManager();
   manager.import(data);
   const resp = await manager.process(text);
-  console.log(resp);
+  logger.info(resp);
 
   if (resp.intent !== 'None' && resp.score > 0.95) {
     const scrPercentage = Math.floor(resp.score * 100);
@@ -188,7 +189,7 @@ const getNlpResponse = async (text: string): Promise<string> => {
 
 const a = async () => {
   await train();
-  console.log(await getNlpResponse('hello'));
+  logger.info(await getNlpResponse('hello'));
 };
 
 // a();

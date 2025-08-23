@@ -8,6 +8,7 @@ import {
 } from '../utils/types';
 import { addCharge, getCharge } from './chargeHandlers';
 import { getUserById, updateUser } from './dbHandlers';
+import logger from './logHandler';
 
 export const cancelKeyboard = Markup.inlineKeyboard([
   Markup.button.callback('🛑 Cancel', '🛑 Cancel'),
@@ -25,7 +26,7 @@ export const endConversation = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
-  console.log('ending conversation');
+  logger.info('ending conversation');
   const id = ctx.from?.id;
   if (id === undefined) {
     await ctx.reply('Something went wrong. Try again later');
@@ -35,7 +36,7 @@ export const endConversation = async (
   user.conversationalStep = undefined;
   await updateUser(user);
 
-  console.log('CALLBACK:', JSON.stringify(ctx.callbackQuery));
+  logger.info('CALLBACK:', JSON.stringify(ctx.callbackQuery));
 
   // Remove the button from the message
   await ctx.telegram.editMessageReplyMarkup(
@@ -52,7 +53,7 @@ export const yesCallback = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
-  console.log('saying yes');
+  logger.info('saying yes');
   const id = ctx.from?.id;
   if (id === undefined) {
     await ctx.reply('Something went wrong. Try again later');
@@ -86,7 +87,7 @@ export const noCallback = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['callback_query']>,
   next: () => Promise<void>,
 ) => {
-  console.log('saying no');
+  logger.info('saying no');
   const id = ctx.from?.id;
   if (id === undefined) {
     await ctx.reply('Something went wrong. Try again later');
@@ -126,7 +127,7 @@ export default async (
     return await next();
   }
   await ctx.replyWithChatAction('typing');
-  console.log(
+  logger.info(
     'Trying to handle conversation: ',
     JSON.stringify(user.conversationalStep),
   );

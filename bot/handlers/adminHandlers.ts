@@ -12,22 +12,23 @@ import {
 import { GROUP_IDS, MAIN_GROUP_ID } from '../utils/ids';
 import { UserData, Warning } from '../utils/types';
 import { getGroupRide } from './rideHandlers';
+import logger from './logHandler';
 
 export const isAdmin = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
   userId: number,
   chatId: number,
 ): Promise<boolean> => {
-  console.log(`testing if ${userId} is admin of ${chatId}`);
+  logger.info(`testing if ${userId} is admin of ${chatId}`);
   const admins = await ctx.telegram.getChatAdministrators(chatId);
   const filtered = admins.filter((admin) => {
     return admin.user.id === userId;
   });
-  console.log(
+  logger.info(
     `User is ${filtered.length !== 0 ? '' : 'not'} an admin of ${chatId}`,
   );
 
-  console.log('returning ', filtered.length !== 0);
+  logger.info('returning ', filtered.length !== 0);
   return filtered.length !== 0;
 };
 
@@ -43,13 +44,13 @@ export const adminCommandHelper = async (
   const senderId = ctx.from.id;
 
   if (!(await isAdmin(ctx, senderId, MAIN_GROUP_ID))) {
-    console.log(`${senderId} is not an admin`);
+    logger.info(`${senderId} is not an admin`);
     await ctx.reply('Only admins of Chicago PEV can use this command...');
     return false;
   } else {
     const isReply = !!ctx.message.reply_to_message;
     if (!isReply) {
-      console.log(`Improperly used command`);
+      logger.info(`Improperly used command`);
       await ctx.reply(
         "Reply to the message of the person you'd like to warn...",
       );
@@ -66,7 +67,7 @@ export const startContest = async (
   next: () => Promise<void>,
 ) => {
   if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
-    console.log('Someone who was not an admin tried to use the command warn');
+    logger.info('Someone who was not an admin tried to use the command warn');
     return await next();
   }
 
@@ -80,7 +81,7 @@ export const endContestSayWinners = async (
   next: () => Promise<void>,
 ) => {
   if (!(await isAdmin(ctx, ctx.from.id, MAIN_GROUP_ID))) {
-    console.log('Someone who was not an admin tried to use the command warn');
+    logger.info('Someone who was not an admin tried to use the command warn');
     return await next();
   }
   await ctx.reply('getting results...');
@@ -106,7 +107,7 @@ export const endContestSayWinners = async (
     }
   }
 
-  console.log('Included User IDs table:', JSON.stringify(includedUserIds));
+  logger.info('Included User IDs table:', JSON.stringify(includedUserIds));
 
   const arrayOfPeopleScores: Array<{ id: string; score: number }> = Object.keys(
     includedUserIds,
@@ -117,7 +118,7 @@ export const endContestSayWinners = async (
     };
   });
 
-  console.log('arrayOfPeopleScores:', arrayOfPeopleScores);
+  logger.info('arrayOfPeopleScores:', arrayOfPeopleScores);
 
   let usersPlusScores: Array<UserData & { score: number }> = [];
   // Map from ID & score to name & score
@@ -151,7 +152,7 @@ export const endContestSayWinners = async (
 //   next: () => Promise<void>,
 // ) => {
 //   if (!(await adminCommandHelper(ctx))) {
-//     console.log('Someone who was not an admin tried to use the command warn');
+//     logger.info('Someone who was not an admin tried to use the command warn');
 //     return await next();
 //   }
 

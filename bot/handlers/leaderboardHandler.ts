@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Context, NarrowedContext, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
+import logger from './logHandler';
 
 type leaderboardEntry = {
   name: string;
@@ -11,12 +12,12 @@ type leaderboardEntry = {
 export const leaderboardHandler = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap['text']>,
 ) => {
-  console.log('leaderboardHandler');
+  logger.info('leaderboardHandler');
   const axiosResponse = await axios.get<leaderboardEntry[]>(
     `${process.env.API_URL}/leaderboard`,
   );
   const leaderboard = axiosResponse.data;
-  console.log(leaderboard);
+  logger.info(leaderboard);
   if (Object.keys(leaderboard).length === 0) {
     return await ctx.reply('No leaderboard found');
   }

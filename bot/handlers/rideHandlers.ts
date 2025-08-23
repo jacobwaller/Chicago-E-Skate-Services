@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Context, Markup, NarrowedContext, Types } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { ApiResponse } from '../utils/types';
+import logger from './logHandler';
 
 export const prevNextKeyboard = Markup.inlineKeyboard([
   [Markup.button.callback('⏮️', '⏮️'), Markup.button.callback('⏭️', '⏭️')],
@@ -87,12 +88,12 @@ export const nextCallback = async (
 
 export const getGroupRide = async (index: number): Promise<string> => {
   // Call API
-  console.log('Calling API with url', process.env.API_URL);
+  logger.info('Calling API with url', process.env.API_URL);
   const axiosResponse = await axios.get<ApiResponse>(
     `${process.env.API_URL}?id=${index}`,
   );
   const response = axiosResponse.data;
-  console.log('Recieved', response);
+  logger.info('Recieved', response);
   if (Object.keys(response).length != 0) {
     // prettier-ignore
     return (

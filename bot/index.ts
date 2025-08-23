@@ -29,6 +29,7 @@ import getNlpResponse from './handlers/nlpHandlers';
 import { myDataHandler } from './handlers/dataHandlers';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { leaderboardHandler } from './handlers/leaderboardHandler';
+import logger from './handlers/logHandler';
 
 const { BOT_TOKEN, PROJECT_ID, FUNCTION_NAME, REGION } = process.env;
 const bot = new Telegraf(BOT_TOKEN || '');
@@ -132,7 +133,7 @@ bot.command(['leaderboard', 'Leaderboard'], leaderboardHandler);
 // bot.command(['optin', 'optIn', 'opt-in', 'opt_in'], optIn);
 
 bot.on('chat_join_request', async (ctx) => {
-  console.log("new person joined", ctx?.chatJoinRequest?.invite_link)
+  logger.info("new person joined", ctx?.chatJoinRequest?.invite_link)
 })
 
 bot.on('new_chat_members', async (ctx) => {
@@ -196,12 +197,12 @@ bot.on('message', async (ctx, next) => {
 // });
 
 export const botFunction: HttpFunction = async (req, res) => {
-  console.log(req.body);
+  logger.info(req.body);
 
   try {
     // Handle the update
     await bot.handleUpdate(req.body);
-    console.log('Success');
+    logger.info('Success');
     res.status(200).send('Success');
   } catch (err) {
     console.error(err);
