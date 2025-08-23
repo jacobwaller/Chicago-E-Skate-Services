@@ -14,7 +14,7 @@ class TelegramMessageTransport extends Transport {
     log(info: unknown, callback: () => void) {
         const ctx = bot.context as Partial<Context>;
         try {
-            const strRep = JSON.stringify(info);
+            const strRep = JSON.stringify(info, null, 2);
             bot.telegram.sendMessage(LOGGING_GROUP_ID, strRep);
         } finally {
             callback();
