@@ -98,8 +98,8 @@ export const getGroupRide = async (index: number): Promise<string> => {
     // prettier-ignore
     return (
       `${response.title} (${response.group}):\n\n` +
-      //
       `When: ${response.date} at ${response.meetTime}\n` +
+      (response.launchTime ? `Launch Time: ${response.launchTime}\n`: '') +
       `Where: ${response.startPoint}\n` +
       (response.endPoint ? `To: ${response.endPoint}\n` : '') +
       (response.routeLink ? `Route: ${response.routeLink}\n` : '') +   
