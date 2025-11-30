@@ -28,7 +28,7 @@ steps:
       - botFunctionQA
       - --source=./built/bot/
       - --trigger-http
-      - --runtime=nodejs24
+      - --runtime=nodejs22
       - --entry-point=botFunction
 
   # Deploy APIs
@@ -41,7 +41,7 @@ steps:
       - fetchRideQA
       - --source=./built/api/
       - --trigger-http
-      - --runtime=nodejs24
+      - --runtime=nodejs22
       - --entry-point=fetchRide
       - --allow-unauthenticated
 
@@ -54,7 +54,7 @@ steps:
       - chargingHandlerQA
       - --source=./built/api/
       - --trigger-http
-      - --runtime=nodejs24
+      - --runtime=nodejs22
       - --entry-point=chargingHandler
       - --allow-unauthenticated
 
