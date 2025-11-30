@@ -88,28 +88,24 @@ const basicCommands: Array<CommandResponse> = [
   {
     commands: ['rule', 'rules'],
     response:
-      'For more information on the rules, visit http://bit.ly/CHIesk8Rules\n\n' +
+      'For further details on the rules, visit http://bit.ly/CHIesk8Rules\n\n' +
+      'All rides are 18+\n\n' +
       '1. Wear a helmet.\n' +
-      '2. Seriously, wear a helmet.\n' +
-      '2.5 Must follow city/state ordinances regarding COVID-19 mitigation.\n' +
-      '3. Keep a safe following distance.\n' +
-      '4. Stagger yourselves while riding.\n' +
-      '5. Wear clothing that wont fly off or get caught in wheels.\n' +
-      "6. Don't blind people with your flashlight.\n" +
-      '7. Watch where you shine your flashlight.\n' +
-      '8. Ride within your limits.\n' +
-      '9. Be a team player.\n' +
-      '10. Communicate.\n' +
-      '11. Come prepared.\n' +
-      '12. Obey traffic signals.\n' +
-      '13. Excersise caution.\n' +
-      '14. Ride Defensively.\n' +
-      '15. Avoid Road Rage.\n' +
-      '16. Keep some form of emergency contact info on your person.\n' +
-      '17. Do not ride drunk.\n' +
-      '18. No spamming.\n' +
-      '19. Be honest with transactions.\n' +
-      '20. Do not share crash videos of someone without their consent',
+      '2. Seriously, wear a F** helmet\n' +
+      '3. Keep a safe following distance (one car length of space for every 10mph)\n' +
+      '4. Turn off ALL lights before pulling up to or entering a business\n' +
+      '5. Ride within your limits & be cognizant of your surroundings\n' +
+      '6. Be a team player\n' +
+      '7. Communicate. Join Discord for live voice chat during the rides and watch our live location on Telegram if you get lost\n' +
+      '8. Come charged & prepared\n' +
+      '9. No Road Rage\n' +
+      '10. Keep some form of emergency contact info on your person\n' +
+      '11. Do not ride overly intoxicated\n' +
+      '12. No spamming\n' +
+      '14. Be honest with transactions\n' +
+      '15. Do NOT share crash videos of someone without their consent\n\n' +
+      '16. Must follow city/state ordinances regarding COVID-19 mitigation.\n' +
+      'DM Management or ask questions related to rules in the Chicago PEV Telegram Chat',
   },
   {
     commands: ['strava'],
