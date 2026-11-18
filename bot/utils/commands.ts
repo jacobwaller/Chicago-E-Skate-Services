@@ -103,8 +103,9 @@ const basicCommands: Array<CommandResponse> = [
       '11. Do not ride overly intoxicated\n' +
       '12. No spamming\n' +
       '14. Be honest with transactions\n' +
-      '15. Do NOT share crash videos of someone without their consent\n\n' +
-      '16. Must follow city/state ordinances regarding COVID-19 mitigation.\n' +
+      '15. Do NOT share crash videos of someone without their consent\n' +
+      '16. Trent must follow city/state ordinances regarding COVID-19 mitigation.\n' +
+      '17. Electric vehicles only.\n' +
       'DM Management or ask questions related to rules in the Chicago PEV Telegram Chat',
   },
   {
